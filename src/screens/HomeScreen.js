@@ -1,4 +1,15 @@
-import { Body, Button, Container, Content, Header, Icon, Left, Title } from 'native-base';
+import {
+  Body,
+  Button,
+  Container,
+  Content,
+  Footer,
+  FooterTab,
+  Header,
+  Left,
+  Title
+} from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
@@ -6,29 +17,32 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Home Page</Title>
-          </Body>
-        </Header>
         <Content>
           <Text>Home Page</Text>
         </Content>
+        <Footer>
+          <FooterTab tabActiveBgColor='green' style={styles.footerTab}>
+            <Button>
+              <Icon name='favorite' />
+              <Text>Favorite</Text>
+            </Button>
+            <Button>
+              <Icon name='explore' />
+              <Text>Explore</Text>
+            </Button>
+            <Button>
+              <Icon name='settings' />
+              <Text>Settings</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
+  footerTab: {
+    backgroundColor: '#FFF',
   },
 });
