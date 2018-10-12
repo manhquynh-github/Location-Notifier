@@ -16,34 +16,59 @@ import {
   Grid,
   Col,
   Row,
+  Text,
 } from 'native-base';
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import Layout from '../constants/Layout';
+import { withNavigation } from 'react-navigation';
 
 const googleMapLogo = require('../assets/images/GoogleMapLogo.png');
 
-export default class MainExploreScreen extends Component {
+class MainExploreScreen extends Component {
+  constructor() {
+    super();
+    this.onSearchPressed = this.onSearchPressed.bind(this);
+    this.onLocatePressed = this.onLocatePressed.bind(this);
+    this.onRangePressed = this.onRangePressed.bind(this);
+  }
+
   render() {
     return (
       <Container>
         <Content>
           <Grid>
-            <Row style={{ flex: 0 }}>
+            <Row style={styles.shrink}>
               <Col>
-                <Item style={{ paddingLeft: 10 }}>
-                  <Icon name="search" />
-                  <Input placeholder="Search" />
-                </Item>
-              </Col>
-              <Col style={{ flex: 0 }}>
-                <Button transparent>
-                  <Icon name='street-view' type='FontAwesome' />
+                <Button
+                  transparent
+                  onPress={this.onSearchPressed}
+                >
+                  <Icon
+                    name="search"
+                    style={{ color: '#000' }} />
+                  <Text
+                    uppercase={false}
+                    style={{ color: '#000' }}
+                  >
+                    Search
+                    </Text>
                 </Button>
               </Col>
-              <Col style={{ flex: 0 }}>
-                <Button transparent>
+              <Col style={styles.shrink}>
+                <Button
+                  transparent
+                  onPress={this.onLocatePressed}
+                >
                   <Icon name='my-location' type='MaterialIcons' />
+                </Button>
+              </Col>
+              <Col style={styles.shrink}>
+                <Button
+                  transparent
+                  onPress={this.onRangePressed}
+                >
+                  <Icon name='street-view' type='FontAwesome' />
                 </Button>
               </Col>
             </Row>
@@ -55,10 +80,25 @@ export default class MainExploreScreen extends Component {
       </Container>
     );
   }
+
+  onSearchPressed() {
+    console.log(this.props);
+    this.props.navigation.navigate('DetailExplore');
+  }
+
+  onLocatePressed() {
+
+  }
+
+  onRangePressed() {
+
+  }
 }
 
 const styles = StyleSheet.create({
-  actionButtonCol: {
-    width: 40,
+  shrink: {
+    flex: 0,
   }
 });
+
+export default withNavigation(MainExploreScreen);

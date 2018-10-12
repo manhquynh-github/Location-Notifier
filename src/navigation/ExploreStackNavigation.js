@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 import { Platform, StatusBar } from 'react-native';
 import MainExploreScreen from '../screens/MainExploreScreen';
-import ExploreScreen from '../screens/ExploreScreen';
+import ExploreScreen from '../screens/DetailExploreScreen';
 
 export default createStackNavigator(
   {

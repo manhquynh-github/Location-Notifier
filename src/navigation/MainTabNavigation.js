@@ -23,7 +23,7 @@ export default createBottomTabNavigator(
     Explore: {
       screen: ExploreStackNavigation,
       navigationOptions: {
-        title: 'Home',
+        title: 'Explore',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
             focused={focused}
