@@ -7,18 +7,50 @@ import {
   FooterTab,
   Header,
   Left,
-  Title
+  Title,
+  Icon,
+  Input,
+  Card,
+  CardItem,
+  Item,
+  Grid,
+  Col,
+  Row,
 } from 'native-base';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
+import Layout from '../constants/Layout';
+
+const googleMapLogo = require('../assets/images/GoogleMapLogo.png');
 
 export default class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
         <Content>
-          <Text>Home Page</Text>
+          <Grid>
+            <Row style={{ flex: 0 }}>
+              <Col>
+                <Item style={{ paddingLeft: 10 }}>
+                  <Icon name="search" />
+                  <Input placeholder="Search" />
+                </Item>
+              </Col>
+              <Col style={{ flex: 0 }}>
+                <Button transparent>
+                  <Icon name='street-view' type='FontAwesome' />
+                </Button>
+              </Col>
+              <Col style={{ flex: 0 }}>
+                <Button transparent>
+                  <Icon name='my-location' type='MaterialIcons' />
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Image source={googleMapLogo} style={{ height: Layout.window.width, width: null, flex: 1 }} />
+            </Row>
+          </Grid>
         </Content>
       </Container>
     );
@@ -26,7 +58,7 @@ export default class MainExploreScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  footerTab: {
-    backgroundColor: '#FFF',
-  },
+  actionButtonCol: {
+    width: 40,
+  }
 });
