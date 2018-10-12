@@ -1,7 +1,7 @@
 import React from 'react';
 import { createSwitchNavigator } from 'react-navigation';
 
-import MainStackNavigation from './MainStackNavigation';
+import MainStackNavigation from './MainTabNavigation';
 
 export default createSwitchNavigator({
   // You could add another route here for authentication.
