@@ -47,9 +47,5 @@ export default createBottomTabNavigator(
   },
   {
     initialRouteName: 'Explore',
-    cardStyle: {
-      paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-    },
-    headerMode: 'none',
   }
 );

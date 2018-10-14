@@ -58,17 +58,21 @@ class MainExploreScreen extends Component {
               <Col style={styles.shrink}>
                 <Button
                   transparent
-                  onPress={this.onLocatePressed}
-                >
-                  <Icon name='my-location' type='MaterialIcons' />
+                  onPress={this.onLocatePressed}>
+                  <Icon
+                    name='my-location'
+                    type='MaterialIcons'
+                    style={styles.actionButtonColor} />
                 </Button>
               </Col>
               <Col style={styles.shrink}>
                 <Button
                   transparent
-                  onPress={this.onRangePressed}
-                >
-                  <Icon name='street-view' type='FontAwesome' />
+                  onPress={this.onRangePressed}>
+                  <Icon
+                    name='street-view'
+                    type='FontAwesome'
+                    style={styles.actionButtonColor} />
                 </Button>
               </Col>
             </Row>
@@ -98,6 +102,9 @@ class MainExploreScreen extends Component {
 const styles = StyleSheet.create({
   shrink: {
     flex: 0,
+  },
+  actionButtonColor: {
+    color: 'gray',
   }
 });
 

@@ -20,9 +20,6 @@ export default createStackNavigator(
   },
   {
     initialRouteName: 'MainExplore',
-    cardStyle: {
-      paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-    },
     headerMode: 'none',
   }
 );
