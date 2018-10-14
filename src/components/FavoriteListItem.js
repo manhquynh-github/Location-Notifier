@@ -25,7 +25,7 @@ export default class FavoriteListItem extends Component {
             transparent
             onPress={this.props.onRemovePressed}
           >
-            <Icon name='trash' />
+            <Icon name='trash' style={{ color: 'gray' }} />
           </Button>
         </Right>
       </ListItem>

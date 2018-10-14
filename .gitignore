@@ -1,3 +1,6 @@
 node_modules/**/*
 .expo/*
 npm-debug.*
+.vscode/.react/AppEntry.bundle
+.vscode/.react/AppEntry.map
+.vscode/.react/debuggerWorker.js

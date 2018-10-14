@@ -41,16 +41,12 @@ class MainExploreScreen extends Component {
             <Row style={styles.shrink}>
               <Col>
                 <Button
+                  full
                   transparent
-                  onPress={this.onSearchPressed}
-                >
-                  <Icon
-                    name="search"
-                    style={{ color: '#000' }} />
+                  onPress={this.onSearchPressed}>
                   <Text
                     uppercase={false}
-                    style={{ color: '#000' }}
-                  >
+                    style={{ color: '#000' }}>
                     Search
                     </Text>
                 </Button>
