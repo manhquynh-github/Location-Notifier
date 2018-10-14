@@ -5,7 +5,7 @@ export const addFavorite = favorite => ({
   payload: { favorite: favorite },
 });
 
-export const deleteFavorite = id => ({
-  type: Favorite.DELETE,
+export const removeFavorite = id => ({
+  type: Favorite.REMOVE,
   payload: { id: id },
 });

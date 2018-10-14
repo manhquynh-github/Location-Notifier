@@ -1,4 +1,4 @@
-import { addFavorite, deleteFavorite } from './Favorite';
+import { addFavorite, removeFavorite } from './Favorite';
 
 export const addFavorite;
-export const deleteFavorite;
+export const removeFavorite;
