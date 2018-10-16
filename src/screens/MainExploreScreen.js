@@ -17,11 +17,13 @@ import {
   Col,
   Row,
   Text,
+  Fab,
 } from 'native-base';
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import Layout from '../constants/Layout';
 import { withNavigation } from 'react-navigation';
+import Colors from '../constants/Colors';
 
 const googleMapLogo = require('../assets/images/GoogleMapLogo.png');
 
@@ -36,46 +38,44 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
+        <Button
+          full
+          onPress={this.onSearchPressed}
+          style={styles.addressBar}>
+          <Text
+            uppercase={false}
+            style={{ color: '#000' }}>
+            Search
+          </Text>
+        </Button>
+        <Fab
+          active={false}
+          containerStyle={{}}
+          style={styles.rangeButton}
+          position="bottomRight">
+          <Icon
+            name='street-view'
+            type='FontAwesome'
+            style={{ color: 'gray' }} />
+        </Fab>
+        <Fab
+          containerStyle={{}}
+          style={styles.myLocationButton}
+          position="bottomRight">
+          <Icon
+            name='my-location'
+            type='MaterialIcons'
+            style={{ color: 'gray' }} />
+        </Fab>
+        <Fab
+          containerStyle={{}}
+          style={styles.startButton}
+          position="bottomRight">
+          <Icon
+            name='play' />
+        </Fab>
         <Content>
-          <Grid>
-            <Row style={styles.shrink}>
-              <Col>
-                <Button
-                  full
-                  transparent
-                  onPress={this.onSearchPressed}>
-                  <Text
-                    uppercase={false}
-                    style={{ color: '#000' }}>
-                    Search
-                    </Text>
-                </Button>
-              </Col>
-              <Col style={styles.shrink}>
-                <Button
-                  transparent
-                  onPress={this.onLocatePressed}>
-                  <Icon
-                    name='my-location'
-                    type='MaterialIcons'
-                    style={styles.actionButtonColor} />
-                </Button>
-              </Col>
-              <Col style={styles.shrink}>
-                <Button
-                  transparent
-                  onPress={this.onRangePressed}>
-                  <Icon
-                    name='street-view'
-                    type='FontAwesome'
-                    style={styles.actionButtonColor} />
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Image source={googleMapLogo} style={{ height: Layout.window.width, width: null, flex: 1 }} />
-            </Row>
-          </Grid>
+          <Image source={googleMapLogo} style={{}} />
         </Content>
       </Container>
     );
@@ -99,8 +99,26 @@ const styles = StyleSheet.create({
   shrink: {
     flex: 0,
   },
-  actionButtonColor: {
-    color: 'gray',
+  addressBar: {
+    zIndex: 1,
+    position: 'absolute',
+    top: 10 + Layout.statusBarHeight,
+    left: 10,
+    right: 10,
+    borderRadius: 10,
+    elevation: 5,
+    backgroundColor: 'white',
+  },
+  startButton: {
+    backgroundColor: Colors.tintColor,
+  },
+  myLocationButton: {
+    backgroundColor: 'white',
+    bottom: 75,
+  },
+  rangeButton: {
+    backgroundColor: 'white',
+    bottom: 150,
   }
 });
 

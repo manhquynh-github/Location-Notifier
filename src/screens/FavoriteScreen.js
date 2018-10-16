@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addFavorite, removeFavorite } from '../actions/Favorite';
 import PropTypes from 'prop-types';
 import FavoriteListItem from '../components/FavoriteListItem';
+import StatusBarOverlay from '../components/StatusBarOverlay';
 
 class FavoriteScreen extends Component {
   static propTypes = {
@@ -26,6 +27,7 @@ class FavoriteScreen extends Component {
     return (
       <Container>
         <Content>
+          <StatusBarOverlay />
           <List>
             {this.renderFavorites()}
           </List>
