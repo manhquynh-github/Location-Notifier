@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     borderRadius: 10,
-    elevation: 5,
+    elevation: 2,
     backgroundColor: 'white',
   },
   startButton: {

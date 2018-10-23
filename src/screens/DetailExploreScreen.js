@@ -1,16 +1,37 @@
 import React, { Component } from 'react';
-import { Container, Content, Text } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Container, Content, Text, Input } from 'native-base';
 import StatusBarOverlay from '../components/StatusBarOverlay';
+import Colors from '../constants/Colors';
 
 export default class DetailExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Content>
+        <Content style={styles.page}>
           <StatusBarOverlay />
-          <Text>Detail Explore</Text>
+          <Input
+            style={styles.searchBar}
+            placeholder='Search'
+            autoFocus={true} />
         </Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  page: {
+    backgroundColor: Colors.defaultBackgroundColor,
+  },
+  searchBar: {
+    margin: 10,
+    borderRadius: 10,
+    elevation: 2,
+    borderWidth: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderColor: 'lightgray',
+    backgroundColor: 'white',
+  },
+});

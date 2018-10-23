@@ -12,4 +12,5 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   statusBarColor: tintColor,
+  defaultBackgroundColor: '#f2f2f2',
 };
