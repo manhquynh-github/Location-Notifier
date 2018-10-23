@@ -1,29 +1,12 @@
-import {
-  Body,
-  Button,
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Header,
-  Left,
-  Title,
-  Icon,
-  Input,
-  Card,
-  CardItem,
-  Item,
-  Grid,
-  Col,
-  Row,
-  Text,
-  Fab,
-} from 'native-base';
+import { ActionSheet, Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import React, { Component } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import Layout from '../constants/Layout';
+import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
+import { setRangeOption } from '../actions';
 import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
+import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
 const googleMapLogo = require('../assets/images/GoogleMapLogo.png');
 
@@ -52,7 +35,8 @@ class MainExploreScreen extends Component {
           active={false}
           containerStyle={{}}
           style={styles.rangeButton}
-          position="bottomRight">
+          position="bottomRight"
+          onPress={this.onRangePressed}>
           <Icon
             name='street-view'
             type='FontAwesome'
@@ -91,7 +75,41 @@ class MainExploreScreen extends Component {
   }
 
   onRangePressed() {
+    this.showRangeOptions();
+  }
 
+  showRangeOptions() {
+    // Generate new range options, where
+    // only selected one has a check mark.
+    const options = [];
+    for (i = 0; i < RANGE_OPTIONS.length; i++) {
+      // re-create one option
+      let option = {}
+      // set that one's text = old one
+      const optionText = RANGE_OPTIONS[i];
+      option['text'] = optionText;
+      // if is selected one, set icon to 
+      // check mark and set color
+      if (this.props.rangeOption == i) {
+        option['icon'] = 'checkmark';
+        option['iconColor'] = Colors.tintColor;
+      }
+      // push back to new option array
+      options.push(option);
+    }
+
+    // show action sheet using newly created options
+    ActionSheet.show(
+      {
+        options: options,
+        title: 'Range to notify',
+      },
+      selectedIndex => {
+        if (selectedIndex !== undefined) {
+          this.props.setRangeOption(selectedIndex);
+        }
+      }
+    )
   }
 }
 
@@ -110,16 +128,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   startButton: {
+    zIndex: 1,
     backgroundColor: Colors.tintColor,
   },
   myLocationButton: {
+    zIndex: 1,
     backgroundColor: 'white',
     bottom: 75,
   },
   rangeButton: {
+    zIndex: 1,
     backgroundColor: 'white',
     bottom: 150,
   }
 });
 
-export default withNavigation(MainExploreScreen);
+const mapStateToProps = state => ({
+  rangeOption: state.settingsReducer.rangeOption,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setRangeOption: optionID => dispatch(setRangeOption(optionID)),
+})
+
+export default withNavigation(
+  connect(mapStateToProps, mapDispatchToProps)(MainExploreScreen)
+);

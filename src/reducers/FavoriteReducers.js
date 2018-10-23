@@ -1,4 +1,7 @@
-import { Favorite } from '../constants/ActionTypes';
+import {
+  ADD_FAVORITE,
+  REMOVE_FAVORITE,
+} from '../constants/ActionTypes';
 import { getFavorites, addFavorite, removeFavorite } from '../backend/Favorite';
 
 const initialState = {
@@ -6,9 +9,9 @@ const initialState = {
 }
 
 const favoriteReducer = (state = initialState, action) => {
-  const currentState = { ...state };
+  const newState = { ...state };
   switch (action.type) {
-    case Favorite.ADD: {
+    case ADD_FAVORITE: {
       const item = action.payload.favorite;
       try {
         addFavorite(item);
@@ -17,11 +20,11 @@ const favoriteReducer = (state = initialState, action) => {
         throw e;
       }
 
-      currentState.favorites.concat(item);
-      return currentState;
+      newState.favorites.concat(item);
+      return newState;
     }
 
-    case Favorite.REMOVE: {
+    case REMOVE_FAVORITE: {
       const id = action.payload.id;
       try {
         removeFavorite(id);
@@ -31,10 +34,10 @@ const favoriteReducer = (state = initialState, action) => {
       }
 
       // reassign new array
-      currentState.favorites = [...state.favorites];
+      newState.favorites = [...state.favorites];
 
       // look for array index
-      let arrIdx = currentState.favorites.findIndex(
+      let arrIdx = newState.favorites.findIndex(
         e => e.id == id
       );
 
@@ -42,11 +45,11 @@ const favoriteReducer = (state = initialState, action) => {
         throw "ERR: No such id to remove.\n" + id;
       }
 
-      currentState.favorites.splice(arrIdx, 1);
-      return currentState;
+      newState.favorites.splice(arrIdx, 1);
+      return newState;
     }
     default: {
-      return currentState;
+      return newState;
     }
   }
 }

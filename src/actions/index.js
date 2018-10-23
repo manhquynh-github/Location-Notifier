@@ -1,4 +1,15 @@
-import { addFavorite, removeFavorite } from './Favorite';
+import {
+  addFavorite,
+  removeFavorite
+} from './Favorite';
 
-export const addFavorite;
-export const removeFavorite;
+import {
+  setRangeOption,
+} from './Settings';
+
+export {
+  addFavorite,
+  removeFavorite,
+
+  setRangeOption,
+}
