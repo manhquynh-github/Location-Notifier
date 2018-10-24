@@ -10,5 +10,5 @@ export const ActionTypes = {
   },
   Settings: {
     CHANGE_RANGE,
-  }
-}
+  },
+};

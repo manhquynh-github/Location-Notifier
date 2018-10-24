@@ -16,7 +16,7 @@ export default createStackNavigator(
       navigationOptions: {
         title: 'Explore Screen',
       },
-    }
+    },
   },
   {
     initialRouteName: 'MainExplore',

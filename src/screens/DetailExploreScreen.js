@@ -12,8 +12,9 @@ export default class DetailExploreScreen extends Component {
           <StatusBarOverlay />
           <Input
             style={styles.searchBar}
-            placeholder='Search'
-            autoFocus={true} />
+            placeholder="Search"
+            autoFocus={true}
+          />
         </Content>
       </Container>
     );

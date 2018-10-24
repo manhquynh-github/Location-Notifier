@@ -1,4 +1,12 @@
-import { ActionSheet, Button, Container, Content, Fab, Icon, Text } from 'native-base';
+import {
+  ActionSheet,
+  Button,
+  Container,
+  Content,
+  Fab,
+  Icon,
+  Text,
+} from 'native-base';
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -21,13 +29,8 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Button
-          full
-          onPress={this.onSearchPressed}
-          style={styles.addressBar}>
-          <Text
-            uppercase={false}
-            style={{ color: '#000' }}>
+        <Button full onPress={this.onSearchPressed} style={styles.addressBar}>
+          <Text uppercase={false} style={{ color: '#000' }}>
             Search
           </Text>
         </Button>
@@ -38,25 +41,26 @@ class MainExploreScreen extends Component {
           position="bottomRight"
           onPress={this.onRangePressed}>
           <Icon
-            name='street-view'
-            type='FontAwesome'
-            style={{ color: 'gray' }} />
+            name="street-view"
+            type="FontAwesome"
+            style={{ color: 'gray' }}
+          />
         </Fab>
         <Fab
           containerStyle={{}}
           style={styles.myLocationButton}
           position="bottomRight">
           <Icon
-            name='my-location'
-            type='MaterialIcons'
-            style={{ color: 'gray' }} />
+            name="my-location"
+            type="MaterialIcons"
+            style={{ color: 'gray' }}
+          />
         </Fab>
         <Fab
           containerStyle={{}}
           style={styles.startButton}
           position="bottomRight">
-          <Icon
-            name='play' />
+          <Icon name="play" />
         </Fab>
         <Content>
           <Image source={googleMapLogo} style={{}} />
@@ -70,9 +74,7 @@ class MainExploreScreen extends Component {
     this.props.navigation.navigate('DetailExplore');
   }
 
-  onLocatePressed() {
-
-  }
+  onLocatePressed() {}
 
   onRangePressed() {
     this.showRangeOptions();
@@ -84,11 +86,11 @@ class MainExploreScreen extends Component {
     const options = [];
     for (i = 0; i < RANGE_OPTIONS.length; i++) {
       // re-create one option
-      let option = {}
+      let option = {};
       // set that one's text = old one
       const optionText = RANGE_OPTIONS[i];
       option['text'] = optionText;
-      // if is selected one, set icon to 
+      // if is selected one, set icon to
       // check mark and set color
       if (this.props.rangeOption == i) {
         option['icon'] = 'checkmark';
@@ -104,12 +106,12 @@ class MainExploreScreen extends Component {
         options: options,
         title: 'Range to notify',
       },
-      selectedIndex => {
+      (selectedIndex) => {
         if (selectedIndex !== undefined) {
           this.props.setRangeOption(selectedIndex);
         }
       }
-    )
+    );
   }
 }
 
@@ -140,17 +142,20 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: 'white',
     bottom: 150,
-  }
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   rangeOption: state.settingsReducer.rangeOption,
-})
+});
 
-const mapDispatchToProps = dispatch => ({
-  setRangeOption: optionID => dispatch(setRangeOption(optionID)),
-})
+const mapDispatchToProps = (dispatch) => ({
+  setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
+});
 
 export default withNavigation(
-  connect(mapStateToProps, mapDispatchToProps)(MainExploreScreen)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(MainExploreScreen)
 );

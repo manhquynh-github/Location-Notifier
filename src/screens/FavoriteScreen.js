@@ -16,7 +16,7 @@ class FavoriteScreen extends Component {
         locationName: PropTypes.string.isRequired,
       }).isRequired
     ),
-  }
+  };
 
   constructor() {
     super();
@@ -28,9 +28,7 @@ class FavoriteScreen extends Component {
       <Container>
         <Content>
           <StatusBarOverlay />
-          <List>
-            {this.renderFavorites()}
-          </List>
+          <List>{this.renderFavorites()}</List>
         </Content>
       </Container>
     );
@@ -52,13 +50,16 @@ class FavoriteScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   favorites: state.favoriteReducer.favorites,
 });
 
-const mapDispatchToProps = dispatch => ({
-  addFavorite: favorite => dispatch(addFavorite(favorite)),
-  removeFavorite: id => dispatch(removeFavorite(id)),
+const mapDispatchToProps = (dispatch) => ({
+  addFavorite: (favorite) => dispatch(addFavorite(favorite)),
+  removeFavorite: (id) => dispatch(removeFavorite(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FavoriteScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FavoriteScreen);

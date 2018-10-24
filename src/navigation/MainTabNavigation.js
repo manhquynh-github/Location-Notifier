@@ -13,10 +13,7 @@ export default createBottomTabNavigator(
       navigationOptions: {
         title: 'Favorite',
         tabBarIcon: ({ focused }) => (
-          <TabBarIcon
-            focused={focused}
-            name='favorite'
-            type='MaterialIcons' />
+          <TabBarIcon focused={focused} name="favorite" type="MaterialIcons" />
         ),
       },
     },
@@ -25,10 +22,7 @@ export default createBottomTabNavigator(
       navigationOptions: {
         title: 'Explore',
         tabBarIcon: ({ focused }) => (
-          <TabBarIcon
-            focused={focused}
-            name='explore'
-            type='MaterialIcons' />
+          <TabBarIcon focused={focused} name="explore" type="MaterialIcons" />
         ),
       },
     },
@@ -37,13 +31,10 @@ export default createBottomTabNavigator(
       navigationOptions: {
         title: 'Settings',
         tabBarIcon: ({ focused }) => (
-          <TabBarIcon
-            focused={focused}
-            name='settings'
-            type='MaterialIcons' />
+          <TabBarIcon focused={focused} name="settings" type="MaterialIcons" />
         ),
       },
-    }
+    },
   },
   {
     initialRouteName: 'Explore',

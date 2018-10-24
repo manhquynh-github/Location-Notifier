@@ -1,10 +1,6 @@
-import {
-  CHANGE_RANGE
-} from '../constants/ActionTypes';
+import { CHANGE_RANGE } from '../constants/ActionTypes';
 
-import {
-  RANGE_OPTIONS,
-} from '../constants/RangeOptions';
+import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
 const initialState = {
   rangeOption: 0,
@@ -16,7 +12,7 @@ const settingsReducer = (state = initialState, action) => {
     case CHANGE_RANGE: {
       const id = action.payload.optionID;
       if (id < 0 || id >= RANGE_OPTIONS.length) {
-        throw "ERR: No such range option id to change.\n" + id;
+        throw 'ERR: No such range option id to change.\n' + id;
       }
 
       newState.rangeOption = id;
@@ -26,6 +22,6 @@ const settingsReducer = (state = initialState, action) => {
       return newState;
     }
   }
-}
+};
 
 export default settingsReducer;

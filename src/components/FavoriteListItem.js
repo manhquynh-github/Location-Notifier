@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { ListItem, Left, Body, Right, CheckBox, Text, Icon, Button } from 'native-base';
+import {
+  ListItem,
+  Left,
+  Body,
+  Right,
+  CheckBox,
+  Text,
+  Icon,
+  Button,
+} from 'native-base';
 import PropTypes from 'prop-types';
 
 export default class FavoriteListItem extends Component {
@@ -21,11 +30,8 @@ export default class FavoriteListItem extends Component {
           <Text>{this.props.locationName}</Text>
         </Body>
         <Right>
-          <Button
-            transparent
-            onPress={this.props.onRemovePressed}
-          >
-            <Icon name='trash' style={{ color: 'gray' }} />
+          <Button transparent onPress={this.props.onRemovePressed}>
+            <Icon name="trash" style={{ color: 'gray' }} />
           </Button>
         </Right>
       </ListItem>

@@ -1,12 +1,9 @@
-import {
-  ADD_FAVORITE,
-  REMOVE_FAVORITE,
-} from '../constants/ActionTypes';
+import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
 import { getFavorites, addFavorite, removeFavorite } from '../backend/Favorite';
 
 const initialState = {
   favorites: [...getFavorites()],
-}
+};
 
 const favoriteReducer = (state = initialState, action) => {
   const newState = { ...state };
@@ -37,12 +34,10 @@ const favoriteReducer = (state = initialState, action) => {
       newState.favorites = [...state.favorites];
 
       // look for array index
-      let arrIdx = newState.favorites.findIndex(
-        e => e.id == id
-      );
+      let arrIdx = newState.favorites.findIndex((e) => e.id == id);
 
       if (arrIdx < 0) {
-        throw "ERR: No such id to remove.\n" + id;
+        throw 'ERR: No such id to remove.\n' + id;
       }
 
       newState.favorites.splice(arrIdx, 1);
@@ -52,6 +47,6 @@ const favoriteReducer = (state = initialState, action) => {
       return newState;
     }
   }
-}
+};
 
 export default favoriteReducer;
