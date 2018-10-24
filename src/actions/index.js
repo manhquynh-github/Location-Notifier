@@ -1,5 +1,5 @@
-import { addFavorite, removeFavorite } from './Favorite';
+import { addFavorite, removeFavorite } from './FavoriteActions';
 
-import { setRangeOption } from './Settings';
+import { setRangeOption } from './SettingsActions';
 
 export { addFavorite, removeFavorite, setRangeOption };
