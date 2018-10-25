@@ -73,7 +73,7 @@ export default class SettingsScreen extends Component {
               <Text>Ringtone</Text>
             </Body>
             <Right>
-              <Text>GeekyAnts</Text>
+              <Text style={styles.rangeRingtone} ellipsizeMode='tail' numberOfLines={1}>Take me to your heart he eh he ah he hdh jska</Text>
               {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
@@ -92,5 +92,8 @@ const styles = StyleSheet.create({
   },
   title:{
     color:'black',
+  },
+  rangeRingtone:{
+    width:150,
   },
 });
