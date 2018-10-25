@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Platform,StyleSheet } from "react-native";
-import {   Container,
+import { Platform, StyleSheet } from "react-native";
+import {
+  Container,
   Header,
   Title,
   Content,
@@ -15,30 +16,46 @@ import {   Container,
   Switch,
   Radio,
   Picker,
-  Separator} from 'native-base';
+  Separator,
+  View,
+  ActionSheet
+} from 'native-base';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 
 const Item = Picker.Item;
+
+const arrRange = [
+  {
+    "range": 5000
+  },
+  {
+    "range": 3000
+  },
+  {
+    "range": 1000
+  },
+  {
+    "range": 500
+  },
+  {
+    "range": 200
+  },
+  {
+    "range": 100
+  },
+];
+
+var BUTTONS = ["5000", "3000", "1000","500", "Custom"];
+var CUSTOM_INDEX = 3;
+
 
 export default class SettingsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectVibrate:true,
+      selectVibrate: true,
+      rangeIndex: 0,
     };
-  }
-  onValueChange() {
-    alert("hello");
-    const newState = this.state;
-    newState.selectVibrate = newState.selectVibrate?false:true;
-    this.setState(newState);
-  }
-
-  _onPressRingtone(){
-    alert("Ringtone click");
-  }
-  _onPressRange(){
-    alert("Range map");
   }
 
   render() {
@@ -46,8 +63,8 @@ export default class SettingsScreen extends Component {
       <Container>
         <StatusBarOverlay></StatusBarOverlay>
         <Header style={styles.headerSetting} noLeft
-          >
-          <Left/>
+        >
+          <Left />
           <Body>
             <Title style={styles.title}>Setting</Title>
           </Body>
@@ -56,60 +73,66 @@ export default class SettingsScreen extends Component {
 
         <Content>
           <Separator />
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#FD3C2D" }}>
-                <Icon active name="vibrate" type="MaterialCommunityIcons" />                
-              </Button>
-            </Left>
-            <Body>
-              <Text>Vibrate</Text>
-            </Body>
-            <Right>
-              <Switch value={this.state.selectVibrate} onValueChange={this.onValueChange.bind(this)} onTintColor="#50B948" />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="notifications" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Ringtone</Text>
-            </Body>
-            <Right>
-              <Text style={styles.nameRingtone} 
-                    ellipsizeMode='tail' 
-                    numberOfLines={1} 
-                    onPress={this._onPressRingtone.bind(this)}>Take me to your heart</Text>
+          <View>
+            <ListItem icon>
+              <Left>
+                <Button style={{ backgroundColor: "#FD3C2D" }}>
+                  <Icon active name="vibrate" type="MaterialCommunityIcons" />
+                </Button>
+              </Left>
+              <Body>
+                <Text>Vibrate</Text>
+              </Body>
+              <Right>
+                <Switch value={this.state.selectVibrate} onValueChange={this._onValueChange.bind(this)} onTintColor="#50B948" />
+              </Right>
+            </ListItem>
+            <ListItem icon>
+              <Left>
+                <Button style={{ backgroundColor: "#007AFF" }}>
+                  <Icon active name="notifications" />
+                </Button>
+              </Left>
+              <Body>
+                <Text onPress={this._onPressRingtone.bind(this)}>Ringtone</Text>
+              </Body>
+              <Right>
+                <Text style={styles.nameRingtone}
+                  ellipsizeMode='tail'
+                  numberOfLines={1}
+                  onPress={this._onPressRingtone.bind(this)}>Take me to your heart</Text>
 
-              {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
-            </Right>
-          </ListItem>
-          <ListItem icon last>
-            <Left>
-              <Button style={{ backgroundColor: "#43D751" }}>
-                <Icon active name="map-marker-distance" type="MaterialCommunityIcons" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Range to Ring</Text>
-            </Body>
-            <Right>
-              <Text style={styles.nameRingtone} 
-                    ellipsizeMode='tail'
-                    onPress={this._onPressRingtone.bind(this)}>2000m</Text>
+                {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
+              </Right>
+            </ListItem>
+            <ListItem icon last>
+              <Left>
+                <Button style={{ backgroundColor: "#43D751" }}>
+                  <Icon active name="map-marker-distance" type="MaterialCommunityIcons" />
+                </Button>
+              </Left>
+              <Body>
+                <Text onPress={this._onPressRange.bind(this)}>Range to Ring</Text>
+              </Body>
+              <Right>
+                <Text style={styles.nameRingtone}
+                  ellipsizeMode='tail'
+                  onPress={this._onPressRange.bind(this)}
+                >
+                  {arrRange[this.state.rangeIndex].range} m</Text>
 
-              {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
-            </Right>
-          </ListItem>
-         
+                {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
+              </Right>
+            </ListItem>
+          </View>
+
           <Separator />
           <ListItem icon last>
             <Left>
               <Button style={{ backgroundColor: "#127cd4" }}>
-                <Icon active name="information-outline" type="MaterialCommunityIcons" />
+                <Icon 
+                active name="information-outline" 
+                type="MaterialCommunityIcons" />
               </Button>
             </Left>
             <Body>
@@ -118,31 +141,60 @@ export default class SettingsScreen extends Component {
             <Right>
             </Right>
           </ListItem>
-          <Text style={{textAlign:"center", fontWeight:"bold"}}>Đội ngũ phát triển</Text>
-          <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
-          <Text style={styles.aboutInfor}>Lê Đức Tiến</Text>
-          <Text style={styles.aboutInfor}>Phan Đức Anh</Text>
-          <Text style={styles.aboutInfor}>Điền sau</Text>
+         
+          <View>
+            <Text style={{ textAlign: "center", fontWeight: "bold" }}>Đội ngũ phát triển</Text>
+            <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
+            <Text style={styles.aboutInfor}>Lê Đức Tiến</Text>
+            <Text style={styles.aboutInfor}>Phan Đức Anh</Text>
+            <Text style={styles.aboutInfor}>Điền sau</Text>
+          </View>
         </Content>
       </Container>
     );
   }
+
+  _onValueChange() {
+    alert("hello");
+    const newState = this.state;
+    newState.selectVibrate = newState.selectVibrate ? false : true;
+    this.setState(newState);
+  }
+
+  _onPressRingtone() {
+    //start screen RingtoneSetting
+    this.props.navigation.navigate('RingtoneSetting');
+  }
+  _onPressRange() {
+    console.log(this.props);
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+        title: "Choose you Range to Ring"
+      },
+      rangeClicked => {
+        this.setState({ clicked: BUTTONS[rangeClicked] });
+      }
+    );
+  }
 }
+
 
 const styles = StyleSheet.create({
   headerSetting: {
-    backgroundColor:'white',
-    borderBottomColor:'#ABABAB', 
-    borderBottomWidth:1
+    backgroundColor: 'white',
+    borderBottomColor: '#ABABAB',
+    borderBottomWidth: 1
   },
-  title:{
-    color:'black',
+  title: {
+    color: 'black',
   },
-  nameRingtone:{
-    width:150,
-    textAlign:"right",
+  nameRingtone: {
+    width: 150,
+    textAlign: "right",
   },
-  aboutInfor:{
-    textAlign:"left",
-    marginLeft:50 },
+  aboutInfor: {
+    textAlign: "left",
+    marginLeft: 50
+  },
 });
