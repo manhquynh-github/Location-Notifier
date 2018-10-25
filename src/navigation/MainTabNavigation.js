@@ -37,6 +37,6 @@ export default createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Explore',
+    initialRouteName: 'Settings',
   }
 );

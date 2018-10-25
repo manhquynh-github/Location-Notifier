@@ -1,37 +1,96 @@
 import React, { Component } from 'react';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text ,Card, CardItem} from 'native-base';
+import { Platform,StyleSheet } from "react-native";
+import {   Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  ListItem,
+  Text,
+  Badge,
+  Left,
+  Right,
+  Body,
+  Switch,
+  Radio,
+  Picker,
+  Separator} from 'native-base';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 
+const Item = Picker.Item;
+
 export default class SettingsScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectVibrate:true,
+    };
+  }
+  onValueChange() {
+    alert("hello");
+    const newState = this.state;
+    newState.selectVibrate = newState.selectVibrate?false:true;
+    this.setState(newState);
+  }
+
+
   render() {
     return (
       <Container>
         <StatusBarOverlay></StatusBarOverlay>
-        <Header>
+        <Header style={styles.headerSetting} noLeft
+          >
           <Left/>
           <Body>
-            <Title>Header</Title>
+            <Title style={styles.title}>Setting</Title>
           </Body>
           <Right />
         </Header>
+
         <Content>
-          <Text>
-            This is Content Section
-          </Text>
-          <Button transparent rounded>
-              <Text>Footer</Text>
-          </Button>
-          <Card>
-            <CardItem>
-              <Icon active name="logo-googleplus" />
-              <Text>Google Plus</Text>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-             </CardItem>
-           </Card>
+          <Separator bordered noTopBorder />
+          <ListItem icon>
+            <Left>
+              <Button style={{ backgroundColor: "#FD3C2D" }}>
+                <Icon active name="vibrate" type="MaterialCommunityIcons" />                
+              </Button>
+            </Left>
+            <Body>
+              <Text>Vibrate</Text>
+            </Body>
+            <Right>
+              <Switch value={this.state.selectVibrate} onValueChange={this.onValueChange.bind(this)} onTintColor="#50B948" />
+            </Right>
+          </ListItem>
+          <ListItem icon last>
+            <Left>
+              <Button style={{ backgroundColor: "#007AFF" }}>
+                <Icon active name="notifications" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Ringtone</Text>
+            </Body>
+            <Right>
+              <Text>GeekyAnts</Text>
+              {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
+            </Right>
+          </ListItem>
+          <Separator bordered />
         </Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  headerSetting: {
+    backgroundColor:'white',
+    borderBottomColor:'#ABABAB', 
+    borderBottomWidth:1
+  },
+  title:{
+    color:'black',
+  },
+});
