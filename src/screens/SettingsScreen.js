@@ -37,6 +37,9 @@ export default class SettingsScreen extends Component {
   _onPressRingtone(){
     alert("Ringtone click");
   }
+  _onPressRange(){
+    alert("Range map");
+  }
 
   render() {
     return (
@@ -66,7 +69,7 @@ export default class SettingsScreen extends Component {
               <Switch value={this.state.selectVibrate} onValueChange={this.onValueChange.bind(this)} onTintColor="#50B948" />
             </Right>
           </ListItem>
-          <ListItem icon last>
+          <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#007AFF" }}>
                 <Icon active name="notifications" />
@@ -76,7 +79,7 @@ export default class SettingsScreen extends Component {
               <Text>Ringtone</Text>
             </Body>
             <Right>
-              <Text style={styles.rangeRingtone} 
+              <Text style={styles.nameRingtone} 
                     ellipsizeMode='tail' 
                     numberOfLines={1} 
                     onPress={this._onPressRingtone.bind(this)}>Take me to your heart</Text>
@@ -84,6 +87,24 @@ export default class SettingsScreen extends Component {
               {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
+          <ListItem icon last>
+            <Left>
+              <Button style={{ backgroundColor: "#43D751" }}>
+                <Icon active name="map-marker-distance" type="MaterialCommunityIcons" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Range to Ring</Text>
+            </Body>
+            <Right>
+              <Text style={styles.nameRingtone} 
+                    ellipsizeMode='tail'
+                    onPress={this._onPressRingtone.bind(this)}>2000m</Text>
+
+              {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
+            </Right>
+          </ListItem>
+         
           <Separator />
           <ListItem icon last>
             <Left>
@@ -117,8 +138,9 @@ const styles = StyleSheet.create({
   title:{
     color:'black',
   },
-  rangeRingtone:{
+  nameRingtone:{
     width:150,
+    textAlign:"right",
   },
   aboutInfor:{
     textAlign:"left",
