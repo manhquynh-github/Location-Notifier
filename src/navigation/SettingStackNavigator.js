@@ -19,7 +19,7 @@ export default createStackNavigator(
     },
   },
   {
-    initialRouteName: 'MainSetting',
+    initialRouteName: 'RingtoneSetting',
     headerMode: 'none',
   }
 );
