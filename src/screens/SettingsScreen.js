@@ -34,6 +34,9 @@ export default class SettingsScreen extends Component {
     this.setState(newState);
   }
 
+  _onPressRingtone(){
+    alert("Ringtone click");
+  }
 
   render() {
     return (
@@ -49,7 +52,7 @@ export default class SettingsScreen extends Component {
         </Header>
 
         <Content>
-          <Separator bordered noTopBorder />
+          <Separator />
           <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#FD3C2D" }}>
@@ -73,11 +76,32 @@ export default class SettingsScreen extends Component {
               <Text>Ringtone</Text>
             </Body>
             <Right>
-              <Text style={styles.rangeRingtone} ellipsizeMode='tail' numberOfLines={1}>Take me to your heart he eh he ah he hdh jska</Text>
+              <Text style={styles.rangeRingtone} 
+                    ellipsizeMode='tail' 
+                    numberOfLines={1} 
+                    onPress={this._onPressRingtone.bind(this)}>Take me to your heart</Text>
+
               {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
-          <Separator bordered />
+          <Separator />
+          <ListItem icon last>
+            <Left>
+              <Button style={{ backgroundColor: "#127cd4" }}>
+                <Icon active name="information-outline" type="MaterialCommunityIcons" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>About</Text>
+            </Body>
+            <Right>
+            </Right>
+          </ListItem>
+          <Text style={{textAlign:"center", fontWeight:"bold"}}>Đội ngũ phát triển</Text>
+          <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
+          <Text style={styles.aboutInfor}>Lê Đức Tiến</Text>
+          <Text style={styles.aboutInfor}>Phan Đức Anh</Text>
+          <Text style={styles.aboutInfor}>Điền sau</Text>
         </Content>
       </Container>
     );
@@ -96,4 +120,7 @@ const styles = StyleSheet.create({
   rangeRingtone:{
     width:150,
   },
+  aboutInfor:{
+    textAlign:"left",
+    marginLeft:50 },
 });
