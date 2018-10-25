@@ -1,7 +1,7 @@
 import { Container, Content, Text, List } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addFavorite, removeFavorite } from '../actions/Favorite';
+import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import PropTypes from 'prop-types';
 import FavoriteListItem from '../components/FavoriteListItem';
 import StatusBarOverlay from '../components/StatusBarOverlay';
