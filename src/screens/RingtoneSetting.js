@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, FlatList } from "react-native";
+import { Platform, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import {
   Container,
   Header,
@@ -17,33 +17,22 @@ import {
 } from "native-base";
 import StatusBarOverlay from "../components/StatusBarOverlay";
 import { Asset, Audio } from "expo";
+import {
+  PLAYLIST,
+  PlaylistItem,
+  LOADING_STRING,
+  LOOPING_TYPE_ALL,
+  LOOPING_TYPE_ONE
+} from "../constants/Sound";
 
-class PlaylistItem {
-  constructor(name, asset) {
-    this.name = name;
-    this.asset = asset;
-  }
-}
-
-const PLAYLIST = [
-  new PlaylistItem("Alarm 1", require("../assets/audio/Alarm1.mp3")),
-  new PlaylistItem("Alarm 2", require("../assets/audio/Alarm2.mp3")),
-  new PlaylistItem("Alarm 3", require("../assets/audio/Alarm3.mp3")),
-  new PlaylistItem("Alarm 4", require("../assets/audio/Alarm4.mp3")),
-  new PlaylistItem("Alarm 5", require("../assets/audio/Alarm5.mp3"))
-];
-
-const LOADING_STRING = "... loading ...";
-const LOOPING_TYPE_ALL = 0;
-const LOOPING_TYPE_ONE = 1;
 
 export default class RingtoneSetting extends Component {
   constructor(props) {
     super(props);
-    this.index = 0;
     this.playbackInstance = null;
 
     this.state = {
+      index:0,
       playbackInstanceName: LOADING_STRING,
       loopingType: LOOPING_TYPE_ONE,
       muted: false,
@@ -60,8 +49,10 @@ export default class RingtoneSetting extends Component {
     };
 
     this._onBackPress = this._onBackPress.bind(this);
-    this._onPlayPausePressed = this._onPlayPausePressed.bind(this);
-  };
+    this._onPlayPausePressedItem = this._onPlayPausePressedItem.bind(this);
+    this._renderSoundItem = this._renderSoundItem.bind(this);
+    this._keyExtractor = this._keyExtractor.bind(this);
+  }
 
   //Set mode for audio
   componentDidMount() {
@@ -73,7 +64,7 @@ export default class RingtoneSetting extends Component {
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
       playThroughEarpieceAndroid: false
     });
-  };
+  }
 
   render() {
     return (
@@ -92,41 +83,51 @@ export default class RingtoneSetting extends Component {
         </Header>
 
         <Content>
-          <List>
-            <ListItem noIndent style={styles.selectedItem}>
-              <Left>
-                <Text onPress={this._onPlayPausePressed}>Simon Mignolet</Text>
-              </Left>
-            </ListItem>
-            <ListItem>
-              <Left>
-                <Text>Nathaniel Clyne</Text>
-              </Left>
-            </ListItem>
-            <ListItem>
-              <Left>
-                <Text>Dejan Lovren</Text>
-              </Left>
-            </ListItem>
-          </List>
+          <FlatList 
+            data={PLAYLIST}
+            renderItem={this._renderSoundItem}
+            keyExtractor={this._keyExtractor}>
+          </FlatList>
         </Content>
       </Container>
     );
   }
+  _renderSoundItem(data){
+    //style={item.item.index==this.state.index?styles.selectedItem:{}}
+    return (
+      <ListItem
+        noIndent
+        selected
+        onPress={()=>{this._onPlayPausePressedItem(data.index)}}
+      >
+        <Left>
+          <Text>{data.item.item.name}</Text>
+        </Left>
+        <Right>
+          <Icon name="arrow-forward" />
+        </Right>
+      </ListItem>
+    );
+  }
+  //_keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING 
+  _keyExtractor(item, index) 
+  {
+    return PLAYLIST[index].item.name
+  } 
 
   _onValueChange() {
     alert("hello");
     // const newState = this.state;
     // newState.selectVibrate = newState.selectVibrate ? false : true;
     // this.setState(newState);
-  };
+  }
 
   _onBackPress() {
     if (this.playbackInstance != null) {
       this.playbackInstance.stopAsync();
     }
     this.props.navigation.navigate("MainSetting");
-  };
+  }
 
   async _loadNewPlaybackInstance(playing) {
     if (this.playbackInstance != null) {
@@ -134,8 +135,7 @@ export default class RingtoneSetting extends Component {
       this.playbackInstance.setOnPlaybackStatusUpdate(null);
       this.playbackInstance = null;
     }
-
-    const source = PLAYLIST[this.index].asset;
+    const source = PLAYLIST[this.state.index].item.asset;
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -156,7 +156,7 @@ export default class RingtoneSetting extends Component {
 
     this.playbackInstance.playAsync();
 
-    this._updateScreenForLoading(false);
+    //this._updateScreenForLoading(false);
   }
   _onPlaybackStatusUpdate = status => {
     if (status.isLoaded) {
@@ -167,7 +167,7 @@ export default class RingtoneSetting extends Component {
         muted: status.isMuted,
         volume: status.volume,
         loopingType: LOOPING_TYPE_ONE,
-        shouldCorrectPitch: status.shouldCorrectPitch,
+        shouldCorrectPitch: status.shouldCorrectPitch
       });
       if (status.didJustFinish && !status.isLooping) {
         this._loadNewPlaybackInstance(status.shouldPlay); //LOOP
@@ -187,23 +187,33 @@ export default class RingtoneSetting extends Component {
         isLoading: true
       });
     } else {
-      this.setState({
-        playbackInstanceName: PLAYLIST[this.index].name,
-        isLoading: false
-      });
-    }
-  };
+      const newState = this.state;
+      newState.playbackInstanceName=PLAYLIST[this.state.index].item.name;
+      newState.isLoading=false;
 
-  _onPlayPausePressed = () => {
-    if (this.playbackInstance != null) {
-      if (this.state.isPlaying) {
-        //this.playbackInstance.pauseAsync();
-        this.playbackInstance.stopAsync();
-      } else {
-        this.playbackInstance.playAsync();
-      }
-    } else {
+      this.setState(newState);
+    }
+  }
+
+  _onPlayPausePressedItem = (index) => {
+    if(index!=this.state.index){
+      const newState=this.state;
+      newState.index=index;
+      this.setState(newState);
+
       this._loadNewPlaybackInstance(true);
+    }
+    else{
+      if (this.playbackInstance != null) {
+        if (this.state.isPlaying) {
+          //this.playbackInstance.pauseAsync();
+          this.playbackInstance.stopAsync();
+        } else {
+          this.playbackInstance.playAsync();
+        }
+      } else {
+        this._loadNewPlaybackInstance(true);
+      }
     }
   };
 }
