@@ -23,7 +23,7 @@ export default class DetailExploreScreen extends Component {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: Colors.defaultBackgroundColor,
+    backgroundColor: Colors.grayBackground,
   },
   searchBar: {
     margin: 10,

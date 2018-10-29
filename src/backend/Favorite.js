@@ -9,7 +9,8 @@ const sampleData = [
     id: 1,
     title: 'School',
     coordinates: [0, 0],
-    locationName: '789 Đường XYZ',
+    locationName:
+      'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
   },
 ];
 

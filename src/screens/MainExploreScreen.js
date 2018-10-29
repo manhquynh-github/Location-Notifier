@@ -16,20 +16,18 @@ import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
-const googleMapLogo = require('../assets/images/GoogleMapLogo.png');
-
 class MainExploreScreen extends Component {
   constructor() {
     super();
-    this.onSearchPressed = this.onSearchPressed.bind(this);
-    this.onLocatePressed = this.onLocatePressed.bind(this);
-    this.onRangePressed = this.onRangePressed.bind(this);
+    this.onSearchPress = this.onSearchPress.bind(this);
+    this.onLocatePress = this.onLocatePress.bind(this);
+    this.onRangePress = this.onRangePress.bind(this);
   }
 
   render() {
     return (
       <Container>
-        <Button full onPress={this.onSearchPressed} style={styles.addressBar}>
+        <Button full onPress={this.onSearchPress} style={styles.addressBar}>
           <Text uppercase={false} style={{ color: '#000' }}>
             Search
           </Text>
@@ -39,7 +37,7 @@ class MainExploreScreen extends Component {
           containerStyle={{}}
           style={styles.rangeButton}
           position="bottomRight"
-          onPress={this.onRangePressed}>
+          onPress={this.onRangePress}>
           <Icon
             name="street-view"
             type="FontAwesome"
@@ -63,20 +61,23 @@ class MainExploreScreen extends Component {
           <Icon name="play" />
         </Fab>
         <Content>
-          <Image source={googleMapLogo} style={{}} />
+          <Image
+            source={require('../assets/images/GoogleMapLogo.png')}
+            style={{}}
+          />
         </Content>
       </Container>
     );
   }
 
-  onSearchPressed() {
+  onSearchPress() {
     console.log(this.props);
     this.props.navigation.navigate('DetailExplore');
   }
 
-  onLocatePressed() {}
+  onLocatePress() {}
 
-  onRangePressed() {
+  onRangePress() {
     this.showRangeOptions();
   }
 

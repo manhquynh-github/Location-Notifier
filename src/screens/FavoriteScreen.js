@@ -1,9 +1,9 @@
-import { Container, Content, Text, List } from 'native-base';
+import { Container, Content } from 'native-base';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
-import PropTypes from 'prop-types';
-import FavoriteListItem from '../components/FavoriteListItem';
+import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 
 class FavoriteScreen extends Component {
@@ -16,11 +16,13 @@ class FavoriteScreen extends Component {
         locationName: PropTypes.string.isRequired,
       }).isRequired
     ),
+    addFavorite: PropTypes.func,
+    removeFavorite: PropTypes.func,
   };
 
   constructor() {
     super();
-    this.onRemovePressed = this.onRemovePressed.bind(this);
+    this.onRemovePress = this.onRemovePress.bind(this);
   }
 
   render() {
@@ -28,25 +30,17 @@ class FavoriteScreen extends Component {
       <Container>
         <Content>
           <StatusBarOverlay />
-          <List>{this.renderFavorites()}</List>
+          <FavoriteList
+            data={this.props.favorites}
+            onRemovePress={this.onRemovePress}
+          />
         </Content>
       </Container>
     );
   }
 
-  renderFavorites() {
-    return this.props.favorites.map((e, i) => (
-      <FavoriteListItem
-        key={`favorite-item-${i}`}
-        title={e.title}
-        locationName={e.locationName}
-        onRemovePressed={() => this.onRemovePressed(i)}
-      />
-    ));
-  }
-
-  onRemovePressed(index) {
-    this.props.removeFavorite(this.props.favorites[index].id);
+  onRemovePress(item) {
+    this.props.removeFavorite(item.id);
   }
 }
 
