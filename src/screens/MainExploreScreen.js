@@ -7,6 +7,7 @@ import {
   Icon,
   Text,
 } from 'native-base';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -17,6 +18,12 @@ import Layout from '../constants/Layout';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
 class MainExploreScreen extends Component {
+  static propTypes = {
+    location: PropTypes.string,
+    rangeOption: PropTypes.number,
+    setRangeOption: PropTypes.func,
+  };
+
   constructor() {
     super();
     this.onSearchPress = this.onSearchPress.bind(this);
@@ -29,7 +36,7 @@ class MainExploreScreen extends Component {
       <Container>
         <Button full onPress={this.onSearchPress} style={styles.addressBar}>
           <Text uppercase={false} style={{ color: '#000' }}>
-            Search
+            {this.props.location === '' ? 'Search...' : this.props.searchQuery}
           </Text>
         </Button>
         <Fab
@@ -71,7 +78,6 @@ class MainExploreScreen extends Component {
   }
 
   onSearchPress() {
-    console.log(this.props);
     this.props.navigation.navigate('DetailExplore');
   }
 
@@ -147,6 +153,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  location: state.exploreReducer.location,
   rangeOption: state.settingsReducer.rangeOption,
 });
 
