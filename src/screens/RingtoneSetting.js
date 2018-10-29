@@ -25,14 +25,13 @@ import {
   LOOPING_TYPE_ONE
 } from "../constants/Sound";
 
-
 export default class RingtoneSetting extends Component {
   constructor(props) {
     super(props);
     this.playbackInstance = null;
 
     this.state = {
-      index:0,
+      index: 0,
       playbackInstanceName: LOADING_STRING,
       loopingType: LOOPING_TYPE_ONE,
       muted: false,
@@ -83,22 +82,24 @@ export default class RingtoneSetting extends Component {
         </Header>
 
         <Content>
-          <FlatList 
+          <FlatList
             data={PLAYLIST}
+            extraData={this.state}
             renderItem={this._renderSoundItem}
-            keyExtractor={this._keyExtractor}>
-          </FlatList>
+            keyExtractor={this._keyExtractor}
+          />
         </Content>
       </Container>
     );
   }
-  _renderSoundItem(data){
-    //style={item.item.index==this.state.index?styles.selectedItem:{}}
+  _renderSoundItem(data) {
     return (
       <ListItem
         noIndent
-        selected
-        onPress={()=>{this._onPlayPausePressedItem(data.index)}}
+        style={data.index == this.state.index ? styles.selectedItem : {}}
+        onPress={() => {
+          this._onPlayPausePressedItem(data.index);
+        }}
       >
         <Left>
           <Text>{data.item.item.name}</Text>
@@ -109,17 +110,9 @@ export default class RingtoneSetting extends Component {
       </ListItem>
     );
   }
-  //_keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING 
-  _keyExtractor(item, index) 
-  {
-    return PLAYLIST[index].item.name
-  } 
-
-  _onValueChange() {
-    alert("hello");
-    // const newState = this.state;
-    // newState.selectVibrate = newState.selectVibrate ? false : true;
-    // this.setState(newState);
+  //_keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING
+  _keyExtractor(item, index) {
+    return PLAYLIST[index].item.name;
   }
 
   _onBackPress() {
@@ -188,22 +181,21 @@ export default class RingtoneSetting extends Component {
       });
     } else {
       const newState = this.state;
-      newState.playbackInstanceName=PLAYLIST[this.state.index].item.name;
-      newState.isLoading=false;
+      newState.playbackInstanceName = PLAYLIST[this.state.index].item.name;
+      newState.isLoading = false;
 
       this.setState(newState);
     }
   }
 
-  _onPlayPausePressedItem = (index) => {
-    if(index!=this.state.index){
-      const newState=this.state;
-      newState.index=index;
+  _onPlayPausePressedItem = index => {
+    if (index != this.state.index) {
+      const newState = this.state;
+      newState.index = index;
       this.setState(newState);
 
       this._loadNewPlaybackInstance(true);
-    }
-    else{
+    } else {
       if (this.playbackInstance != null) {
         if (this.state.isPlaying) {
           //this.playbackInstance.pauseAsync();

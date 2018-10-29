@@ -21,33 +21,7 @@ import {
   ActionSheet
 } from 'native-base';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-
-const Item = Picker.Item;
-
-const arrRange = [
-  {
-    "range": 5000
-  },
-  {
-    "range": 3000
-  },
-  {
-    "range": 1000
-  },
-  {
-    "range": 500
-  },
-  {
-    "range": 200
-  },
-  {
-    "range": 100
-  },
-];
-
-var BUTTONS = ["5000", "3000", "1000","500", "Custom"];
-var CUSTOM_INDEX = 3;
-
+import { RANGE_OPTIONS } from '../constants/RangeOptions'
 
 export default class SettingsScreen extends Component {
   constructor(props) {
@@ -56,6 +30,9 @@ export default class SettingsScreen extends Component {
       selectVibrate: true,
       rangeIndex: 0,
     };
+    this._onPressRange = this._onPressRange.bind(this);
+    this._onPressRingtone = this._onPressRingtone.bind(this);
+    this._onValueChange = this._onValueChange.bind(this);
   }
 
   render() {
@@ -77,14 +54,20 @@ export default class SettingsScreen extends Component {
             <ListItem icon>
               <Left>
                 <Button style={{ backgroundColor: "#FD3C2D" }}>
-                  <Icon active name="vibrate" type="MaterialCommunityIcons" />
+                  <Icon
+                    active
+                    name="vibrate"
+                    type="MaterialCommunityIcons" />
                 </Button>
               </Left>
               <Body>
                 <Text>Vibrate</Text>
               </Body>
               <Right>
-                <Switch value={this.state.selectVibrate} onValueChange={this._onValueChange.bind(this)} onTintColor="#50B948" />
+                <Switch
+                  value={this.state.selectVibrate}
+                  onValueChange={this._onValueChange}
+                  onTintColor="#50B948" />
               </Right>
             </ListItem>
             <ListItem icon>
@@ -94,13 +77,13 @@ export default class SettingsScreen extends Component {
                 </Button>
               </Left>
               <Body>
-                <Text onPress={this._onPressRingtone.bind(this)}>Ringtone</Text>
+                <Text onPress={this._onPressRingtone}>Ringtone</Text>
               </Body>
               <Right>
                 <Text style={styles.nameRingtone}
                   ellipsizeMode='tail'
                   numberOfLines={1}
-                  onPress={this._onPressRingtone.bind(this)}>Take me to your heart</Text>
+                  onPress={this._onPressRingtone}>Take me to your heart</Text>
 
                 {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
               </Right>
@@ -108,18 +91,19 @@ export default class SettingsScreen extends Component {
             <ListItem icon last>
               <Left>
                 <Button style={{ backgroundColor: "#43D751" }}>
-                  <Icon active name="map-marker-distance" type="MaterialCommunityIcons" />
+                  <Icon active name="map-marker-distance"
+                    type="MaterialCommunityIcons" />
                 </Button>
               </Left>
               <Body>
-                <Text onPress={this._onPressRange.bind(this)}>Range to Ring</Text>
+                <Text onPress={this._onPressRange}>Range to Ring</Text>
               </Body>
               <Right>
                 <Text style={styles.nameRingtone}
                   ellipsizeMode='tail'
-                  onPress={this._onPressRange.bind(this)}
+                  onPress={this._onPressRange}
                 >
-                  {arrRange[this.state.rangeIndex].range} m</Text>
+                  {RANGE_OPTIONS[this.state.rangeIndex]} m</Text>
 
                 {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
               </Right>
@@ -130,9 +114,9 @@ export default class SettingsScreen extends Component {
           <ListItem icon last>
             <Left>
               <Button style={{ backgroundColor: "#127cd4" }}>
-                <Icon 
-                active name="information-outline" 
-                type="MaterialCommunityIcons" />
+                <Icon
+                  active name="information-outline"
+                  type="MaterialCommunityIcons" />
               </Button>
             </Left>
             <Body>
@@ -141,7 +125,7 @@ export default class SettingsScreen extends Component {
             <Right>
             </Right>
           </ListItem>
-         
+
           <View>
             <Text style={{ textAlign: "center", fontWeight: "bold" }}>Đội ngũ phát triển</Text>
             <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
@@ -169,11 +153,11 @@ export default class SettingsScreen extends Component {
     console.log(this.props);
     ActionSheet.show(
       {
-        options: BUTTONS,
+        options: RANGE_OPTIONS,
         title: "Choose you Range to Ring"
       },
       rangeClicked => {
-        this.setState({ clicked: BUTTONS[rangeClicked] });
+        this.setState({ clicked: RANGE_OPTIONS[rangeClicked] });
       }
     );
   }
