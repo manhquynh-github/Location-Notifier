@@ -22,14 +22,19 @@ import {
 } from 'native-base';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import { RANGE_OPTIONS } from '../constants/RangeOptions'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {setVibrate} from '../actions/SettingsActions'
 
-export default class SettingsScreen extends Component {
+export class SettingsScreen extends Component {
+  static propTypes = {
+      rangeOption: PropTypes.number.isRequired,
+      soundID: PropTypes.number.isRequired,
+      vibrate: PropTypes.bool.isRequired,
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      selectVibrate: true,
-      rangeIndex: 0,
-    };
     this._onPressRange = this._onPressRange.bind(this);
     this._onPressRingtone = this._onPressRingtone.bind(this);
     this._onValueChange = this._onValueChange.bind(this);
@@ -65,7 +70,7 @@ export default class SettingsScreen extends Component {
               </Body>
               <Right>
                 <Switch
-                  value={this.state.selectVibrate}
+                  value={this.props.vibrate}
                   onValueChange={this._onValueChange}
                   onTintColor="#50B948" />
               </Right>
@@ -103,7 +108,7 @@ export default class SettingsScreen extends Component {
                   ellipsizeMode='tail'
                   onPress={this._onPressRange}
                 >
-                  {RANGE_OPTIONS[this.state.rangeIndex]} m</Text>
+                  {RANGE_OPTIONS[this.props.rangeOption]} m</Text>
 
                 {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
               </Right>
@@ -139,10 +144,8 @@ export default class SettingsScreen extends Component {
   }
 
   _onValueChange() {
-    alert("hello");
-    const newState = this.state;
-    newState.selectVibrate = newState.selectVibrate ? false : true;
-    this.setState(newState);
+    let check = this.props.vibrate?false:true;
+    this.props.setVibrate(check);
   }
 
   _onPressRingtone() {
@@ -182,3 +185,18 @@ const styles = StyleSheet.create({
     marginLeft: 50
   },
 });
+
+const mapStateToProps = (state) => ({
+  soundID: state.settingsReducer.soundID,
+  rangeOption: state.settingsReducer.rangeOption,
+  vibrate: state.settingsReducer.vibrate,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setVibrate: (vibrate) => dispatch(setVibrate(vibrate))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsScreen);
