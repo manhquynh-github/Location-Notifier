@@ -35,7 +35,7 @@ class MainExploreScreen extends Component {
     return (
       <Container>
         <Button full onPress={this.onSearchPress} style={styles.addressBar}>
-          <Text uppercase={false} style={{ color: '#000' }}>
+          <Text uppercase={false} style={{ color: Colors.darkGray }}>
             {this.props.location === '' ? 'Search...' : this.props.searchQuery}
           </Text>
         </Button>

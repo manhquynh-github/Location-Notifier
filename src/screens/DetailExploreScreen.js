@@ -1,7 +1,7 @@
-import { Container, Content, Input } from 'native-base';
+import { Button, Container, Content, Icon, Input, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { changeLocation } from '../actions/ExploreActions';
@@ -34,6 +34,38 @@ class DetailExploreScreen extends Component {
             autoFocus={true}
             onChangeText={this.onChangeText}
           />
+          <View style={styles.helperContainer}>
+            <Button
+              transparent
+              bordered
+              rounded
+              iconLeft
+              style={styles.helperItemContainer}>
+              <Icon
+                name="local-gas-station"
+                type="MaterialIcons"
+                style={{ color: '#2196f3' }}
+              />
+              <Text uppercase={false} style={{ color: Colors.darkGray }}>
+                Gas Station
+              </Text>
+            </Button>
+            <Button
+              transparent
+              bordered
+              rounded
+              iconLeft
+              style={styles.helperItemContainer}>
+              <Icon
+                name="local-atm"
+                type="MaterialIcons"
+                style={{ color: '#357a38' }}
+              />
+              <Text uppercase={false} style={{ color: Colors.darkGray }}>
+                Local ATM
+              </Text>
+            </Button>
+          </View>
         </Content>
       </Container>
     );
@@ -48,10 +80,12 @@ class DetailExploreScreen extends Component {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: Colors.grayBackground,
+    backgroundColor: Colors.lightGrayBackground,
   },
   searchBar: {
-    margin: 10,
+    marginTop: 10,
+    marginBottom: 5,
+    marginHorizontal: 10,
     borderRadius: 10,
     elevation: 2,
     borderWidth: 1,
@@ -59,6 +93,17 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     borderColor: 'lightgray',
     backgroundColor: 'white',
+  },
+  helperContainer: {
+    marginVertical: 5,
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  helperItemContainer: {
+    marginRight: 10,
+    borderColor: Colors.darkGray,
   },
 });
 

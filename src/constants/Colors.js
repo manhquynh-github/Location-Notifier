@@ -12,5 +12,6 @@ export default {
   noticeBackground: primaryColor,
   noticeText: '#fff',
   statusBarColor: primaryColor,
-  grayBackground: '#f2f2f2',
+  lightGrayBackground: '#f2f2f2',
+  darkGray: '#4C4A48',
 };
