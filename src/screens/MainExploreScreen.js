@@ -16,6 +16,7 @@ import { setRangeOption } from '../actions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
+import showRangeOptions from '../components/RangeOptions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -84,41 +85,11 @@ class MainExploreScreen extends Component {
   onLocatePress() {}
 
   onRangePress() {
-    this.showRangeOptions();
-  }
-
-  showRangeOptions() {
-    // Generate new range options, where
-    // only selected one has a check mark.
-    const options = [];
-    for (i = 0; i < RANGE_OPTIONS.length; i++) {
-      // re-create one option
-      let option = {};
-      // set that one's text = old one
-      const optionText = RANGE_OPTIONS[i];
-      option['text'] = optionText;
-      // if is selected one, set icon to
-      // check mark and set color
-      if (this.props.rangeOption == i) {
-        option['icon'] = 'checkmark';
-        option['iconColor'] = Colors.tintColor;
+    showRangeOptions(this.props.rangeOption, (selectedIndex) => {
+      if (selectedIndex !== undefined) {
+        this.props.setRangeOption(selectedIndex);
       }
-      // push back to new option array
-      options.push(option);
-    }
-
-    // show action sheet using newly created options
-    ActionSheet.show(
-      {
-        options: options,
-        title: 'Range to notify',
-      },
-      (selectedIndex) => {
-        if (selectedIndex !== undefined) {
-          this.props.setRangeOption(selectedIndex);
-        }
-      }
-    );
+    });
   }
 }
 

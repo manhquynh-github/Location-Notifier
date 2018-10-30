@@ -26,6 +26,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setVibrate, setRangeOption } from '../actions/SettingsActions';
 import { PLAYLIST } from '../constants/Sound';
+import showRangeOptions from '../components/RangeOptions';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -116,7 +117,7 @@ export class SettingsScreen extends Component {
             </Body>
             <Right>
               <Text style={styles.nameRingtone} ellipsizeMode="tail">
-                {`${RANGE_OPTIONS[this.props.rangeOption]} m`}
+                {RANGE_OPTIONS[this.props.rangeOption]}
               </Text>
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
@@ -162,17 +163,13 @@ export class SettingsScreen extends Component {
     //start screen RingtoneSetting
     this.props.navigation.navigate('RingtoneSetting');
   }
+
   onPressRange() {
-    ActionSheet.show(
-      {
-        options: RANGE_OPTIONS,
-        title: 'Choose you Range to Ring',
-      },
-      (rangeClicked) => {
-        if (rangeClicked != null && rangeClicked != this.props.rangeOption)
-          this.props.setRangeOption(rangeClicked);
+    showRangeOptions(this.props.rangeOption, (selectedIndex) => {
+      if (selectedIndex !== undefined) {
+        this.props.setRangeOption(selectedIndex);
       }
-    );
+    });
   }
 }
 
