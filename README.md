@@ -56,6 +56,27 @@ Click Run on Android device/ emulator
 
 Refer [expo-project](https://facebook.github.io/react-native/docs/getting-started.html) page for additional information
 
+**c. Addition: Setup VSCode and package**
+[VSCode Download](https://code.visualstudio.com/)
+
+We have some extensions for VScode to make code easily.
+
+[Auto Import](#2-getting-started) Automatically finds, parses and provides code actions and code completion for all available imports. Works with Typescript and TSX
+
+[Auto Import - ES6, TS, JSX, TSX](#2-getting-started) Automatically finds, parses and provides code actions and code completion for all available imports. Works with JavaScript and TypeScript. [Forked]
+
+[JavaScript (ES6) code snippets](#2-getting-started) Code snippets for JavaScript in ES6 syntax
+
+[Node.js Modules Intellisense](#2-getting-started) Autocompletes Node.js modules in import statements
+
+[Path Intellisense](#2-getting-started) Visual Studio Code plugin that autocompletes filenames
+
+[Prettier - Code formatter](#2-getting-started) VS Code package to format your JavaScript / TypeScript / CSS using Prettier.
+
+[React Native Tools](#2-getting-started) This extension provides a development environment for React Native projects. Using this extension, you can debug your code and quickly run react-native commands from the command palette.
+
+[Version Lens](#2-getting-started) Shows the latest version for each package using code lens
+
 ## 3. Components
 
 [Expo](https://docs.expo.io) apps are React Native apps which contain the Expo SDK. The SDK is a native-and-JS library which provides access to the device's system functionality (things like the camera, contacts, local storage, and other hardware). That means you don't need to use Xcode or Android Studio, or write any native code, and it also makes your pure-JS project very portable because it can run in any native environment containing the Expo SDK.
@@ -66,12 +87,22 @@ Refer [expo-project](https://facebook.github.io/react-native/docs/getting-starte
 
 [MapView](https://docs.expo.io/versions/latest/sdk/map-view) A Map component that uses Apple Maps or Google Maps on iOS and Google Maps on Android. Expo uses react-native-maps at react-community/react-native-maps. No setup required for use within the Expo app, or within a standalone app for iOS. See below for instructions on how to configure for deployment as a standalone app on Android.
 
+[Redux](https://redux.js.org/) Redux is a predictable state container for JavaScript apps.
+(Not to be confused with a WordPress framework – Redux Framework.)
+
 ## 4. Documentation
 
 Go through [NativeBase Docs](https://docs.nativebase.io/) to play with [NativeBase](https://nativebase.io/).
 
+[Redux EN](https://medium.com/backticks-tildes/setting-up-a-redux-project-with-create-react-app-e363ab2329b8) Documentation Redux for english 
 
+[Redux VI](https://viblo.asia/p/chuong-2-ung-dung-redux-dau-tien-cua-ban-07LKXA8JZV4) Documentation redux for vietnamese
 
+[PropTypes VI](https://viblo.asia/p/react-proptypes-khai-bao-kieu-du-lieu-cho-component-naQZR1aPKvx) Documentation proptypes for vietnamese
+
+[FlatList](https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6)
+
+Refer [expo-project](https://facebook.github.io/react-native/docs/getting-started.html) page for additional information
 ## 5. Appstore
 [https://vietpano.com](https://vietpano.com)
 
