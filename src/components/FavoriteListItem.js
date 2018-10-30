@@ -27,13 +27,7 @@ export default class FavoriteListItem extends Component {
 
   render() {
     return (
-      <ListItem
-        noIndent
-        button
-        onPress={this.onPress}
-        delayLongPress={0}
-        delayPressIn={0}
-        delayPressOut={0}>
+      <ListItem noIndent button onPress={this.onPress} delayPressIn={0}>
         <Body>
           <Text
             ellipsizeMode="tail"

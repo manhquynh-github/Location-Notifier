@@ -57,12 +57,7 @@ export class SettingsScreen extends Component {
 
         <Content>
           <Separator />
-          <ListItem
-            icon
-            button
-            onPress={this.onValueChange}
-            delayLongPress={0}
-            delayPressIn={0}>
+          <ListItem icon button onPress={this.onValueChange} delayPressIn={0}>
             <Left>
               <Button style={{ backgroundColor: '#FD3C2D' }}>
                 <Icon active name="vibrate" type="MaterialCommunityIcons" />
@@ -80,12 +75,7 @@ export class SettingsScreen extends Component {
               />
             </Right>
           </ListItem>
-          <ListItem
-            icon
-            button
-            onPress={this.onPressRingtone}
-            delayLongPress={0}
-            delayPressIn={0}>
+          <ListItem icon button onPress={this.onPressRingtone} delayPressIn={0}>
             <Left>
               <Button style={{ backgroundColor: '#007AFF' }}>
                 <Icon active name="notifications" />
@@ -111,7 +101,6 @@ export class SettingsScreen extends Component {
             last
             button
             onPress={this.onPressRange}
-            delayLongPress={0}
             delayPressIn={0}>
             <Left>
               <Button style={{ backgroundColor: '#43D751' }}>

@@ -27,6 +27,7 @@ import {
 import { setRingtone } from '../actions/SettingsActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Colors from '../constants/Colors';
 
 export class RingtoneSetting extends Component {
   static propTypes = {
@@ -98,17 +99,23 @@ export class RingtoneSetting extends Component {
       </Container>
     );
   }
+
   renderSoundItem(data) {
     return (
       <ListItem
         noIndent
+        iconRight
+        button
+        delayPressIn={0}
         style={data.index == this.props.index ? styles.selectedItem : {}}
         onPress={() => {
           this.onPlayPausePressItem(data.index);
         }}>
-        <Left>
-          <Text>{data.item.item.name}</Text>
-        </Left>
+        <Body>
+          <Text ellipsizeMode="tail" numberOfLines={1}>
+            {data.item.item.name}
+          </Text>
+        </Body>
         <Right>
           <Icon name="arrow-forward" />
         </Right>
@@ -154,6 +161,7 @@ export class RingtoneSetting extends Component {
 
     //this._updateScreenForLoading(false); //TODO: Update icon
   }
+
   onPlaybackStatusUpdate = (status) => {
     if (status.isLoaded) {
       this.setState({
@@ -212,7 +220,7 @@ export class RingtoneSetting extends Component {
 
 const styles = StyleSheet.create({
   headerSetting: {
-    backgroundColor: '#127cd4',
+    backgroundColor: Colors.primaryColor,
     borderBottomColor: '#ABABAB',
     borderBottomWidth: 1,
   },
@@ -222,10 +230,6 @@ const styles = StyleSheet.create({
   nameRingtone: {
     width: 150,
     textAlign: 'right',
-  },
-  aboutInfor: {
-    textAlign: 'left',
-    marginLeft: 50,
   },
   selectedItem: {
     backgroundColor: '#cde1f9',
