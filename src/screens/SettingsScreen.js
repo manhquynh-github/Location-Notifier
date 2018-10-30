@@ -57,69 +57,81 @@ export class SettingsScreen extends Component {
 
         <Content>
           <Separator />
-          <View>
-            <ListItem icon>
-              <Left>
-                <Button style={{ backgroundColor: '#FD3C2D' }}>
-                  <Icon active name="vibrate" type="MaterialCommunityIcons" />
-                </Button>
-              </Left>
-              <Body>
-                <Text>Vibrate</Text>
-              </Body>
-              <Right>
-                <Switch
-                  value={this.props.vibrate}
-                  onValueChange={this.onValueChange}
-                  onTintColor="#50B948"
-                />
-              </Right>
-            </ListItem>
-            <ListItem icon>
-              <Left>
-                <Button style={{ backgroundColor: '#007AFF' }}>
-                  <Icon active name="notifications" />
-                </Button>
-              </Left>
-              <Body>
-                <Text onPress={this.onPressRingtone}>Ringtone</Text>
-              </Body>
-              <Right>
-                <Text
-                  style={styles.nameRingtone}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  onPress={this.onPressRingtone}>
-                  {PLAYLIST[this.props.soundID].item.name}
-                </Text>
+          <ListItem
+            icon
+            button
+            onPress={this.onValueChange}
+            delayLongPress={0}
+            delayPressIn={0}>
+            <Left>
+              <Button style={{ backgroundColor: '#FD3C2D' }}>
+                <Icon active name="vibrate" type="MaterialCommunityIcons" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Vibrate</Text>
+            </Body>
+            <Right>
+              <Switch
+                value={this.props.vibrate}
+                onValueChange={this.onValueChange}
+                onTintColor="#50B948"
+                style={{ width: 200 }}
+              />
+            </Right>
+          </ListItem>
+          <ListItem
+            icon
+            button
+            onPress={this.onPressRingtone}
+            delayLongPress={0}
+            delayPressIn={0}>
+            <Left>
+              <Button style={{ backgroundColor: '#007AFF' }}>
+                <Icon active name="notifications" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Ringtone</Text>
+            </Body>
+            <Right>
+              <Text
+                style={styles.nameRingtone}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                onPress={this.onPressRingtone}>
+                {PLAYLIST[this.props.soundID].item.name}
+              </Text>
 
-                {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
-              </Right>
-            </ListItem>
-            <ListItem icon last>
-              <Left>
-                <Button style={{ backgroundColor: '#43D751' }}>
-                  <Icon
-                    active
-                    name="map-marker-distance"
-                    type="MaterialCommunityIcons"
-                  />
-                </Button>
-              </Left>
-              <Body>
-                <Text onPress={this.onPressRange}>Range to Ring</Text>
-              </Body>
-              <Right>
-                <Text
-                  style={styles.nameRingtone}
-                  ellipsizeMode="tail"
-                  onPress={this.onPressRange}>
-                  {RANGE_OPTIONS[this.props.rangeOption]} m
-                </Text>
-                {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
-              </Right>
-            </ListItem>
-          </View>
+              {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
+            </Right>
+          </ListItem>
+          <ListItem
+            icon
+            last
+            button
+            onPress={this.onPressRange}
+            delayLongPress={0}
+            delayPressIn={0}>
+            <Left>
+              <Button style={{ backgroundColor: '#43D751' }}>
+                <Icon
+                  active
+                  name="map-marker-distance"
+                  type="MaterialCommunityIcons"
+                />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Range to Ring</Text>
+            </Body>
+            <Right>
+              <Text style={styles.nameRingtone} ellipsizeMode="tail">
+                {`${RANGE_OPTIONS[this.props.rangeOption]} m`}
+              </Text>
+              {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
+            </Right>
+          </ListItem>
 
           <Separator />
           <ListItem icon last>
