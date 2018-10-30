@@ -17,76 +17,44 @@ Notify Location - Thông báo địa điểm
 
 ## 2. Getting Started
 
-**a. Setup with pure React Native app**
+**a. Setup with React Native Expo app**
 
-*Install NativeBase*
-
-```js
-npm install native-base --save
-```
-*Install Peer Dependencies*<br />
-The peer dependencies included from any npm packages does not automatically get installed. Your application will not depend on it explicitly.
+*Install Expo*
 
 ```js
-react-native link
+npm install -g expo-cli
 ```
+*Download project & install package*<br />
 
-You've successfully setup [NativeBase](https://nativebase.io/) with your [React Native](https://facebook.github.io/react-native/) app. Your React Native app is now all set to run on iOS and Android simulator.
-
-
-**b. Setup with CRNA**
-
-*Create React Native project using the CRNA cli.* <br />
-CRNA helps you make React Native apps with no build configuration. Create React App works on macOS, Windows, and Linux. <br />
-Refer this link for additional information [CRNA](https://github.com/react-community/create-react-native-app)
-
-*Install NativeBase*
 ```js
-npm install native-base --save
+git clone https://github.com/manhquynh-github/React-Native-Project.git
+cd React-Native-Project.git
+yarn install
 ```
-*Install @expo/vector-icons*
-```js
-npm install @expo/vector-icons --save
-```
-<br />
 
-**Note** <br />
-[NativeBase](https://nativebase.io/) uses some custom fonts that can be loaded using **loadAsync** function. Check out [this](https://docs.expo.io/versions/v15.0.0/sdk/font.html#expofontloadasyncname-url) expo link.
-<br />
-Syntax <br />
-```js
-async componentWillMount() {
-      await Expo.Font.loadAsync({
-        'Roboto': require('native-base/Fonts/Roboto.ttf'),
-        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-        'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
-      });
-```
-<br />
+You've successfully setup [Notify Location](https://github.com/manhquynh-github/React-Native-Project) with your [React Native Expo Project](https://facebook.github.io/react-native/) app. Your React Native app is now all set to run on Android simulator.
 
-Check out the [KitchenSink](https://expo.io/@geekyants/nativebasekitchensink) with CRNA for an example of the implementation.<br />
-Find the [KitchenSink repo here](https://github.com/GeekyAnts/NativeBase-KitchenSink/tree/CRNA)
 
-**c. Setup with ignite-native-base-boilerplate**
+**b. Setup with browser expo**
 
-You can run the following command to create the boilerplate, provided you have [Ignite CLI](https://github.com/infinitered/ignite) installed.
+You can run the following command to create the boilerplate.
 
-```
-ignite new appname --boilerplate native-base-boilerplate
-```
 Go to app location
 ```sh
-cd appname
+cd React-Native-Project
 ```
-For iOS run
-```sh
-react-native run-ios
-```
+
 For Android run
 ```sh
-react-native run-android
+expo start
 ```
-Refer [ignite-native-base-boilerplate](https://github.com/GeekyAnts/ignite-native-base-boilerplate) page for additional information
+Connect your android device or turn on emulator
+```sh
+Choose Local in CONNECTION Menu
+Click Run on Android device/ emulator
+```
+
+Refer [expo-project](https://facebook.github.io/react-native/docs/getting-started.html) page for additional information
 
 ## 3. Components
 
