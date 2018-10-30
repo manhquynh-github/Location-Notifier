@@ -15,9 +15,9 @@ class FavoriteScreen extends Component {
         coordinates: PropTypes.array.isRequired,
         locationName: PropTypes.string.isRequired,
       }).isRequired
-    ),
-    addFavorite: PropTypes.func,
-    removeFavorite: PropTypes.func,
+    ).isRequired,
+    addFavorite: PropTypes.func.isRequired,
+    removeFavorite: PropTypes.func.isRequired,
   };
 
   constructor() {

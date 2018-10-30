@@ -13,8 +13,8 @@ import PropTypes from 'prop-types';
 
 export default class FavoriteListItem extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    locationName: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    locationName: PropTypes.string,
     onPress: PropTypes.func,
     onRemovePress: PropTypes.func,
   };

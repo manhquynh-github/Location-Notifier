@@ -10,8 +10,8 @@ import Colors from '../constants/Colors';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
-    location: PropTypes.string,
-    changeLocation: PropTypes.func,
+    location: PropTypes.string.isRequired,
+    changeLocation: PropTypes.func.isRequired,
   };
 
   constructor(props) {

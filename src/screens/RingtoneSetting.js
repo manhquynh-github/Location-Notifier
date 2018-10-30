@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Platform, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React, { Component } from 'react';
+import { Platform, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import {
   Container,
   Header,
@@ -13,26 +13,26 @@ import {
   ListItem,
   Text,
   Button,
-  Icon
-} from "native-base";
-import StatusBarOverlay from "../components/StatusBarOverlay";
-import { Asset, Audio } from "expo";
+  Icon,
+} from 'native-base';
+import StatusBarOverlay from '../components/StatusBarOverlay';
+import { Asset, Audio } from 'expo';
 import {
   PLAYLIST,
   PlaylistItem,
   LOADING_STRING,
   LOOPING_TYPE_ALL,
-  LOOPING_TYPE_ONE
-} from "../constants/Sound";
-import { setRingtone } from "../actions/SettingsActions";
+  LOOPING_TYPE_ONE,
+} from '../constants/Sound';
+import { setRingtone } from '../actions/SettingsActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 export class RingtoneSetting extends Component {
-  static propTypes={
-      index:PropTypes.number.isRequired,
-  }
-  
+  static propTypes = {
+    index: PropTypes.number.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.playbackInstance = null;
@@ -50,13 +50,13 @@ export class RingtoneSetting extends Component {
       rate: 1.0,
       poster: false,
       useNativeControls: false,
-      throughEarpiece: false
+      throughEarpiece: false,
     };
 
-    this._onBackPress = this._onBackPress.bind(this);
-    this._onPlayPausePressedItem = this._onPlayPausePressedItem.bind(this);
-    this._renderSoundItem = this._renderSoundItem.bind(this);
-    this._keyExtractor = this._keyExtractor.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
+    this.onPlayPauseItemPress = this.onPlayPausePressItem.bind(this);
+    this.renderSoundItem = this.renderSoundItem.bind(this);
+    this.keyExtractor = this.keyExtractor.bind(this);
   }
 
   //Set mode for audio
@@ -67,7 +67,7 @@ export class RingtoneSetting extends Component {
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-      playThroughEarpieceAndroid: false
+      playThroughEarpieceAndroid: false,
     });
   }
 
@@ -77,7 +77,7 @@ export class RingtoneSetting extends Component {
         <StatusBarOverlay />
         <Header style={styles.headerSetting}>
           <Left>
-            <Button transparent onPress={this._onBackPress}>
+            <Button transparent onPress={this.onBackPress}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -91,22 +91,21 @@ export class RingtoneSetting extends Component {
           <FlatList
             data={PLAYLIST}
             extraData={this.state}
-            renderItem={this._renderSoundItem}
-            keyExtractor={this._keyExtractor}
+            renderItem={this.renderSoundItem}
+            keyExtractor={this.keyExtractor}
           />
         </Content>
       </Container>
     );
   }
-  _renderSoundItem(data) {
+  renderSoundItem(data) {
     return (
       <ListItem
         noIndent
         style={data.index == this.props.index ? styles.selectedItem : {}}
         onPress={() => {
-          this._onPlayPausePressedItem(data.index);
-        }}
-      >
+          this.onPlayPausePressItem(data.index);
+        }}>
         <Left>
           <Text>{data.item.item.name}</Text>
         </Left>
@@ -116,19 +115,19 @@ export class RingtoneSetting extends Component {
       </ListItem>
     );
   }
-  //_keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING
-  _keyExtractor(item, index) {
+  //keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING
+  keyExtractor(item, index) {
     return PLAYLIST[index].item.name;
   }
 
-  _onBackPress() {
+  onBackPress() {
     if (this.playbackInstance != null) {
       this.playbackInstance.stopAsync();
     }
-    this.props.navigation.navigate("MainSetting");
+    this.props.navigation.navigate('MainSetting');
   }
 
-  async _loadNewPlaybackInstance(playing) {
+  async loadNewPlaybackInstance(playing) {
     if (this.playbackInstance != null) {
       await this.playbackInstance.unloadAsync();
       this.playbackInstance.setOnPlaybackStatusUpdate(null);
@@ -141,13 +140,13 @@ export class RingtoneSetting extends Component {
       shouldCorrectPitch: this.state.shouldCorrectPitch,
       volume: this.state.volume,
       isMuted: this.state.muted,
-      isLooping: this.state.loopingType
+      isLooping: this.state.loopingType,
     };
 
     const { sound, status } = await Audio.Sound.create(
       source,
       initialStatus,
-      this._onPlaybackStatusUpdate  //get status and looping sound
+      this.onPlaybackStatusUpdate //get status and looping sound
     );
     this.playbackInstance = sound;
 
@@ -155,7 +154,7 @@ export class RingtoneSetting extends Component {
 
     //this._updateScreenForLoading(false); //TODO: Update icon
   }
-  _onPlaybackStatusUpdate = status => {
+  onPlaybackStatusUpdate = (status) => {
     if (status.isLoaded) {
       this.setState({
         shouldPlay: status.shouldPlay,
@@ -164,10 +163,10 @@ export class RingtoneSetting extends Component {
         muted: status.isMuted,
         volume: status.volume,
         loopingType: LOOPING_TYPE_ONE,
-        shouldCorrectPitch: status.shouldCorrectPitch
+        shouldCorrectPitch: status.shouldCorrectPitch,
       });
       if (status.didJustFinish && !status.isLooping) {
-        this._loadNewPlaybackInstance(status.shouldPlay); //LOOP
+        this.loadNewPlaybackInstance(status.shouldPlay); //LOOP
       }
     } else {
       if (status.error) {
@@ -176,12 +175,12 @@ export class RingtoneSetting extends Component {
     }
   };
 
-  _updateScreenForLoading(isLoading) {
+  updateScreenForLoading(isLoading) {
     if (isLoading) {
       this.setState({
         isPlaying: false,
         playbackInstanceName: LOADING_STRING,
-        isLoading: true
+        isLoading: true,
       });
     } else {
       const newState = this.state;
@@ -191,11 +190,11 @@ export class RingtoneSetting extends Component {
     }
   }
 
-  _onPlayPausePressedItem = index => {
+  onPlayPausePressItem = (index) => {
     if (index != this.props.index) {
       this.props.setRingtone(index);
 
-      this._loadNewPlaybackInstance(true);
+      this.loadNewPlaybackInstance(true);
     } else {
       if (this.playbackInstance != null) {
         if (this.state.isPlaying) {
@@ -205,7 +204,7 @@ export class RingtoneSetting extends Component {
           this.playbackInstance.playAsync();
         }
       } else {
-        this._loadNewPlaybackInstance(true);
+        this.loadNewPlaybackInstance(true);
       }
     }
   };
@@ -213,24 +212,24 @@ export class RingtoneSetting extends Component {
 
 const styles = StyleSheet.create({
   headerSetting: {
-    backgroundColor: "#127cd4",
-    borderBottomColor: "#ABABAB",
-    borderBottomWidth: 1
+    backgroundColor: '#127cd4',
+    borderBottomColor: '#ABABAB',
+    borderBottomWidth: 1,
   },
   title: {
-    color: "white"
+    color: 'white',
   },
   nameRingtone: {
     width: 150,
-    textAlign: "right"
+    textAlign: 'right',
   },
   aboutInfor: {
-    textAlign: "left",
-    marginLeft: 50
+    textAlign: 'left',
+    marginLeft: 50,
   },
   selectedItem: {
-    backgroundColor: "#cde1f9"
-  }
+    backgroundColor: '#cde1f9',
+  },
 });
 const mapStateToProps = (state) => ({
   index: state.settingsReducer.soundID,

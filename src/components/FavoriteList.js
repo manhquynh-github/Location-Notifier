@@ -13,8 +13,8 @@ export default class FavoriteList extends Component {
         coordinates: PropTypes.array.isRequired,
         locationName: PropTypes.string.isRequired,
       }).isRequired
-    ),
-    onRemovePress: PropTypes.func,
+    ).isRequired,
+    onRemovePress: PropTypes.func.isRequired,
   };
 
   constructor() {

@@ -19,9 +19,9 @@ import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
-    location: PropTypes.string,
-    rangeOption: PropTypes.number,
-    setRangeOption: PropTypes.func,
+    location: PropTypes.string.isRequired,
+    rangeOption: PropTypes.number.isRequired,
+    setRangeOption: PropTypes.func.isRequired,
   };
 
   constructor() {
