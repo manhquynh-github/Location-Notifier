@@ -1,1 +1,1 @@
-export const RANGE_OPTIONS = ['100m', '500m', '1000m'];
+export const RANGE_OPTIONS = ['100', '500', '1000','3000','5000'];

@@ -3,8 +3,8 @@ import { Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import FavoriteScreen from '../screens/FavoriteScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import ExploreStackNavigation from './ExploreStackNavigation';
+import SettingStackNavigation from './SettingStackNavigator';
 
 export default createBottomTabNavigator(
   {
@@ -27,7 +27,7 @@ export default createBottomTabNavigator(
       },
     },
     Settings: {
-      screen: SettingsScreen,
+      screen: SettingStackNavigation,
       navigationOptions: {
         title: 'Settings',
         tabBarIcon: ({ focused }) => (
@@ -37,6 +37,6 @@ export default createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Explore',
+    initialRouteName: 'Settings',
   }
 );
