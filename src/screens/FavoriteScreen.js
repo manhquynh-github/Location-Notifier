@@ -1,10 +1,12 @@
-import { Container, Content } from 'native-base';
+import { Body, Container, Content, Header, Title } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
+import Colors from '../constants/Colors';
 
 class FavoriteScreen extends Component {
   static propTypes = {
@@ -28,8 +30,13 @@ class FavoriteScreen extends Component {
   render() {
     return (
       <Container>
+        <StatusBarOverlay />
+        <Header style={styles.header} noLeft>
+          <Body>
+            <Title>Favorites</Title>
+          </Body>
+        </Header>
         <Content>
-          <StatusBarOverlay />
           <FavoriteList
             data={this.props.favorites}
             onRemovePress={this.onRemovePress}
@@ -43,6 +50,14 @@ class FavoriteScreen extends Component {
     this.props.removeFavorite(item.id);
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: Colors.statusBarColor,
+    borderBottomColor: '#ABABAB',
+    borderBottomWidth: 1,
+  },
+});
 
 const mapStateToProps = (state) => ({
   favorites: state.favoriteReducer.favorites,

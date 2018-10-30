@@ -27,6 +27,7 @@ import PropTypes from 'prop-types';
 import { setVibrate, setRangeOption } from '../actions/SettingsActions';
 import { PLAYLIST } from '../constants/Sound';
 import showRangeOptions from '../components/RangeOptions';
+import Colors from '../constants/Colors';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -48,10 +49,10 @@ export class SettingsScreen extends Component {
     return (
       <Container>
         <StatusBarOverlay />
-        <Header style={styles.headerSetting} noLeft>
+        <Header style={styles.header} noLeft>
           <Left />
           <Body>
-            <Title style={styles.title}>Setting</Title>
+            <Title>Setting</Title>
           </Body>
           <Right />
         </Header>
@@ -174,13 +175,10 @@ export class SettingsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  headerSetting: {
-    backgroundColor: 'white',
+  header: {
+    backgroundColor: Colors.statusBarColor,
     borderBottomColor: '#ABABAB',
     borderBottomWidth: 1,
-  },
-  title: {
-    color: 'black',
   },
   nameRingtone: {
     width: 150,

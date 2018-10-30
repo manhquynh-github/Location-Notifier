@@ -76,14 +76,14 @@ export class RingtoneSetting extends Component {
     return (
       <Container>
         <StatusBarOverlay />
-        <Header style={styles.headerSetting}>
+        <Header style={styles.header}>
           <Left>
             <Button transparent onPress={this.onBackPress}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
-            <Title style={styles.title}>Choose Sound</Title>
+            <Title>Choose Sound</Title>
           </Body>
           <Right />
         </Header>
@@ -219,13 +219,10 @@ export class RingtoneSetting extends Component {
 }
 
 const styles = StyleSheet.create({
-  headerSetting: {
-    backgroundColor: Colors.primaryColor,
+  header: {
+    backgroundColor: Colors.statusBarColor,
     borderBottomColor: '#ABABAB',
     borderBottomWidth: 1,
-  },
-  title: {
-    color: 'white',
   },
   nameRingtone: {
     width: 150,
