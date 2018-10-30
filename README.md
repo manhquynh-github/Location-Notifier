@@ -1,6 +1,9 @@
 Notify Location - Thông báo địa điểm
 
  Download CH Play [here!](https://vietpano.com/)
+ 
+![Demo](https://media.giphy.com/media/WyeodYfrqvHCo/giphy.gif)
+![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
 # Table of Content
 
