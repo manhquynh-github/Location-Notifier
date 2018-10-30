@@ -24,14 +24,20 @@ import {
   LOOPING_TYPE_ALL,
   LOOPING_TYPE_ONE
 } from "../constants/Sound";
+import { setRingtone } from "../actions/SettingsActions";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class RingtoneSetting extends Component {
+export class RingtoneSetting extends Component {
+  static propTypes={
+      index:PropTypes.number.isRequired,
+  }
+  
   constructor(props) {
     super(props);
     this.playbackInstance = null;
 
     this.state = {
-      index: 0,
       playbackInstanceName: LOADING_STRING,
       loopingType: LOOPING_TYPE_ONE,
       muted: false,
@@ -96,7 +102,7 @@ export default class RingtoneSetting extends Component {
     return (
       <ListItem
         noIndent
-        style={data.index == this.state.index ? styles.selectedItem : {}}
+        style={data.index == this.props.index ? styles.selectedItem : {}}
         onPress={() => {
           this._onPlayPausePressedItem(data.index);
         }}
@@ -128,7 +134,7 @@ export default class RingtoneSetting extends Component {
       this.playbackInstance.setOnPlaybackStatusUpdate(null);
       this.playbackInstance = null;
     }
-    const source = PLAYLIST[this.state.index].item.asset;
+    const source = PLAYLIST[this.props.index].item.asset;
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -141,15 +147,13 @@ export default class RingtoneSetting extends Component {
     const { sound, status } = await Audio.Sound.create(
       source,
       initialStatus,
-      this._onPlaybackStatusUpdate
+      this._onPlaybackStatusUpdate  //get status and looping sound
     );
     this.playbackInstance = sound;
 
-    this.playbackInstance.setIsLoopingAsync(this.state.loopingType);
-
     this.playbackInstance.playAsync();
 
-    //this._updateScreenForLoading(false);
+    //this._updateScreenForLoading(false); //TODO: Update icon
   }
   _onPlaybackStatusUpdate = status => {
     if (status.isLoaded) {
@@ -181,18 +185,15 @@ export default class RingtoneSetting extends Component {
       });
     } else {
       const newState = this.state;
-      newState.playbackInstanceName = PLAYLIST[this.state.index].item.name;
+      newState.playbackInstanceName = PLAYLIST[this.props.index].item.name;
       newState.isLoading = false;
-
       this.setState(newState);
     }
   }
 
   _onPlayPausePressedItem = index => {
-    if (index != this.state.index) {
-      const newState = this.state;
-      newState.index = index;
-      this.setState(newState);
+    if (index != this.props.index) {
+      this.props.setRingtone(index);
 
       this._loadNewPlaybackInstance(true);
     } else {
@@ -231,3 +232,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#cde1f9"
   }
 });
+const mapStateToProps = (state) => ({
+  index: state.settingsReducer.soundID,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setRingtone: (index) => dispatch(setRingtone(index)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RingtoneSetting);

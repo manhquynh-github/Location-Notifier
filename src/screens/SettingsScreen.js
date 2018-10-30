@@ -24,7 +24,8 @@ import StatusBarOverlay from '../components/StatusBarOverlay';
 import { RANGE_OPTIONS } from '../constants/RangeOptions'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {setVibrate} from '../actions/SettingsActions'
+import {setVibrate, setRangeOption} from '../actions/SettingsActions'
+import { PLAYLIST } from '../constants/Sound';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -88,7 +89,7 @@ export class SettingsScreen extends Component {
                 <Text style={styles.nameRingtone}
                   ellipsizeMode='tail'
                   numberOfLines={1}
-                  onPress={this._onPressRingtone}>Take me to your heart</Text>
+                  onPress={this._onPressRingtone}>{PLAYLIST[this.props.soundID].item.name}</Text>
 
                 {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
               </Right>
@@ -153,14 +154,14 @@ export class SettingsScreen extends Component {
     this.props.navigation.navigate('RingtoneSetting');
   }
   _onPressRange() {
-    console.log(this.props);
     ActionSheet.show(
       {
         options: RANGE_OPTIONS,
         title: "Choose you Range to Ring"
       },
       rangeClicked => {
-        this.setState({ clicked: RANGE_OPTIONS[rangeClicked] });
+        if(rangeClicked!=null && rangeClicked!=this.props.rangeOption)
+            this.props.setRangeOption(rangeClicked);
       }
     );
   }
@@ -193,7 +194,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setVibrate: (vibrate) => dispatch(setVibrate(vibrate))
+  setVibrate: (vibrate) => dispatch(setVibrate(vibrate)),
+  setRangeOption:(range) => dispatch(setRangeOption(range)),
 });
 
 export default connect(
