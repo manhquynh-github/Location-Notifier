@@ -1,33 +1,35 @@
-Notify Location - Thông báo địa điểm
+# Location Notifier
 
- Download CH Play [here!](https://vietpano.com/)
- 
-![Demo](https://media.giphy.com/media/WyeodYfrqvHCo/giphy.gif)
-![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
+Download CH Play [here!](https://vietpano.com/)
+
+!Demo](https://media.giphy.com/media/WyeodYfrqvHCo/giphy.gif)
+!Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
 # Table of Content
 
-1. [What is Notification Location?](#1-what-is-notify-location)
+1. [What is Location Notifier?](#1-what-is-notify-location)
 2. [Getting Started](#2-getting-started)
 3. [Components](#3-components)
-5. [Documentation](#4-documentation)
-6. [Appstore](#5-appstore)
+4. [Documentation](#4-documentation)
+5. [Appstore](#5-appstore)
 
+## 1. What is Location Notifier?
 
+[Location Notifier](#1-what-is-location-notifier) is a simple cross-platform mobile app that utilizes [React Native](https://facebook.github.io/react-native/) technology. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list and other related settings where you can control the reminder.
 
-## 1. What is Notify Location?
-[Notification Location](#1-what-is-notify-location) - TODO
+This is useful for those who are students or people who travel by bus a lot, which, in some cases, they don't know if they have reached the destination or sometimes oversleep on the bus. Moreover, our app also assists those who are looking for nearby gas station or local ATM.
 
 ## 2. Getting Started
 
 **a. Setup with React Native Expo app**
 
-*Install Expo*
+_Install Expo_
 
 ```js
 npm install -g expo-cli
 ```
-*Download project & install package*<br />
+
+_Download project & install package_<br />
 
 ```js
 git clone https://github.com/manhquynh-github/React-Native-Project.git
@@ -37,21 +39,24 @@ yarn install
 
 You've successfully setup [Notify Location](https://github.com/manhquynh-github/React-Native-Project) with your [React Native Expo Project](https://facebook.github.io/react-native/) app. Your React Native app is now all set to run on Android simulator.
 
-
 **b. Setup with browser expo**
 
 You can run the following command to create the boilerplate.
 
 Go to app location
+
 ```sh
 cd React-Native-Project
 ```
 
 For Android run
+
 ```sh
 expo start
 ```
+
 Connect your android device or turn on emulator
+
 ```sh
 Choose Local in CONNECTION Menu
 Click Run on Android device/ emulator
@@ -97,7 +102,7 @@ We have some extensions for VScode to make code easily.
 
 Go through [NativeBase Docs](https://docs.nativebase.io/) to play with [NativeBase](https://nativebase.io/).
 
-[Redux EN](https://medium.com/backticks-tildes/setting-up-a-redux-project-with-create-react-app-e363ab2329b8) Documentation Redux for english 
+[Redux EN](https://medium.com/backticks-tildes/setting-up-a-redux-project-with-create-react-app-e363ab2329b8) Documentation Redux for english
 
 [Redux VI](https://viblo.asia/p/chuong-2-ung-dung-redux-dau-tien-cua-ban-07LKXA8JZV4) Documentation redux for vietnamese
 
@@ -106,7 +111,7 @@ Go through [NativeBase Docs](https://docs.nativebase.io/) to play with [NativeBa
 [FlatList](https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6)
 
 Refer [expo-project](https://facebook.github.io/react-native/docs/getting-started.html) page for additional information
+
 ## 5. Appstore
+
 [https://vietpano.com](https://vietpano.com)
-
-
