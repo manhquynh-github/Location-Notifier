@@ -56,30 +56,30 @@ export class SettingsScreen extends Component {
           </Body>
           <Right />
         </Header>
-
         <Content>
           <Separator />
           <ListItem icon button onPress={this.onValueChange} delayPressIn={0}>
             <Left>
-              <Button style={{ backgroundColor: '#FD3C2D' }}>
+              <Button style={styles.vibrateButton}>
                 <Icon active name="vibrate" type="MaterialCommunityIcons" />
               </Button>
             </Left>
             <Body>
               <Text>Vibrate</Text>
             </Body>
-            <Right>
+            <Right style={{ flex: 0 }}>
               <Switch
                 value={this.props.vibrate}
                 onValueChange={this.onValueChange}
-                onTintColor="#50B948"
+                onTintColor={Colors.lightPrimary}
+                thumbTintColor={Colors.primary}
                 style={{ width: 200 }}
               />
             </Right>
           </ListItem>
           <ListItem icon button onPress={this.onPressRingtone} delayPressIn={0}>
             <Left>
-              <Button style={{ backgroundColor: '#007AFF' }}>
+              <Button style={styles.ringtoneButton}>
                 <Icon active name="notifications" />
               </Button>
             </Left>
@@ -105,7 +105,7 @@ export class SettingsScreen extends Component {
             onPress={this.onPressRange}
             delayPressIn={0}>
             <Left>
-              <Button style={{ backgroundColor: '#43D751' }}>
+              <Button style={styles.rangeButton}>
                 <Icon
                   active
                   name="map-marker-distance"
@@ -114,7 +114,7 @@ export class SettingsScreen extends Component {
               </Button>
             </Left>
             <Body>
-              <Text>Range to Ring</Text>
+              <Text>Range to notify</Text>
             </Body>
             <Right>
               <Text style={styles.nameRingtone} ellipsizeMode="tail">
@@ -127,7 +127,7 @@ export class SettingsScreen extends Component {
           <Separator />
           <ListItem icon last>
             <Left>
-              <Button style={{ backgroundColor: '#127cd4' }}>
+              <Button style={styles.aboutButton}>
                 <Icon
                   active
                   name="information-outline"
@@ -187,6 +187,18 @@ const styles = StyleSheet.create({
   aboutInfor: {
     textAlign: 'left',
     marginLeft: 50,
+  },
+  vibrateButton: {
+    backgroundColor: '#FD3C2D',
+  },
+  ringtoneButton: {
+    backgroundColor: '#007AFF',
+  },
+  rangeButton: {
+    backgroundColor: '#43D751',
+  },
+  aboutButton: {
+    backgroundColor: '#127cd4',
   },
 });
 
