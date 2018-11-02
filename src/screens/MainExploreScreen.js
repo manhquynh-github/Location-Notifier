@@ -43,14 +43,14 @@ class MainExploreScreen extends Component {
           <Icon
             name="street-view"
             type="FontAwesome"
-            style={styles.rangeIcon}
+            style={{ color: 'gray' }}
           />
         </Fab>
         <Fab style={styles.myLocationButton} position="bottomRight">
           <Icon
             name="my-location"
             type="MaterialIcons"
-            style={styles.locateIcon}
+            style={{ color: 'gray' }}
           />
         </Fab>
         <Fab style={styles.startButton} position="bottomRight">
@@ -108,12 +108,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: 'white',
     bottom: 150,
-  },
-  locateIcon: {
-    color: 'gray',
-  },
-  rangeIcon: {
-    color: 'gray',
   },
 });
 
