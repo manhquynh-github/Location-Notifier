@@ -1,6 +1,7 @@
 import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 
 export default class FavoriteListItem extends Component {
   static propTypes = {
