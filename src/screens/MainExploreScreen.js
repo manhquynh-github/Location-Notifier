@@ -31,13 +31,12 @@ class MainExploreScreen extends Component {
           onPress={this.onSearchPress}
           style={styles.addressBar}
           delayPressIn={0}>
-          <Text uppercase={false} style={{ color: Colors.darkGray }}>
+          <Text uppercase={false} style={{ color: Colors.darkGrayBackground }}>
             {this.props.location === '' ? 'Search...' : this.props.searchQuery}
           </Text>
         </Button>
         <Fab
           active={false}
-          containerStyle={{}}
           style={styles.rangeButton}
           position="bottomRight"
           onPress={this.onRangePress}>
@@ -47,20 +46,14 @@ class MainExploreScreen extends Component {
             style={{ color: 'gray' }}
           />
         </Fab>
-        <Fab
-          containerStyle={{}}
-          style={styles.myLocationButton}
-          position="bottomRight">
+        <Fab style={styles.myLocationButton} position="bottomRight">
           <Icon
             name="my-location"
             type="MaterialIcons"
             style={{ color: 'gray' }}
           />
         </Fab>
-        <Fab
-          containerStyle={{}}
-          style={styles.startButton}
-          position="bottomRight">
+        <Fab style={styles.startButton} position="bottomRight">
           <Icon name="play" />
         </Fab>
         <Content>

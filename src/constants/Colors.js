@@ -1,7 +1,11 @@
-const primary = '#2f95dc';
+const primary = '#2196f3';
+const darkPrimary = '#1769aa';
+const lightPrimary = '#4dabf5';
 
 export default {
   primary,
+  darkPrimary,
+  lightPrimary,
   tintColor: primary,
   tabIconDefault: '#ccc',
   tabIconSelected: primary,

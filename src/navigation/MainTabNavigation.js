@@ -41,7 +41,7 @@ export default createBottomTabNavigator(
     initialRouteName: 'Explore',
     tabBarOptions: {
       style: {
-        color: Colors.tabBar,
+        backgroundColor: Colors.tabBar,
         elevation: 2,
         borderColor: 'lightgray',
         borderTopWidth: 1,

@@ -7,6 +7,7 @@ import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
+import TabBarIcon from '../components/TabBarIcon';
 
 class FavoriteScreen extends Component {
   static propTypes = {
