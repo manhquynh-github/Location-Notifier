@@ -1,15 +1,6 @@
-import React, { Component } from 'react';
-import {
-  ListItem,
-  Left,
-  Body,
-  Right,
-  CheckBox,
-  Text,
-  Icon,
-  Button,
-} from 'native-base';
+import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 export default class FavoriteListItem extends Component {
   static propTypes = {
@@ -44,7 +35,7 @@ export default class FavoriteListItem extends Component {
           onPress={this.onRemovePress}
           rounded
           androidRippleColor="lightgray">
-          <Icon name="trash" style={{ color: 'gray' }} />
+          <Icon name="trash" style={styles.trashIcon} />
         </Button>
       </ListItem>
     );
@@ -62,3 +53,9 @@ export default class FavoriteListItem extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  trashIcon: {
+    color: 'gray',
+  },
+});
