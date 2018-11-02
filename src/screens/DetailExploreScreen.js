@@ -45,7 +45,7 @@ class DetailExploreScreen extends Component {
               <Icon
                 name="local-gas-station"
                 type="MaterialIcons"
-                style={{ color: '#2196f3' }}
+                style={styles.gasStationIcon}
               />
               <Text
                 uppercase={false}
@@ -63,7 +63,7 @@ class DetailExploreScreen extends Component {
               <Icon
                 name="local-atm"
                 type="MaterialIcons"
-                style={{ color: '#357a38' }}
+                style={styles.localAtmIcon}
               />
               <Text
                 uppercase={false}
@@ -110,6 +110,12 @@ const styles = StyleSheet.create({
   helperItemContainer: {
     marginRight: 10,
     borderColor: Colors.darkGrayBackground,
+  },
+  gasStationIcon: {
+    color: '#2196f3',
+  },
+  localAtmIcon: {
+    color: '#357a38',
   },
 });
 
