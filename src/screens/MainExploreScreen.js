@@ -1,22 +1,13 @@
-import {
-  ActionSheet,
-  Button,
-  Container,
-  Content,
-  Fab,
-  Icon,
-  Text,
-} from 'native-base';
+import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
+import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
-import showRangeOptions from '../components/RangeOptions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -35,37 +26,34 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Button full onPress={this.onSearchPress} style={styles.addressBar}>
-          <Text uppercase={false} style={{ color: Colors.darkGray }}>
+        <Button
+          full
+          onPress={this.onSearchPress}
+          style={styles.addressBar}
+          delayPressIn={0}>
+          <Text uppercase={false} style={{ color: Colors.darkGrayBackground }}>
             {this.props.location === '' ? 'Search...' : this.props.searchQuery}
           </Text>
         </Button>
         <Fab
           active={false}
-          containerStyle={{}}
           style={styles.rangeButton}
           position="bottomRight"
           onPress={this.onRangePress}>
           <Icon
             name="street-view"
             type="FontAwesome"
-            style={{ color: 'gray' }}
+            style={styles.rangeIcon}
           />
         </Fab>
-        <Fab
-          containerStyle={{}}
-          style={styles.myLocationButton}
-          position="bottomRight">
+        <Fab style={styles.myLocationButton} position="bottomRight">
           <Icon
             name="my-location"
             type="MaterialIcons"
-            style={{ color: 'gray' }}
+            style={styles.locateIcon}
           />
         </Fab>
-        <Fab
-          containerStyle={{}}
-          style={styles.startButton}
-          position="bottomRight">
+        <Fab style={styles.startButton} position="bottomRight">
           <Icon name="play" />
         </Fab>
         <Content>
@@ -120,6 +108,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: 'white',
     bottom: 150,
+  },
+  locateIcon: {
+    color: 'gray',
+  },
+  rangeIcon: {
+    color: 'gray',
   },
 });
 

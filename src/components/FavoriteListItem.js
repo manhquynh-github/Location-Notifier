@@ -39,7 +39,11 @@ export default class FavoriteListItem extends Component {
             {this.props.locationName}
           </Text>
         </Body>
-        <Button transparent onPress={this.onRemovePress}>
+        <Button
+          transparent
+          onPress={this.onRemovePress}
+          rounded
+          androidRippleColor="lightgray">
           <Icon name="trash" style={{ color: 'gray' }} />
         </Button>
       </ListItem>

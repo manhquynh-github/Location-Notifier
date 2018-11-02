@@ -30,7 +30,7 @@ class DetailExploreScreen extends Component {
           <Input
             value={this.state.location}
             style={styles.searchBar}
-            placeholder="Search"
+            placeholder="Search..."
             autoFocus={true}
             onChangeText={this.onChangeText}
           />
@@ -40,13 +40,16 @@ class DetailExploreScreen extends Component {
               bordered
               rounded
               iconLeft
-              style={styles.helperItemContainer}>
+              style={styles.helperItemContainer}
+              androidRippleColor="lightgray">
               <Icon
                 name="local-gas-station"
                 type="MaterialIcons"
-                style={{ color: '#2196f3' }}
+                style={styles.gasStationIcon}
               />
-              <Text uppercase={false} style={{ color: Colors.darkGray }}>
+              <Text
+                uppercase={false}
+                style={{ color: Colors.darkGrayBackground }}>
                 Gas Station
               </Text>
             </Button>
@@ -55,13 +58,16 @@ class DetailExploreScreen extends Component {
               bordered
               rounded
               iconLeft
-              style={styles.helperItemContainer}>
+              style={styles.helperItemContainer}
+              androidRippleColor="lightgray">
               <Icon
                 name="local-atm"
                 type="MaterialIcons"
-                style={{ color: '#357a38' }}
+                style={styles.localAtmIcon}
               />
-              <Text uppercase={false} style={{ color: Colors.darkGray }}>
+              <Text
+                uppercase={false}
+                style={{ color: Colors.darkGrayBackground }}>
                 Local ATM
               </Text>
             </Button>
@@ -103,7 +109,13 @@ const styles = StyleSheet.create({
   },
   helperItemContainer: {
     marginRight: 10,
-    borderColor: Colors.darkGray,
+    borderColor: Colors.darkGrayBackground,
+  },
+  gasStationIcon: {
+    color: '#2196f3',
+  },
+  localAtmIcon: {
+    color: '#357a38',
   },
 });
 
