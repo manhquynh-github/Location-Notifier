@@ -22,7 +22,12 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.uit.LocationNotifier"
+      "package": "com.uit.LocationNotifier",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig"
+        }
+      }
     }
   }
 }

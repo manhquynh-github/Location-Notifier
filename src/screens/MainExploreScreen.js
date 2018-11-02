@@ -1,22 +1,14 @@
-import {
-  ActionSheet,
-  Button,
-  Container,
-  Content,
-  Fab,
-  Icon,
-  Text,
-} from 'native-base';
+import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
+import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
-import showRangeOptions from '../components/RangeOptions';
+import { MapView } from 'expo';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -68,12 +60,15 @@ class MainExploreScreen extends Component {
           position="bottomRight">
           <Icon name="play" />
         </Fab>
-        <Content>
-          <Image
-            source={require('../assets/images/GoogleMapLogo.png')}
-            style={{}}
-          />
-        </Content>
+        <MapView
+          style={{ flex: 1, alignSelf: 'stretch' }}
+          initialRegion={{
+            latitude: 10.8703,
+            longitude: 106.8034513,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
       </Container>
     );
   }
