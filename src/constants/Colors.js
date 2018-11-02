@@ -1,18 +1,18 @@
-const primaryColor = '#2f95dc';
+const primary = '#2f95dc';
 
 export default {
-  primaryColor,
-  tintColor: primaryColor,
+  primary,
+  tintColor: primary,
   tabIconDefault: '#ccc',
-  tabIconSelected: primaryColor,
+  tabIconSelected: primary,
   tabBar: '#fefefe',
   errorBackground: 'red',
   errorText: '#fff',
   warningBackground: '#EAEB5E',
   warningText: '#666804',
-  noticeBackground: primaryColor,
+  noticeBackground: primary,
   noticeText: '#fff',
-  statusBarColor: primaryColor,
+  statusBarColor: primary,
   lightGrayBackground: '#f2f2f2',
-  darkGray: '#4C4A48',
+  darkGrayBackground: '#4C4A48',
 };

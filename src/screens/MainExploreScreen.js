@@ -1,22 +1,13 @@
-import {
-  ActionSheet,
-  Button,
-  Container,
-  Content,
-  Fab,
-  Icon,
-  Text,
-} from 'native-base';
+import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
+import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
-import showRangeOptions from '../components/RangeOptions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -35,7 +26,11 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Button full onPress={this.onSearchPress} style={styles.addressBar}>
+        <Button
+          full
+          onPress={this.onSearchPress}
+          style={styles.addressBar}
+          delayPressIn={0}>
           <Text uppercase={false} style={{ color: Colors.darkGray }}>
             {this.props.location === '' ? 'Search...' : this.props.searchQuery}
           </Text>

@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import ExploreStackNavigation from './ExploreStackNavigation';
 import SettingStackNavigation from './SettingStackNavigator';
+import Colors from '../constants/Colors';
 
 export default createBottomTabNavigator(
   {
@@ -38,5 +39,13 @@ export default createBottomTabNavigator(
   },
   {
     initialRouteName: 'Explore',
+    tabBarOptions: {
+      style: {
+        color: Colors.tabBar,
+        elevation: 2,
+        borderColor: 'lightgray',
+        borderTopWidth: 1,
+      },
+    },
   }
 );
