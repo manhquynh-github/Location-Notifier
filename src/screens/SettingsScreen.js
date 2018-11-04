@@ -73,7 +73,7 @@ export class SettingsScreen extends Component {
                 onValueChange={this.onValueChange}
                 onTintColor={Colors.lightPrimary}
                 thumbTintColor={Colors.primary}
-                style={{ width: 200 }}
+                style={{ width: 75 }}
               />
             </Right>
           </ListItem>
