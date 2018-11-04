@@ -177,8 +177,6 @@ export class SettingsScreen extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.statusBarColor,
-    borderBottomColor: '#ABABAB',
-    borderBottomWidth: 1,
   },
   nameRingtone: {
     width: 150,

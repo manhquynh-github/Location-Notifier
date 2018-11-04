@@ -42,9 +42,8 @@ export default createBottomTabNavigator(
     tabBarOptions: {
       style: {
         backgroundColor: Colors.tabBar,
-        elevation: 2,
-        borderColor: 'lightgray',
-        borderTopWidth: 1,
+        elevation: 10,
+        borderTopWidth: 0,
       },
     },
   }

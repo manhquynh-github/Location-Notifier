@@ -25,15 +25,11 @@ export default class FavoriteList extends Component {
 
   render() {
     return (
-      <Container>
-        <Content>
-          <FlatList
-            data={this.props.data}
-            renderItem={this.onRenderItem}
-            keyExtractor={this.onKeyExtractor}
-          />
-        </Content>
-      </Container>
+      <FlatList
+        data={this.props.data}
+        renderItem={this.onRenderItem}
+        keyExtractor={this.onKeyExtractor}
+      />
     );
   }
 
