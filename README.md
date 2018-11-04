@@ -1,8 +1,8 @@
 # Location Notifier
 
-[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that utilizes [React Native](https://facebook.github.io/react-native/) technology. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list and other related settings where you can control the reminder.
+[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that utilizes [React Native](https://facebook.github.io/react-native/) technology. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list, searching for nearby gas stations or local ATMs, and other related settings to control the alarm.
 
-This is useful for those who are students or people who travel by bus a lot, which, in some cases, they don't know if they have reached the destination or sometimes oversleep on the bus. Moreover, our app also assists those who are looking for nearby gas station or local ATM.
+This is useful for those who travel a lot, especially students that don't know if they have reached the destination yet or may oversleep on the bus.
 
 ![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
@@ -24,11 +24,11 @@ Below is the guidelines to start the app in development mode.
 
 ## Set up environment
 
-**[NodeJS](https://nodejs.org/en/)**
+### [NodeJS](https://nodejs.org/en/)
 
 We recommend you use the latest version.
 
-**[Yarn](https://yarnpkg.com/en/) package**
+### [Yarn](https://yarnpkg.com/en/) package
 
 You can download and use the installer from their [homepage](https://yarnpkg.com/en/docs/install#windows-stable) or install via npm.
 
@@ -42,7 +42,7 @@ Then add to PATH environment:
 %USERPROFILE%\AppData\Local\Yarn\bin
 ```
 
-**[Expo](https://expo.io/) client**
+### [Expo](https://expo.io/) client
 
 ```sh
 yarn global add expo-cli
@@ -89,11 +89,11 @@ Refer [expo-project](https://facebook.github.io/react-native/docs/getting-starte
 
 You can use any text editor to edit source code and any command line program to start the project. These are the recommended development tools.
 
-**IDE**
+### IDE
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 
-**VSCode extensions**
+### VSCode extensions
 
 - [Auto Import](https://marketplace.visualstudio.com/items?itemName=steoates.autoimport) Automatically finds, parses and provides code actions and code completion for all available imports. Works with Typescript and TSX
 - [Auto Import - ES6, TS, JSX, TSX](https://marketplace.visualstudio.com/items?itemName=NuclleaR.vscode-extension-auto-import) Automatically finds, parses and provides code actions and code completion for all available imports. Works with JavaScript and TypeScript.
