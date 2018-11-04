@@ -34,6 +34,7 @@ export default class FavoriteListItem extends Component {
         <Button
           transparent
           onPress={this.onRemovePress}
+          delayPressIn={0}
           rounded
           androidRippleColor="lightgray">
           <Icon name="trash" style={styles.trashIcon} />
