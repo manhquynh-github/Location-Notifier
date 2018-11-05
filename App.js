@@ -1,22 +1,16 @@
-import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './src/navigation/AppNavigator';
-import { Provider } from 'react-redux';
-import {persistor , store} from './src/store/index';
 import { Root } from 'native-base';
-import { PersistGate } from 'redux-persist/integration/react'
+import React from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import AppNavigator from './src/navigation/AppNavigator';
+import { persistor, store } from './src/store/index';
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
-
-  renderLoading = () =>{
-    <View style={styles.container}>
-      <ActivityIndicator size="large"/>
-    </View>
-  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -30,9 +24,7 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-          <PersistGate 
-              loading={this.renderLoading()} 
-              persistor={persistor}>
+          <PersistGate loading={<AppLoading />} persistor={persistor}>
             <Root>
               <View style={styles.container}>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
