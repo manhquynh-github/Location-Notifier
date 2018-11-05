@@ -5,7 +5,10 @@
     "slug": "Location-Notifier",
     "privacy": "public",
     "sdkVersion": "31.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -17,7 +20,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -27,7 +32,14 @@
         "googleMaps": {
           "apiKey": "AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig"
         }
-      }
-    }
+      },
+      "publishBundlePath": "android\\app\\src\\main\\assets\\shell-app.bundle",
+      "publishManifestPath": "android\\app\\src\\main\\assets\\shell-app-manifest.json"
+    },
+    "isDetached": true,
+    "detach": {
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.9.0-sdk31.0.0-91d15219-d0a0-42a6-8f40-a768710d4664.tar.gz"
+    },
+    "scheme": "expdb22f0cbc1344e20b996c46c9ffd03be"
   }
 }
