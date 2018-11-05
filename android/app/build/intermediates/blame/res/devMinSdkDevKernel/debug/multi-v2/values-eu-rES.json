@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\CMQ\\Documents\\ReactNative\\expo-eject\\React-Native-Project\\android\\app\\build\\intermediates\\incremental\\mergeDevMinSdkDevKernelDebugResources\\merged.dir\\values-eu-rES\\values-eu-rES.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\CMQ\\.gradle\\caches\\transforms-1\\files-1.1\\exoplayer-ui-2.6.1.aar\\ca8721717ecfd5d7447144f3f1cdf565\\res\\values-eu-rES\\values-eu-rES.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,132,207,276,350,428,513,593,674,745,828",
+                        "endColumns": "76,74,68,73,77,84,79,80,70,82,67",
+                        "endOffsets": "127,202,271,345,423,508,588,669,740,823,891"
+                    }
+                }
+            ]
+        }
+    ]
+}

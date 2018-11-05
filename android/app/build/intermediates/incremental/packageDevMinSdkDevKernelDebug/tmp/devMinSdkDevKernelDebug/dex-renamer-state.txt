@@ -1,0 +1,13 @@
+#Mon Nov 05 17:01:09 ICT 2018
+path.3=classes3.dex
+path.2=classes2.dex
+path.1=classes.dex
+path.0=classes.dex
+renamed.3=classes4.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+base.3=D\:\\CMQ\\Documents\\ReactNative\\expo-eject\\React-Native-Project\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\1
+base.2=D\:\\CMQ\\Documents\\ReactNative\\expo-eject\\React-Native-Project\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\1
+base.1=D\:\\CMQ\\Documents\\ReactNative\\expo-eject\\React-Native-Project\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\1
+base.0=D\:\\CMQ\\Documents\\ReactNative\\expo-eject\\React-Native-Project\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\0
