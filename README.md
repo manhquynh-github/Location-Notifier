@@ -117,6 +117,8 @@ You can use any text editor to edit source code and any command line program to 
 > [Redux](https://redux.js.org/) Redux is a predictable state container for JavaScript apps.
 > (Not to be confused with a WordPress framework – Redux Framework.)
 
+> [Redux Persist](https://github.com/rt2zz/redux-persist) Persist and rehydrate a redux store.
+
 > [MapServiceBackground](https://github.com/mauron85/react-native-background-geolocation) This plugin can be used for geolocation when the app is running in the foreground or background. [DEMO & Fork](https://github.com/ductienuit/DemoMapService)
 
 # Documentation
