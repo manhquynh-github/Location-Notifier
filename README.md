@@ -1,8 +1,6 @@
 # Location Notifier
 
-[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that utilizes [React Native](https://facebook.github.io/react-native/) technology. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list, searching for nearby gas stations or local ATMs, and other related settings to control the alarm.
-
-This is useful for those who travel a lot, especially students that don't know if they have reached the destination yet or may oversleep on the bus.
+[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that uses [React Native](https://facebook.github.io/react-native/) framework. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list, searching for nearby gas stations or local ATMs, and other related settings to control the alarm. This is useful for those who travel a lot, especially students that don't know if they are close to the destination or may oversleep on the bus.
 
 ![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
