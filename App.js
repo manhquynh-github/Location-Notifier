@@ -5,6 +5,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 import { Provider } from 'react-redux';
 import store from './src/store/index';
 import { Root } from 'native-base';
+import {firebaseApp} from './src/components/firebaseconfig.js'
 
 export default class App extends React.Component {
   state = {
