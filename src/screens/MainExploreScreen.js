@@ -10,6 +10,9 @@ import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { MapView } from 'expo';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import MapViewDirections from 'react-native-maps-directions';
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -20,6 +23,14 @@ class MainExploreScreen extends Component {
 
   constructor() {
     super();
+    this.state = {
+      currentLocation:{
+        latitude: 10.8703,
+        longitude: 106.8034513
+      }
+    }
+
+
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
@@ -58,15 +69,20 @@ class MainExploreScreen extends Component {
         <Fab style={styles.startButton} position="bottomRight">
           <Icon name="play" />
         </Fab>
-        {/* <MapView
+        <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
-            latitude: 10.8703,
-            longitude: 106.8034513,
+            latitude: this.state.currentLocation.latitude,
+            longitude: this.state.currentLocation.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-        /> */}
+        >{<MapViewDirections
+                origin={this.state.currentLocation}
+                destination={{latitude: 10.866356,
+                  longitude: 106.792509}}
+                apikey={GOOGLE_MAPS_APIKEY}
+        />}</MapView>
       </Container>
     );
   }
@@ -120,6 +136,12 @@ class MainExploreScreen extends Component {
         // execute long running task
         // eg. ajax post location
         // IMPORTANT: task has to be ended by endTask
+        console.log(location);
+        const newState = this.state;
+        const newLocation = location;
+        newState.currentLocation = newLocation;
+        this.setState(newState);
+
         BackgroundGeolocation.endTask(taskKey);
       });
     });
@@ -194,6 +216,7 @@ class MainExploreScreen extends Component {
     BackgroundGeolocation.events.forEach(event => BackgroundGeolocation.removeAllListeners(event));
   }
 }
+
 
 const styles = StyleSheet.create({
   shrink: {
