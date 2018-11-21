@@ -45,7 +45,7 @@ class FavoriteScreen extends Component {
   }
 
   onRemovePress(item) {
-    this.props.removeFavorite(item.id);
+    this.props.removeFavorite(item.favoriteID);
   }
 
   onPress(item) {}
@@ -63,7 +63,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
-  removeFavorite: (id) => dispatch(removeFavorite(id)),
+  removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
 });
 
 export default connect(

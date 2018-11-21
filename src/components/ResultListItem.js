@@ -2,9 +2,11 @@ import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
+import Colors from '../constants/Colors';
 
 export default class ResultListItem extends Component {
   static propTypes = {
+    label: PropTypes.string,
     name: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
@@ -12,6 +14,7 @@ export default class ResultListItem extends Component {
   };
 
   static defaultProps = {
+    label: undefined,
     name: '',
     address: '',
     onPress: undefined,
@@ -32,7 +35,7 @@ export default class ResultListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.name}
+            {this.props.label ? this.props.label : this.props.name}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {this.props.address}
@@ -44,7 +47,11 @@ export default class ResultListItem extends Component {
           delayPressIn={0}
           rounded
           androidRippleColor="lightgray">
-          <Icon name="favorite" type="MaterialIcons" style={styles.trashIcon} />
+          <Icon
+            name="favorite"
+            type="MaterialIcons"
+            style={{ color: this.props.label ? Colors.primary : 'gray' }}
+          />
         </Button>
       </ListItem>
     );
@@ -62,9 +69,3 @@ export default class ResultListItem extends Component {
     }
   }
 }
-
-const styles = StyleSheet.create({
-  trashIcon: {
-    color: 'gray',
-  },
-});

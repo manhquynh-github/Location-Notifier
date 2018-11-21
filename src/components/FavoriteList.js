@@ -9,7 +9,7 @@ export default class FavoriteList extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        favoriteID: PropTypes.number.isRequired,
         label: PropTypes.string,
         ...LocationProps,
       })

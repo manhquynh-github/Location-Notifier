@@ -2,13 +2,15 @@ import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
 
 const sampleData = [
   {
-    id: 0,
+    favoriteID: 0,
     label: 'Home',
+    name: 'Khách sạn 5 sao',
     address: '123 Đường 456',
   },
   {
-    id: 1,
+    favoriteID: 1,
     label: 'School',
+    name: 'Trường Đại học Công nghệ thông tin',
     address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
   },
 ];
@@ -24,22 +26,24 @@ const favoriteReducer = (state = initialState, action) => {
       const item = action.payload.favorite;
       const arrLength = newState.favorites.length;
       if (arrLength > 0) {
-        item.id = newState.favorites[arrLength - 1].id + 1;
+        item.favoriteID = newState.favorites[arrLength - 1].favoriteID + 1;
       } else {
-        item.id = 0;
+        item.favoriteID = 0;
       }
       newState.favorites.concat(item);
       return newState;
     }
 
     case REMOVE_FAVORITE: {
-      const id = action.payload.id;
+      const favoriteID = action.payload.favoriteID;
       // reassign new array
       newState.favorites = [...state.favorites];
       // look for array index
-      let arrIdx = newState.favorites.findIndex((e) => e.id == id);
+      let arrIdx = newState.favorites.findIndex(
+        (e) => e.favoriteID == favoriteID
+      );
       if (arrIdx < 0) {
-        throw 'ERR: No such id to remove.\n' + id;
+        throw 'ERR: No such favoriteID to remove.\n' + favoriteID;
       }
       // remove old index
       newState.favorites.splice(arrIdx, 1);

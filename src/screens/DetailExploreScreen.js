@@ -5,12 +5,17 @@ import { StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { changeLocation } from '../actions/ExploreActions';
+import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
+import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
-import ResultList from '../components/ResultList';
+import { propTypes as LocationProps } from '../model/Location';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
+    favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
+    addFavorite: PropTypes.func.isRequired,
+    removeFavorite: PropTypes.func.isRequired,
     location: PropTypes.string.isRequired,
     changeLocation: PropTypes.func.isRequired,
   };
@@ -19,6 +24,7 @@ class DetailExploreScreen extends Component {
     super(props);
     this.state = {
       location: props.location,
+      resultList: [],
     };
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
@@ -77,22 +83,7 @@ class DetailExploreScreen extends Component {
             </Button>
           </View>
           <View style={styles.resultList}>
-            <ResultList
-              data={[
-                {
-                  id: 0,
-                  name: 'Home',
-                  address: '123 Đường 456',
-                },
-                {
-                  id: 1,
-                  name: 'School',
-                  address:
-                    'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
-                },
-              ]}
-              onPress={this.onPress}
-            />
+            <ResultList data={this.state.resultList} onPress={this.onPress} />
           </View>
         </Content>
       </Container>
@@ -103,9 +94,35 @@ class DetailExploreScreen extends Component {
     this.setState({
       location: e,
     });
+
+    if (e !== '') {
+      const searchResults = this.search(e);
+      this.setState({
+        resultList: searchResults,
+      });
+    }
   }
 
   onPress(item) {}
+
+  search(value) {
+    value = value.toLowerCase();
+    const results = [];
+
+    // Search in favorites
+    for (let i = 0; i < this.props.favorites.length; i++) {
+      const favorite = this.props.favorites[i];
+      if (
+        favorite.label.toLowerCase().includes(value) ||
+        favorite.name.toLowerCase().includes(value) ||
+        favorite.address.toLowerCase().includes(value)
+      ) {
+        results.push(favorite);
+      }
+    }
+
+    return results;
+  }
 }
 
 const styles = StyleSheet.create({
@@ -152,10 +169,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
+  favorites: state.favoriteReducer.favorites,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeLocation: (query) => dispatch(changeLocation(query)),
+  addFavorite: (favorite) => dispatch(addFavorite(favorite)),
+  removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
 });
 
 export default withNavigation(

@@ -6,9 +6,7 @@ import { propTypes as LocationProps } from '../model/Location';
 
 export default class ResultList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.shape({ id: PropTypes.number.isRequired, ...LocationProps })
-    ),
+    data: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     onPress: PropTypes.func,
   };
 
@@ -36,6 +34,7 @@ export default class ResultList extends Component {
   onRenderItem({ item, index }) {
     return (
       <ResultListItem
+        label={item.label ? item.label : undefined}
         name={item.name}
         address={item.address}
         onPress={() => this.onPress(item)}

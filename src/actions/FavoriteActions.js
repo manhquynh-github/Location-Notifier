@@ -5,7 +5,7 @@ export const addFavorite = (favorite) => ({
   payload: { favorite: favorite },
 });
 
-export const removeFavorite = (id) => ({
+export const removeFavorite = (favoriteID) => ({
   type: REMOVE_FAVORITE,
-  payload: { id: id },
+  payload: { favoriteID: favoriteID },
 });
