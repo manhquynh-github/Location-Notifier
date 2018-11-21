@@ -1,21 +1,21 @@
-import { Container, Content, Text } from 'native-base';
+import { Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Image, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { strictProps as LocationProps } from '../model/Location';
 import FavoriteListItem from './FavoriteListItem';
 
 export default class FavoriteList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        coordinates: PropTypes.array.isRequired,
-        locationName: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
-    onPress: PropTypes.func.isRequired,
-    onRemovePress: PropTypes.func.isRequired,
+    data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape(LocationProps))),
+    onPress: PropTypes.func,
+    onRemovePress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    data: [],
+    onPress: undefined,
+    onRemovePress: undefined,
   };
 
   constructor() {
@@ -52,7 +52,7 @@ export default class FavoriteList extends Component {
     return (
       <FavoriteListItem
         title={item.title}
-        locationName={item.locationName}
+        address={item.address}
         onPress={() => this.onPress(item)}
         onRemovePress={() => this.onRemovePress(item)}
       />

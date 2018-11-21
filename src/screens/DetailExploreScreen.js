@@ -83,13 +83,13 @@ class DetailExploreScreen extends Component {
                   id: 0,
                   title: 'Home',
                   coordinates: [0, 0],
-                  locationName: '123 Đường 456',
+                  address: '123 Đường 456',
                 },
                 {
                   id: 1,
                   title: 'School',
                   coordinates: [0, 0],
-                  locationName:
+                  address:
                     'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
                 },
               ]}

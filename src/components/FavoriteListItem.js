@@ -5,10 +5,17 @@ import { StyleSheet } from 'react-native';
 
 export default class FavoriteListItem extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    locationName: PropTypes.string,
+    label: PropTypes.string,
+    address: PropTypes.string,
     onPress: PropTypes.func,
     onRemovePress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    label: '',
+    address: '',
+    onPress: undefined,
+    onRemovePress: undefined,
   };
 
   constructor() {
@@ -25,10 +32,10 @@ export default class FavoriteListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.title}
+            {this.props.label}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {this.props.locationName}
+            {this.props.address}
           </Text>
         </Body>
         <Button

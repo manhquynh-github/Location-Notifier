@@ -1,4 +1,4 @@
-import { Body, Container, Content, Header, Title } from 'native-base';
+import { Body, Container, Header, Title } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
@@ -7,20 +7,19 @@ import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
-import TabBarIcon from '../components/TabBarIcon';
+import { strictProps as LocationProps } from '../model/Location';
 
 class FavoriteScreen extends Component {
   static propTypes = {
     favorites: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        coordinates: PropTypes.array.isRequired,
-        locationName: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
+      PropTypes.objectOf(PropTypes.shape(LocationProps))
+    ),
     addFavorite: PropTypes.func.isRequired,
     removeFavorite: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    favorites: [],
   };
 
   constructor() {
