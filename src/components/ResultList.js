@@ -2,16 +2,19 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import ResultListItem from './ResultListItem';
+import { propTypes as LocationProps } from '../model/Location';
 
 export default class ResultList extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        locationName: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
-    onPress: PropTypes.func.isRequired,
+      PropTypes.shape({ id: PropTypes.number.isRequired, ...LocationProps })
+    ),
+    onPress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    data: [],
+    onPress: undefined,
   };
 
   constructor() {
@@ -33,8 +36,8 @@ export default class ResultList extends Component {
   onRenderItem({ item, index }) {
     return (
       <ResultListItem
-        title={item.title}
-        locationName={item.locationName}
+        name={item.name}
+        address={item.address}
         onPress={() => this.onPress(item)}
       />
     );

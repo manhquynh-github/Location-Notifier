@@ -1,18 +1,27 @@
-import { Body, Icon, ListItem, Right, Text } from 'native-base';
+import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 
 export default class ResultListItem extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    locationName: PropTypes.string,
+    name: PropTypes.string,
+    address: PropTypes.string,
     onPress: PropTypes.func,
+    onSavePress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    name: '',
+    address: '',
+    onPress: undefined,
+    onSavePress: undefined,
   };
 
   constructor() {
     super();
     this.onPress = this.onPress.bind(this);
+    this.onSavePress = this.onSavePress.bind(this);
   }
 
   render() {
@@ -23,15 +32,20 @@ export default class ResultListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.title}
+            {this.props.name}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {this.props.locationName}
+            {this.props.address}
           </Text>
         </Body>
-        <Right>
-          <Icon name="arrow-up-right" type="Feather" style={styles.trashIcon} />
-        </Right>
+        <Button
+          transparent
+          onPress={this.onSavePress}
+          delayPressIn={0}
+          rounded
+          androidRippleColor="lightgray">
+          <Icon name="favorite" type="MaterialIcons" style={styles.trashIcon} />
+        </Button>
       </ListItem>
     );
   }
@@ -39,6 +53,12 @@ export default class ResultListItem extends Component {
   onPress() {
     if (this.props.onPress) {
       this.props.onPress();
+    }
+  }
+
+  onSavePress() {
+    if (this.props.onSavePress) {
+      this.props.onSavePress();
     }
   }
 }

@@ -1,7 +1,8 @@
-import { Container, Content, Text } from 'native-base';
+import { Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Image, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { propTypes as LocationProps } from '../model/Location';
 import FavoriteListItem from './FavoriteListItem';
 
 export default class FavoriteList extends Component {
@@ -9,13 +10,18 @@ export default class FavoriteList extends Component {
     data: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        coordinates: PropTypes.array.isRequired,
-        locationName: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
-    onPress: PropTypes.func.isRequired,
-    onRemovePress: PropTypes.func.isRequired,
+        label: PropTypes.string,
+        ...LocationProps,
+      })
+    ),
+    onPress: PropTypes.func,
+    onRemovePress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    data: [],
+    onPress: undefined,
+    onRemovePress: undefined,
   };
 
   constructor() {
@@ -51,8 +57,8 @@ export default class FavoriteList extends Component {
   onRenderItem({ item, index }) {
     return (
       <FavoriteListItem
-        title={item.title}
-        locationName={item.locationName}
+        label={item.label}
+        address={item.address}
         onPress={() => this.onPress(item)}
         onRemovePress={() => this.onRemovePress(item)}
       />
