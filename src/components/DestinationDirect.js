@@ -5,7 +5,7 @@ import { StyleSheet,View } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
 import { MapView } from "expo";
 import {RANGE_VALUES} from "../constants/RangeOptions"
-
+import {primaryRBGA, primary} from "../constants/Colors"
 const GOOGLE_MAPS_APIKEY = "AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ";
 
 export default class DestinationDirect extends Component {
@@ -48,6 +48,8 @@ export default class DestinationDirect extends Component {
           center={this.props.destination}
           radius={RANGE_VALUES[this.props.range]}
           strokeWidth={3}
+          strokeColor='#2196f3'
+          fillColor="rgba(33, 150, 243, 0.2)"
         />
       </View>
     );
