@@ -38,13 +38,11 @@ class FavoriteScreen extends Component {
             <Title>Favorites</Title>
           </Body>
         </Header>
-        <Content>
-          <FavoriteList
-            data={this.props.favorites}
-            onPress={this.onPress}
-            onRemovePress={this.onRemovePress}
-          />
-        </Content>
+        <FavoriteList
+          data={this.props.favorites}
+          onPress={this.onPress}
+          onRemovePress={this.onRemovePress}
+        />
       </Container>
     );
   }
