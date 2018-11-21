@@ -17,7 +17,7 @@ export const strictProps = {
   address: PropTypes.string.isRequired,
   website: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
-  types: PropTypes.arrayOf(PropTypes.string).isRequired,
+  types: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
 };
