@@ -4,3 +4,5 @@ npm-debug.*
 .vscode/.react/AppEntry.bundle
 .vscode/.react/AppEntry.map
 .vscode/.react/debuggerWorker.js
+android/app/build/
+android/.gradle/

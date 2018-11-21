@@ -2734,6 +2734,13 @@ expo@^31.0.0:
     uuid-js "^0.7.5"
     whatwg-fetch "^2.0.4"
 
+expokit@31.0.1:
+  version "31.0.1"
+  resolved "https://registry.yarnpkg.com/expokit/-/expokit-31.0.1.tgz#d46a912e1e93b2ac12c1cbe41d7922991fa76add"
+  integrity sha512-BqZ7r3rQag4ViBSjR4EZAeZcdn6dtsQHOd2Qw3Ydhd1TXgYUTf4sBKvCS/p7/tgDwFsjcyaCCKBpf83nYejAiA==
+  dependencies:
+    jsc-android "^224109.1.0"
+
 extend-shallow@^1.1.2:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/extend-shallow/-/extend-shallow-1.1.4.tgz#19d6bf94dfc09d76ba711f39b872d21ff4dd9071"
@@ -4083,6 +4090,11 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
+
+jsc-android@^224109.1.0:
+  version "224109.1.0"
+  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-224109.1.0.tgz#9749ec92f1e284b3c09befe7c47cc6e60b1f0cdf"
+  integrity sha512-mhALFynePc/wJsUt9BJuH13mSK/dGWtBO/pcYwVV1I0A7iduyqy3fSoAt1b0yI+/B3TzlGyue/gqjPxsqG1HRQ==
 
 jsdom@^11.5.1:
   version "11.12.0"
@@ -5690,9 +5702,9 @@ react-native-view-shot@2.5.0:
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-2.5.0.tgz#428a997f470d3148d0067c5b46abd988ef1aa4c0"
   integrity sha512-xFJA+N7wh8Ik/17I4QB24e0a0L3atg1ScVehvtYR5UBTgHdzTFA0ZylvXp9gkZt7V+AT5Pni0H3NQItpqSKFoQ==
 
-"react-native@https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz":
+"react-native@https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz":
   version "0.57.1"
-  resolved "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz#4e15edb8dca4159b47e80014029da30c6d4bef7e"
+  resolved "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz#433d7b0693df3c036287343644a4478bc41fde97"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
