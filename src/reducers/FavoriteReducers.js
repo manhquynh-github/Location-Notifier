@@ -1,8 +1,22 @@
 import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
-import { getFavorites, addFavorite, removeFavorite } from '../backend/Favorite';
+
+const sampleData = [
+  {
+    favoriteID: 0,
+    label: 'Home',
+    name: 'Khách sạn 5 sao',
+    address: '123 Đường 456',
+  },
+  {
+    favoriteID: 1,
+    label: 'School',
+    name: 'Trường Đại học Công nghệ thông tin',
+    address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
+  },
+];
 
 const initialState = {
-  favorites: [...getFavorites()],
+  favorites: sampleData,
 };
 
 const favoriteReducer = (state = initialState, action) => {
@@ -10,36 +24,28 @@ const favoriteReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_FAVORITE: {
       const item = action.payload.favorite;
-      try {
-        addFavorite(item);
-      } catch (e) {
-        console.log(e);
-        throw e;
+      const arrLength = newState.favorites.length;
+      if (arrLength > 0) {
+        item.favoriteID = newState.favorites[arrLength - 1].favoriteID + 1;
+      } else {
+        item.favoriteID = 0;
       }
-
       newState.favorites.concat(item);
       return newState;
     }
 
     case REMOVE_FAVORITE: {
-      const id = action.payload.id;
-      try {
-        removeFavorite(id);
-      } catch (e) {
-        console.log(e);
-        throw e;
-      }
-
+      const favoriteID = action.payload.favoriteID;
       // reassign new array
       newState.favorites = [...state.favorites];
-
       // look for array index
-      let arrIdx = newState.favorites.findIndex((e) => e.id == id);
-
+      let arrIdx = newState.favorites.findIndex(
+        (e) => e.favoriteID == favoriteID
+      );
       if (arrIdx < 0) {
-        throw 'ERR: No such id to remove.\n' + id;
+        throw 'ERR: No such favoriteID to remove.\n' + favoriteID;
       }
-
+      // remove old index
       newState.favorites.splice(arrIdx, 1);
       return newState;
     }

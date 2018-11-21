@@ -1,7 +1,7 @@
 import { CHANGE_LOCATION } from '../constants/ActionTypes';
 
 const initialState = {
-  location: '',
+  location: null,
 };
 
 const exploreReducer = (state = initialState, action) => {

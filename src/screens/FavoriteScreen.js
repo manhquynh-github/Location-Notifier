@@ -1,31 +1,31 @@
-import { Body, Container, Content, Header, Title } from 'native-base';
+import { Body, Container, Header, Title } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { changeLocation } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
-import TabBarIcon from '../components/TabBarIcon';
+import { propTypes as LocationProps } from '../model/Location';
 
 class FavoriteScreen extends Component {
   static propTypes = {
-    favorites: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        coordinates: PropTypes.array.isRequired,
-        locationName: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
+    favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     addFavorite: PropTypes.func.isRequired,
     removeFavorite: PropTypes.func.isRequired,
+    changeLocation: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    favorites: [],
   };
 
   constructor() {
     super();
     this.onRemovePress = this.onRemovePress.bind(this);
+    this.onPress = this.onPress.bind(this);
   }
 
   render() {
@@ -37,18 +37,22 @@ class FavoriteScreen extends Component {
             <Title>Favorites</Title>
           </Body>
         </Header>
-        <Content>
-          <FavoriteList
-            data={this.props.favorites}
-            onRemovePress={this.onRemovePress}
-          />
-        </Content>
+        <FavoriteList
+          data={this.props.favorites}
+          onPress={this.onPress}
+          onRemovePress={this.onRemovePress}
+        />
       </Container>
     );
   }
 
   onRemovePress(item) {
-    this.props.removeFavorite(item.id);
+    this.props.removeFavorite(item.favoriteID);
+  }
+
+  onPress(item) {
+    this.props.changeLocation(item);
+    this.props.navigation.navigate('MainExplore');
   }
 }
 
@@ -64,7 +68,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
-  removeFavorite: (id) => dispatch(removeFavorite(id)),
+  removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
+  changeLocation: (location) => dispatch(changeLocation(location)),
 });
 
 export default connect(
