@@ -36,7 +36,7 @@ export default class ResultList extends Component {
   onRenderItem({ item, index }) {
     return (
       <ResultListItem
-        title={item.title}
+        name={item.name}
         address={item.address}
         onPress={() => this.onPress(item)}
       />

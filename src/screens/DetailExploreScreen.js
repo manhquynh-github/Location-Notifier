@@ -81,14 +81,12 @@ class DetailExploreScreen extends Component {
               data={[
                 {
                   id: 0,
-                  title: 'Home',
-                  coordinates: [0, 0],
+                  name: 'Home',
                   address: '123 Đường 456',
                 },
                 {
                   id: 1,
-                  title: 'School',
-                  coordinates: [0, 0],
+                  name: 'School',
                   address:
                     'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
                 },

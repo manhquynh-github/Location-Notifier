@@ -53,7 +53,7 @@ export default class FavoriteList extends Component {
   onRenderItem({ item, index }) {
     return (
       <FavoriteListItem
-        title={item.title}
+        name={item.name}
         address={item.address}
         onPress={() => this.onPress(item)}
         onRemovePress={() => this.onRemovePress(item)}
