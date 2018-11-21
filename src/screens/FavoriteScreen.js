@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { changeLocation } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
@@ -14,6 +15,7 @@ class FavoriteScreen extends Component {
     favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     addFavorite: PropTypes.func.isRequired,
     removeFavorite: PropTypes.func.isRequired,
+    changeLocation: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -48,7 +50,10 @@ class FavoriteScreen extends Component {
     this.props.removeFavorite(item.favoriteID);
   }
 
-  onPress(item) {}
+  onPress(item) {
+    this.props.changeLocation(item);
+    this.props.navigation.navigate('MainExplore');
+  }
 }
 
 const styles = StyleSheet.create({
@@ -64,6 +69,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
+  changeLocation: (location) => dispatch(changeLocation(location)),
 });
 
 export default connect(
