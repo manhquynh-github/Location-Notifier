@@ -106,7 +106,7 @@ class DetailExploreScreen extends Component {
 
   onPress(item) {
     this.props.changeLocation(item);
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('MainExplore');
   }
 
   search(value) {
