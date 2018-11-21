@@ -1,4 +1,4 @@
-import { Body, Icon, ListItem, Right, Text } from 'native-base';
+import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';

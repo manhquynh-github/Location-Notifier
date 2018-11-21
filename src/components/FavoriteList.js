@@ -2,12 +2,14 @@ import { Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
-import { strictProps as LocationProps } from '../model/Location';
+import { propTypes as LocationProps } from '../model/Location';
 import FavoriteListItem from './FavoriteListItem';
 
 export default class FavoriteList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape(LocationProps))),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({ id: PropTypes.number.isRequired, ...LocationProps })
+    ),
     onPress: PropTypes.func,
     onRemovePress: PropTypes.func,
   };

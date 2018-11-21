@@ -7,13 +7,11 @@ import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import FavoriteList from '../components/FavoriteList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
-import { strictProps as LocationProps } from '../model/Location';
+import { propTypes as LocationProps } from '../model/Location';
 
 class FavoriteScreen extends Component {
   static propTypes = {
-    favorites: PropTypes.arrayOf(
-      PropTypes.objectOf(PropTypes.shape(LocationProps))
-    ),
+    favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     addFavorite: PropTypes.func.isRequired,
     removeFavorite: PropTypes.func.isRequired,
   };

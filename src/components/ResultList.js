@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import ResultListItem from './ResultListItem';
-import { strictProps as LocationProps } from '../model/Location';
+import { propTypes as LocationProps } from '../model/Location';
 
 export default class ResultList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape(LocationProps))),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({ id: PropTypes.number.isRequired, ...LocationProps })
+    ),
     onPress: PropTypes.func,
   };
 
