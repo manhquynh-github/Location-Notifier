@@ -16,18 +16,24 @@ class DetailExploreScreen extends Component {
     favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     addFavorite: PropTypes.func.isRequired,
     removeFavorite: PropTypes.func.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.shape(LocationProps),
     changeLocation: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      location: props.location,
+      location: props.location
+        ? `${this.props.location.name}, ${this.props.location.address}`
+        : '',
       resultList: [],
     };
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
+  }
+
+  componentDidMount() {
+    this.search(this.props.location ? this.props.location.address : '');
   }
 
   render() {
@@ -95,15 +101,13 @@ class DetailExploreScreen extends Component {
       location: e,
     });
 
-    if (e !== '') {
-      const searchResults = this.search(e);
-      this.setState({
-        resultList: searchResults,
-      });
-    }
+    this.search(e);
   }
 
-  onPress(item) {}
+  onPress(item) {
+    this.props.changeLocation(item);
+    this.props.navigation.goBack();
+  }
 
   search(value) {
     value = value.toLowerCase();
@@ -121,7 +125,7 @@ class DetailExploreScreen extends Component {
       }
     }
 
-    return results;
+    this.setState({ resultList: results });
   }
 }
 
@@ -173,7 +177,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLocation: (query) => dispatch(changeLocation(query)),
+  changeLocation: (location) => dispatch(changeLocation(location)),
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
 });
