@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { StyleSheet,View } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
 import { MapView } from "expo";
+import {RANGE_VALUES} from "../constants/RangeOptions"
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ";
 
@@ -17,7 +18,8 @@ export default class DestinationDirect extends Component {
       latitude: PropTypes.number,
       longitude: PropTypes.number
     }).isRequired,
-    FitToCoordinates: PropTypes.func
+    fitToCoordinates: PropTypes.func,
+    range:PropTypes.number.isRequired
   };
   
   constructor() {
@@ -34,7 +36,7 @@ export default class DestinationDirect extends Component {
           strokeWidth={4}
           strokeColor="hotpink"
           onReady={result => {
-            this.FitToCoordinates(result);
+            this.fitToCoordinates(result);
           }}
         />
         <MapView.Marker
@@ -42,14 +44,19 @@ export default class DestinationDirect extends Component {
           title="Name"
           description="Hello man"
         />
+        <MapView.Circle
+          center={this.props.destination}
+          radius={RANGE_VALUES[this.props.range]}
+          strokeWidth={3}
+        />
       </View>
     );
   }
 
-  FitToCoordinates(result) {
-    if (this.props.FitToCoordinates) {
-      this.props.FitToCoordinates(result);
-      console.log("Fit To Coordinates")
+  fitToCoordinates(result) {
+    if (this.props.fitToCoordinates) {
+      this.props.fitToCoordinates(result);
+      console.log("range"+this.props.range);
     }
   }
 }

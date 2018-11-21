@@ -42,7 +42,7 @@ class MainExploreScreen extends Component {
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
-    this.FitToCoordinates = this.FitToCoordinates.bind(this);
+    this.fitToCoordinates = this.fitToCoordinates.bind(this);
   }
 
   render() {
@@ -94,12 +94,13 @@ class MainExploreScreen extends Component {
         ><DestinationDirect
           currentLocation={this.state.currentLocation}
           destination={this.state.destination}
-          FitToCoordinates={this.FitToCoordinates}
+          fitToCoordinates={this.fitToCoordinates}
+          range={this.props.rangeOption}
         /></MapView>
       </Container>
     );
   }
-  FitToCoordinates(result) {
+  fitToCoordinates(result) {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
         right: width / 20,
@@ -128,6 +129,7 @@ class MainExploreScreen extends Component {
       }
     });
   }
+
   componentDidMount() {
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -143,17 +145,7 @@ class MainExploreScreen extends Component {
       interval: 10000,
       fastestInterval: 5000,
       activitiesInterval: 10000,
-      stopOnStillActivity: false,
-      url: "http://192.168.81.15:3000/location",
-      httpHeaders: {
-        "X-FOO": "bar"
-      },
-      // customize post properties
-      postTemplate: {
-        lat: "@latitude",
-        lon: "@longitude",
-        foo: "bar" // you can also add your own properties
-      }
+      stopOnStillActivity: false
     });
 
     BackgroundGeolocation.on("location", location => {
@@ -224,19 +216,6 @@ class MainExploreScreen extends Component {
       console.log("[INFO] App is in foreground");
     });
 
-    BackgroundGeolocation.on("abort_requested", () => {
-      console.log("[INFO] Server responded with 285 Updates Not Required");
-
-      // Here we can decide whether we want stop the updates or not.
-      // If you've configured the server to return 285, then it means the server does not require further update.
-      // So the normal thing to do here would be to `BackgroundGeolocation.stop()`.
-      // But you might be counting on it to receive location updates in the UI, so you could just reconfigure and set `url` to null.
-    });
-
-    BackgroundGeolocation.on("http_authorization", () => {
-      console.log("[INFO] App needs to authorize the http requests");
-    });
-
     BackgroundGeolocation.checkStatus(status => {
       console.log(
         "[INFO] BackgroundGeolocation service is running",
@@ -255,10 +234,9 @@ class MainExploreScreen extends Component {
         BackgroundGeolocation.start(); //triggers start on start event
       }
     });
-
-    // you can also just start without checking for status
-    // BackgroundGeolocation.start();
   }
+
+  //TODO
   checkToAlarm() {
     //TO DO
   }
