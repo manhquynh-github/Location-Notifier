@@ -8,7 +8,7 @@ import { setRangeOption } from '../actions';
 import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { MapView } from 'expo';
+import { MapView} from 'expo';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 var { height, width } = Dimensions.get('window');
@@ -28,6 +28,10 @@ class MainExploreScreen extends Component {
       currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513
+      },
+      destination:{
+        latitude: 10.866356,
+        longitude: 106.792509
       },
       distance: null
     }
@@ -83,12 +87,10 @@ class MainExploreScreen extends Component {
           ref={c => this.mapView = c}
           showsUserLocation
           showsMyLocationButton
-        >{<MapViewDirections
+        >
+        {<MapViewDirections
           origin={this.state.currentLocation}
-          destination={{
-            latitude: 10.866356,
-            longitude: 106.792509
-          }}
+          destination={this.state.destination}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={4}
           strokeColor="hotpink"
@@ -106,9 +108,13 @@ class MainExploreScreen extends Component {
             newState.distance = result.distance;
             this.setState(newState);
             console.log("OFFFF " + newState.distance);
-            checkToAlarm();
+            this.checkToAlarm();
           }}
-        />}</MapView>
+        />}
+         {
+          <MapView.Marker coordinate={this.state.destination} title="Name" description="Hello man" />
+        }
+        </MapView>
       </Container>
     );
   }
