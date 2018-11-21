@@ -1,7 +1,20 @@
 import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
 
+const sampleData = [
+  {
+    id: 0,
+    label: 'Home',
+    address: '123 Đường 456',
+  },
+  {
+    id: 1,
+    label: 'School',
+    address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
+  },
+];
+
 const initialState = {
-  favorites: [],
+  favorites: sampleData,
 };
 
 const favoriteReducer = (state = initialState, action) => {

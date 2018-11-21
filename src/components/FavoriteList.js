@@ -8,7 +8,11 @@ import FavoriteListItem from './FavoriteListItem';
 export default class FavoriteList extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(
-      PropTypes.shape({ id: PropTypes.number.isRequired, ...LocationProps })
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        label: PropTypes.string,
+        ...LocationProps,
+      })
     ),
     onPress: PropTypes.func,
     onRemovePress: PropTypes.func,
@@ -53,7 +57,7 @@ export default class FavoriteList extends Component {
   onRenderItem({ item, index }) {
     return (
       <FavoriteListItem
-        name={item.name}
+        label={item.label}
         address={item.address}
         onPress={() => this.onPress(item)}
         onRemovePress={() => this.onRemovePress(item)}
