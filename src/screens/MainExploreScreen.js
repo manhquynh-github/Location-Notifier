@@ -9,10 +9,11 @@ import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { MapView } from 'expo';
+import { propTypes as LocationProps } from '../model/Location';
 
 class MainExploreScreen extends Component {
   static propTypes = {
-    location: PropTypes.string.isRequired,
+    location: PropTypes.shape(LocationProps),
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
   };
@@ -32,8 +33,14 @@ class MainExploreScreen extends Component {
           onPress={this.onSearchPress}
           style={styles.addressBar}
           delayPressIn={0}>
-          <Text uppercase={false} style={{ color: Colors.darkGrayBackground }}>
-            {this.props.location === '' ? 'Search...' : this.props.searchQuery}
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            uppercase={false}
+            style={{ color: Colors.darkGrayBackground }}>
+            {this.props.location
+              ? `${this.props.location.name}, ${this.props.location.address}`
+              : 'Search...'}
           </Text>
         </Button>
         <Fab

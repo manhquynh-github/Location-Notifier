@@ -5,21 +5,35 @@ import { StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { changeLocation } from '../actions/ExploreActions';
+import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
+import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
+import { propTypes as LocationProps } from '../model/Location';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
-    location: PropTypes.string.isRequired,
+    favorites: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
+    addFavorite: PropTypes.func.isRequired,
+    removeFavorite: PropTypes.func.isRequired,
+    location: PropTypes.shape(LocationProps),
     changeLocation: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      location: props.location,
+      location: props.location
+        ? `${this.props.location.name}, ${this.props.location.address}`
+        : '',
+      resultList: [],
     };
     this.onChangeText = this.onChangeText.bind(this);
+    this.onPress = this.onPress.bind(this);
+  }
+
+  componentDidMount() {
+    this.search(this.props.location ? this.props.location.address : '');
   }
 
   render() {
@@ -41,7 +55,8 @@ class DetailExploreScreen extends Component {
               rounded
               iconLeft
               style={styles.helperItemContainer}
-              androidRippleColor="lightgray">
+              androidRippleColor="lightgray"
+              delayPressIn={0}>
               <Icon
                 name="local-gas-station"
                 type="MaterialIcons"
@@ -59,7 +74,8 @@ class DetailExploreScreen extends Component {
               rounded
               iconLeft
               style={styles.helperItemContainer}
-              androidRippleColor="lightgray">
+              androidRippleColor="lightgray"
+              delayPressIn={0}>
               <Icon
                 name="local-atm"
                 type="MaterialIcons"
@@ -72,6 +88,9 @@ class DetailExploreScreen extends Component {
               </Text>
             </Button>
           </View>
+          <View style={styles.resultList}>
+            <ResultList data={this.state.resultList} onPress={this.onPress} />
+          </View>
         </Content>
       </Container>
     );
@@ -81,6 +100,32 @@ class DetailExploreScreen extends Component {
     this.setState({
       location: e,
     });
+
+    this.search(e);
+  }
+
+  onPress(item) {
+    this.props.changeLocation(item);
+    this.props.navigation.navigate('MainExplore');
+  }
+
+  search(value) {
+    value = value.toLowerCase();
+    const results = [];
+
+    // Search in favorites
+    for (let i = 0; i < this.props.favorites.length; i++) {
+      const favorite = this.props.favorites[i];
+      if (
+        favorite.label.toLowerCase().includes(value) ||
+        favorite.name.toLowerCase().includes(value) ||
+        favorite.address.toLowerCase().includes(value)
+      ) {
+        results.push(favorite);
+      }
+    }
+
+    this.setState({ resultList: results });
   }
 }
 
@@ -94,7 +139,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
     elevation: 2,
-    borderWidth: 1,
     paddingLeft: 15,
     paddingRight: 15,
     borderColor: 'lightgray',
@@ -109,7 +153,7 @@ const styles = StyleSheet.create({
   },
   helperItemContainer: {
     marginRight: 10,
-    borderColor: Colors.darkGrayBackground,
+    borderColor: '#ccc',
   },
   gasStationIcon: {
     color: '#2196f3',
@@ -117,14 +161,25 @@ const styles = StyleSheet.create({
   localAtmIcon: {
     color: '#357a38',
   },
+  resultList: {
+    marginHorizontal: 10,
+    marginTop: 5,
+    marginBottom: 10,
+    borderRadius: 10,
+    elevation: 2,
+    backgroundColor: 'white',
+  },
 });
 
 const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
+  favorites: state.favoriteReducer.favorites,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLocation: (query) => dispatch(changeLocation(query)),
+  changeLocation: (location) => dispatch(changeLocation(location)),
+  addFavorite: (favorite) => dispatch(addFavorite(favorite)),
+  removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
 });
 
 export default withNavigation(

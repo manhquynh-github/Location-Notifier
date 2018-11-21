@@ -2,26 +2,29 @@ import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
+import Colors from '../constants/Colors';
 
-export default class FavoriteListItem extends Component {
+export default class ResultListItem extends Component {
   static propTypes = {
     label: PropTypes.string,
+    name: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
-    onRemovePress: PropTypes.func,
+    onSavePress: PropTypes.func,
   };
 
   static defaultProps = {
-    label: '',
+    label: undefined,
+    name: '',
     address: '',
     onPress: undefined,
-    onRemovePress: undefined,
+    onSavePress: undefined,
   };
 
   constructor() {
     super();
     this.onPress = this.onPress.bind(this);
-    this.onRemovePress = this.onRemovePress.bind(this);
+    this.onSavePress = this.onSavePress.bind(this);
   }
 
   render() {
@@ -32,7 +35,7 @@ export default class FavoriteListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.label}
+            {this.props.label ? this.props.label : this.props.name}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {this.props.address}
@@ -40,11 +43,15 @@ export default class FavoriteListItem extends Component {
         </Body>
         <Button
           transparent
-          onPress={this.onRemovePress}
+          onPress={this.onSavePress}
           delayPressIn={0}
           rounded
           androidRippleColor="lightgray">
-          <Icon name="trash" style={styles.trashIcon} />
+          <Icon
+            name="favorite"
+            type="MaterialIcons"
+            style={{ color: this.props.label ? Colors.primary : 'gray' }}
+          />
         </Button>
       </ListItem>
     );
@@ -56,15 +63,9 @@ export default class FavoriteListItem extends Component {
     }
   }
 
-  onRemovePress() {
-    if (this.props.onRemovePress) {
-      this.props.onRemovePress();
+  onSavePress() {
+    if (this.props.onSavePress) {
+      this.props.onSavePress();
     }
   }
 }
-
-const styles = StyleSheet.create({
-  trashIcon: {
-    color: 'gray',
-  },
-});
