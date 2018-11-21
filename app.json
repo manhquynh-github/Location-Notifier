@@ -30,7 +30,7 @@
       "package": "com.uit.LocationNotifier",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig"
+          "apiKey": "AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ"
         }
       },
       "publishBundlePath": "android\\app\\src\\main\\assets\\shell-app.bundle",

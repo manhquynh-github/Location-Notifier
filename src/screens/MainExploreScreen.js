@@ -1,7 +1,7 @@
 import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Dimensions, ToastAndroid } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
@@ -11,8 +11,9 @@ import Layout from '../constants/Layout';
 import { MapView } from 'expo';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import MapViewDirections from 'react-native-maps-directions';
+var { height, width } = Dimensions.get('window');
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -24,12 +25,14 @@ class MainExploreScreen extends Component {
   constructor() {
     super();
     this.state = {
-      currentLocation:{
+      currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513
-      }
+      },
+      distance: null
     }
 
+    this.mapView = null;
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
@@ -77,11 +80,34 @@ class MainExploreScreen extends Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          ref={c => this.mapView = c}
+          showsUserLocation
+          showsMyLocationButton
         >{<MapViewDirections
-                origin={this.state.currentLocation}
-                destination={{latitude: 10.866356,
-                  longitude: 106.792509}}
-                apikey={GOOGLE_MAPS_APIKEY}
+          origin={this.state.currentLocation}
+          destination={{
+            latitude: 10.866356,
+            longitude: 106.792509
+          }}
+          apikey={GOOGLE_MAPS_APIKEY}
+          strokeWidth={4}
+          strokeColor="hotpink"
+          onReady={(result) => {
+            this.mapView.fitToCoordinates(result.coordinates, {
+              edgePadding: {
+                right: (width / 20),
+                bottom: (height / 20),
+                left: (width / 20),
+                top: (height / 20),
+              },
+              animated: true,
+            });
+            const newState = this.state;
+            newState.distance = result.distance;
+            this.setState(newState);
+            console.log("OFFFF " + newState.distance);
+            checkToAlarm();
+          }}
         />}</MapView>
       </Container>
     );
@@ -91,7 +117,7 @@ class MainExploreScreen extends Component {
     this.props.navigation.navigate('DetailExplore');
   }
 
-  onLocatePress() {}
+  onLocatePress() { }
 
   onRangePress() {
     showRangeOptions(this.props.rangeOption, (selectedIndex) => {
@@ -105,7 +131,7 @@ class MainExploreScreen extends Component {
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
       distanceFilter: 50,
-      notificationsEnabled:true,
+      notificationsEnabled: true,
       notificationTitle: 'Location Notifier',
       notificationText: 'Location Notifier is tracking your locations',
       debug: true,
@@ -133,10 +159,7 @@ class MainExploreScreen extends Component {
       // to perform long running operation on iOS
       // you need to create background task
       BackgroundGeolocation.startTask(taskKey => {
-        // execute long running task
-        // eg. ajax post location
-        // IMPORTANT: task has to be ended by endTask
-        console.log(location);
+        //get current location
         const newState = this.state;
         const newLocation = location;
         newState.currentLocation = newLocation;
@@ -209,6 +232,9 @@ class MainExploreScreen extends Component {
 
     // you can also just start without checking for status
     // BackgroundGeolocation.start();
+  }
+  checkToAlarm(){
+    //TO DO
   }
 
   componentWillUnmount() {
