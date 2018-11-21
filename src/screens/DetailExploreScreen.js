@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { changeLocation } from '../actions/ExploreActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
+import ResultList from '../components/ResultList';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -20,6 +21,7 @@ class DetailExploreScreen extends Component {
       location: props.location,
     };
     this.onChangeText = this.onChangeText.bind(this);
+    this.onPress = this.onPress.bind(this);
   }
 
   render() {
@@ -41,7 +43,8 @@ class DetailExploreScreen extends Component {
               rounded
               iconLeft
               style={styles.helperItemContainer}
-              androidRippleColor="lightgray">
+              androidRippleColor="lightgray"
+              delayPressIn={0}>
               <Icon
                 name="local-gas-station"
                 type="MaterialIcons"
@@ -59,7 +62,8 @@ class DetailExploreScreen extends Component {
               rounded
               iconLeft
               style={styles.helperItemContainer}
-              androidRippleColor="lightgray">
+              androidRippleColor="lightgray"
+              delayPressIn={0}>
               <Icon
                 name="local-atm"
                 type="MaterialIcons"
@@ -72,6 +76,26 @@ class DetailExploreScreen extends Component {
               </Text>
             </Button>
           </View>
+          <View style={styles.resultList}>
+            <ResultList
+              data={[
+                {
+                  id: 0,
+                  title: 'Home',
+                  coordinates: [0, 0],
+                  locationName: '123 Đường 456',
+                },
+                {
+                  id: 1,
+                  title: 'School',
+                  coordinates: [0, 0],
+                  locationName:
+                    'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
+                },
+              ]}
+              onPress={this.onPress}
+            />
+          </View>
         </Content>
       </Container>
     );
@@ -82,6 +106,8 @@ class DetailExploreScreen extends Component {
       location: e,
     });
   }
+
+  onPress(item) {}
 }
 
 const styles = StyleSheet.create({
@@ -94,7 +120,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
     elevation: 2,
-    borderWidth: 1,
     paddingLeft: 15,
     paddingRight: 15,
     borderColor: 'lightgray',
@@ -109,13 +134,21 @@ const styles = StyleSheet.create({
   },
   helperItemContainer: {
     marginRight: 10,
-    borderColor: Colors.darkGrayBackground,
+    borderColor: '#ccc',
   },
   gasStationIcon: {
     color: '#2196f3',
   },
   localAtmIcon: {
     color: '#357a38',
+  },
+  resultList: {
+    marginHorizontal: 10,
+    marginTop: 5,
+    marginBottom: 10,
+    borderRadius: 10,
+    elevation: 2,
+    backgroundColor: 'white',
   },
 });
 

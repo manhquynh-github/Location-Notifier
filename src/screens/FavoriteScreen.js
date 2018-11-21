@@ -26,6 +26,7 @@ class FavoriteScreen extends Component {
   constructor() {
     super();
     this.onRemovePress = this.onRemovePress.bind(this);
+    this.onPress = this.onPress.bind(this);
   }
 
   render() {
@@ -40,6 +41,7 @@ class FavoriteScreen extends Component {
         <Content>
           <FavoriteList
             data={this.props.favorites}
+            onPress={this.onPress}
             onRemovePress={this.onRemovePress}
           />
         </Content>
@@ -50,6 +52,8 @@ class FavoriteScreen extends Component {
   onRemovePress(item) {
     this.props.removeFavorite(item.id);
   }
+
+  onPress(item) {}
 }
 
 const styles = StyleSheet.create({
