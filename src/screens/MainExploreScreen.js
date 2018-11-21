@@ -13,6 +13,7 @@ import BackgroundGeolocation from "react-native-mauron85-background-geolocation"
 import MapViewDirections from "react-native-maps-directions";
 var { height, width } = Dimensions.get("window");
 import DestinationDirect from "../components/DestinationDirect";
+import {RANGE_VALUES} from "../constants/RangeOptions"
 
 
 
@@ -43,6 +44,8 @@ class MainExploreScreen extends Component {
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
+    this.calcCrow =this.calcCrow.bind(this);
+    this.toRad = this.toRad.bind(this);
   }
 
   render() {
@@ -111,9 +114,7 @@ class MainExploreScreen extends Component {
       animated: true
     });
 
-    const newState = this.state;
-    newState.distance = result.distance;
-    this.setState(newState);
+    this.checkToAlarm();
   }
 
   onSearchPress() {
@@ -236,16 +237,43 @@ class MainExploreScreen extends Component {
     });
   }
 
-  //TODO
-  checkToAlarm() {
-    //TO DO
-  }
-
   componentWillUnmount() {
     // unregister all event listeners
     BackgroundGeolocation.events.forEach(event =>
       BackgroundGeolocation.removeAllListeners(event)
     );
+  }
+
+  checkToAlarm() {
+    const current = this.state.currentLocation;
+    const des = this.state.destination;
+    const distance = this.calcCrow(current.latitude,current.longitude,des.latitude,des.longitude);
+    if(distance<=RANGE_VALUES[this.props.rangeOption]){
+        //PUSH NOTIFICATIONS
+        //ALARM
+        console.log("YOU ARE IN")
+    }
+    console.log("DISTANCE"+distance);
+  }
+
+  //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
+  calcCrow(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km
+    var dLat = this.toRad(lat2 - lat1);
+    var dLon = this.toRad(lon2 - lon1);
+    var lat1 = this.toRad(lat1);
+    var lat2 = this.toRad(lat2);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c * 1000;
+    return d;
+  }
+
+  // Converts numeric degrees to radians
+  toRad(Value) {
+    return Value * Math.PI / 180;
   }
 }
 
