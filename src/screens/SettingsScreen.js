@@ -71,8 +71,8 @@ export class SettingsScreen extends Component {
               <Switch
                 value={this.props.vibrate}
                 onValueChange={this.onValueChange}
-                onTintColor={Colors.lightPrimary}
-                thumbTintColor={Colors.primary}
+                trackColor={{ true: Colors.lightPrimary, false: null }}
+                thumbColor={Colors.primary}
                 style={{ width: 75 }}
               />
             </Right>
@@ -86,7 +86,7 @@ export class SettingsScreen extends Component {
             <Body>
               <Text>Ringtone</Text>
             </Body>
-            <Right>
+            <Right style={{ flex: 0 }}>
               <Text
                 style={styles.nameRingtone}
                 ellipsizeMode="tail"
@@ -94,7 +94,6 @@ export class SettingsScreen extends Component {
                 onPress={this.onPressRingtone}>
                 {PLAYLIST[this.props.soundID].item.name}
               </Text>
-
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
@@ -116,14 +115,13 @@ export class SettingsScreen extends Component {
             <Body>
               <Text>Range to notify</Text>
             </Body>
-            <Right>
+            <Right style={{ flex: 0 }}>
               <Text style={styles.nameRingtone} ellipsizeMode="tail">
                 {RANGE_OPTIONS[this.props.rangeOption]}
               </Text>
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
-
           <Separator />
           <ListItem icon last>
             <Left>
@@ -140,7 +138,6 @@ export class SettingsScreen extends Component {
             </Body>
             <Right />
           </ListItem>
-
           <View>
             <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
               Developers

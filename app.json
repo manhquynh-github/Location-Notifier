@@ -4,7 +4,7 @@
     "description": "This project is really great.",
     "slug": "Location-Notifier",
     "privacy": "public",
-    "sdkVersion": "30.0.0",
+    "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,7 +22,12 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.uit.LocationNotifier"
+      "package": "com.uit.LocationNotifier",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBoQ_yAZYFKQByAhL8USTlHuV6NGIJTsig"
+        }
+      }
     }
   }
 }

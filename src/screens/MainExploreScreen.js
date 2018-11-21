@@ -8,6 +8,7 @@ import { setRangeOption } from '../actions';
 import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
+import { MapView } from 'expo';
 import { propTypes as LocationProps } from '../model/Location';
 
 class MainExploreScreen extends Component {
@@ -63,12 +64,15 @@ class MainExploreScreen extends Component {
         <Fab style={styles.startButton} position="bottomRight">
           <Icon name="play" />
         </Fab>
-        <Content>
-          <Image
-            source={require('../assets/images/GoogleMapLogo.png')}
-            style={{}}
-          />
-        </Content>
+        <MapView
+          style={{ flex: 1, alignSelf: 'stretch' }}
+          initialRegion={{
+            latitude: 10.8703,
+            longitude: 106.8034513,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
       </Container>
     );
   }
