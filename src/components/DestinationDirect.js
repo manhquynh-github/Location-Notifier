@@ -19,6 +19,7 @@ export default class DestinationDirect extends Component {
       longitude: PropTypes.number
     }).isRequired,
     fitToCoordinates: PropTypes.func,
+    checkAlarm:PropTypes.func,
     range:PropTypes.number.isRequired
   };
   
@@ -56,9 +57,9 @@ export default class DestinationDirect extends Component {
   }
 
   fitToCoordinates(result) {
-    if (this.props.fitToCoordinates) {
-      this.props.fitToCoordinates(result);
-      console.log("range"+this.props.range);
+    if (this.props.fitToCoordinates && this.props.checkAlarm) {
+      this.props.fitToCoordinates(result);       
+      this.props.checkAlarm();     
     }
   }
 }

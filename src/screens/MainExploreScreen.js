@@ -47,6 +47,8 @@ class MainExploreScreen extends Component {
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
     this.calcCrow =this.calcCrow.bind(this);
     this.toRad = this.toRad.bind(this);
+    this.checkToAlarm = this.checkToAlarm.bind(this);
+    this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
   }
 
   render() {
@@ -79,7 +81,10 @@ class MainExploreScreen extends Component {
             style={{ color: "gray" }}
           />
         </Fab>
-        <Fab style={styles.myLocationButton} position="bottomRight">
+        <Fab
+          style={styles.myLocationButton}
+          position="bottomRight"
+          onPress={this.fitToCurrentCoordinates}>
           <Icon
             name="my-location"
             type="MaterialIcons"
@@ -104,11 +109,13 @@ class MainExploreScreen extends Component {
           currentLocation={this.state.currentLocation}
           destination={this.state.destination}
           fitToCoordinates={this.fitToCoordinates}
+          checkAlarm={this.checkToAlarm}
           range={this.props.rangeOption}
         /></MapView>
       </Container>
     );
   }
+  
   fitToCoordinates(result) {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -118,9 +125,20 @@ class MainExploreScreen extends Component {
         top: height / 20
       },
       animated: true
-    });
+    });    
+  }
 
-    this.checkToAlarm();
+  fitToCurrentCoordinates() {
+    const current = this.state.currentLocation;
+    this.mapView.fitToCoordinates([current], {
+      edgePadding: {
+        right: width / 20,
+        bottom: height / 20,
+        left: width / 20,
+        top: height / 20
+      },
+      animated: true
+    });    
   }
 
   onSearchPress() {
