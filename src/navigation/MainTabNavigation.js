@@ -9,10 +9,10 @@ import Colors from '../constants/Colors';
 
 export default createBottomTabNavigator(
   {
-    Favorite: {
+    Favorites: {
       screen: FavoriteScreen,
       navigationOptions: {
-        title: 'Favorite',
+        title: 'Favorites',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="favorite" type="MaterialIcons" />
         ),
