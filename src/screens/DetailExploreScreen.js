@@ -140,6 +140,9 @@ class DetailExploreScreen extends Component {
     if (item.sourceType === 'favorite') {
       this.props.changeLocation(item.value);
       this.props.navigation.navigate('MainExplore');
+    } else if (item.sourceType === 'google') {
+      // TODO: Query google api for actual location
+      // item.value has the same shape as src/model/SearchResult
     }
   }
 
