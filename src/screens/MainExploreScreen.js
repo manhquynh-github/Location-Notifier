@@ -1,19 +1,19 @@
-import { Button, Container, Content, Fab, Icon, Text } from "native-base";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Image, StyleSheet, Dimensions, ToastAndroid } from "react-native";
-import { withNavigation } from "react-navigation";
-import { connect } from "react-redux";
-import { setRangeOption } from "../actions";
-import showRangeOptions from "../components/RangeOptions";
-import Colors from "../constants/Colors";
-import Layout from "../constants/Layout";
-import { MapView } from "expo";
-import BackgroundGeolocation from "react-native-mauron85-background-geolocation";
-import DestinationDirect from "../components/DestinationDirect";
-import { RANGE_VALUES } from "../constants/RangeOptions";
-import { propTypes as LocationProps } from "../model/Location";
-import { stopDirect } from "../actions/ExploreActions";
+import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Image, StyleSheet, Dimensions, ToastAndroid } from 'react-native';
+import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
+import { setRangeOption } from '../actions';
+import showRangeOptions from '../components/RangeOptions';
+import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
+import { MapView } from 'expo';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import DestinationDirect from '../components/DestinationDirect';
+import { RANGE_VALUES } from '../constants/RangeOptions';
+import { propTypes as LocationProps } from '../model/Location';
+import { stopDirect } from '../actions/ExploreActions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -21,7 +21,7 @@ class MainExploreScreen extends Component {
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
-    isDirect:PropTypes.bool
+    isDirect: PropTypes.bool,
   };
 
   constructor() {
@@ -29,9 +29,9 @@ class MainExploreScreen extends Component {
     this.state = {
       currentLocation: {
         latitude: 10.8703,
-        longitude: 106.8034513
+        longitude: 106.8034513,
       },
-      distance: null
+      distance: null,
     };
 
     this.mapView = null;
@@ -53,62 +53,62 @@ class MainExploreScreen extends Component {
           full
           onPress={this.onSearchPress}
           style={styles.addressBar}
-          delayPressIn={0}
-        >
+          delayPressIn={0}>
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             uppercase={false}
-            style={{ color: Colors.darkGrayBackground }}
-          >
+            style={{ color: Colors.darkGrayBackground }}>
             {this.props.location
-              ? `${this.props.location.fullText}`
-              : "Search..."}
+              ? `${this.props.location.name}, ${this.props.location.address}`
+              : 'Search...'}
           </Text>
         </Button>
         <Fab
           active={false}
           style={styles.rangeButton}
           position="bottomRight"
-          onPress={this.onRangePress}
-        >
+          onPress={this.onRangePress}>
           <Icon
             name="street-view"
             type="FontAwesome"
-            style={{ color: "gray" }}
+            style={{ color: 'gray' }}
           />
         </Fab>
         <Fab
           style={styles.myLocationButton}
           position="bottomRight"
-          onPress={this.fitToCurrentCoordinates}
-        >
+          onPress={this.fitToCurrentCoordinates}>
           <Icon
             name="my-location"
             type="MaterialIcons"
-            style={{ color: "gray" }}
+            style={{ color: 'gray' }}
           />
         </Fab>
-        <Fab style={styles.startButton} position="bottomRight" onPress={()=>{this.props.stopDirect()}}>
+        <Fab
+          style={styles.startButton}
+          position="bottomRight"
+          onPress={() => {
+            this.props.stopDirect();
+          }}>
           <Icon name="play" />
         </Fab>
         <MapView
-          style={{ flex: 1, alignSelf: "stretch" }}
+          style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
             latitude: this.state.currentLocation.latitude,
             longitude: this.state.currentLocation.longitude,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+            longitudeDelta: 0.0421,
           }}
-          ref={c => (this.mapView = c)}
-          showsUserLocation
-        >
+          ref={(c) => (this.mapView = c)}
+          showsUserLocation>
           {this.props.isDirect && this.props.location && (
             <DestinationDirect
               currentLocation={this.state.currentLocation}
               destination={{
                 latitude: this.props.location.latitude,
-                longitude: this.props.location.longitude
+                longitude: this.props.location.longitude,
               }}
               fitToCoordinates={this.fitToCoordinates}
               checkAlarm={this.checkToAlarm}
@@ -126,9 +126,9 @@ class MainExploreScreen extends Component {
         right: Layout.window.width / 20,
         bottom: Layout.window.height / 20,
         left: Layout.window.width / 20,
-        top: Layout.window.height / 20
+        top: Layout.window.height / 20,
       },
-      animated: true
+      animated: true,
     });
   }
 
@@ -139,20 +139,20 @@ class MainExploreScreen extends Component {
         right: Layout.window.width / 20,
         bottom: Layout.window.height / 20,
         left: Layout.window.width / 20,
-        top: Layout.window.height / 20
+        top: Layout.window.height / 20,
       },
-      animated: true
+      animated: true,
     });
   }
 
   onSearchPress() {
-    this.props.navigation.navigate("DetailExplore");
+    this.props.navigation.navigate('DetailExplore');
   }
 
   onLocatePress() {}
 
   onRangePress() {
-    showRangeOptions(this.props.rangeOption, selectedIndex => {
+    showRangeOptions(this.props.rangeOption, (selectedIndex) => {
       if (selectedIndex !== undefined) {
         this.props.setRangeOption(selectedIndex);
       }
@@ -165,8 +165,8 @@ class MainExploreScreen extends Component {
       stationaryRadius: 50,
       distanceFilter: 50,
       notificationsEnabled: true,
-      notificationTitle: "Location Notifier",
-      notificationText: "Location Notifier is tracking your locations",
+      notificationTitle: 'Location Notifier',
+      notificationText: 'Location Notifier is tracking your locations',
       debug: true,
       startOnBoot: false,
       stopOnTerminate: true,
@@ -174,14 +174,14 @@ class MainExploreScreen extends Component {
       interval: 10000,
       fastestInterval: 5000,
       activitiesInterval: 10000,
-      stopOnStillActivity: false
+      stopOnStillActivity: false,
     });
 
-    BackgroundGeolocation.on("location", location => {
+    BackgroundGeolocation.on('location', (location) => {
       // handle your locations here
       // to perform long running operation on iOS
       // you need to create background task
-      BackgroundGeolocation.startTask(taskKey => {
+      BackgroundGeolocation.startTask((taskKey) => {
         //get current location
         const newState = this.state;
         const newLocation = location;
@@ -192,44 +192,44 @@ class MainExploreScreen extends Component {
       });
     });
 
-    BackgroundGeolocation.on("stationary", stationaryLocation => {
+    BackgroundGeolocation.on('stationary', (stationaryLocation) => {
       // handle stationary locations here
       Actions.sendLocation(stationaryLocation);
     });
 
-    BackgroundGeolocation.on("error", error => {
-      console.log("[ERROR] BackgroundGeolocation error:", error);
+    BackgroundGeolocation.on('error', (error) => {
+      console.log('[ERROR] BackgroundGeolocation error:', error);
     });
 
-    BackgroundGeolocation.on("start", () => {
-      console.log("[INFO] BackgroundGeolocation service has been started");
+    BackgroundGeolocation.on('start', () => {
+      console.log('[INFO] BackgroundGeolocation service has been started');
     });
 
-    BackgroundGeolocation.on("stop", () => {
-      console.log("[INFO] BackgroundGeolocation service has been stopped");
+    BackgroundGeolocation.on('stop', () => {
+      console.log('[INFO] BackgroundGeolocation service has been stopped');
     });
 
-    BackgroundGeolocation.on("authorization", status => {
+    BackgroundGeolocation.on('authorization', (status) => {
       console.log(
-        "[INFO] BackgroundGeolocation authorization status: " + status
+        '[INFO] BackgroundGeolocation authorization status: ' + status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
         // we need to set delay or otherwise alert may not be shown
         setTimeout(
           () =>
             Alert.alert(
-              "App requires location tracking permission",
-              "Would you like to open app settings?",
+              'App requires location tracking permission',
+              'Would you like to open app settings?',
               [
                 {
-                  text: "Yes",
-                  onPress: () => BackgroundGeolocation.showAppSettings()
+                  text: 'Yes',
+                  onPress: () => BackgroundGeolocation.showAppSettings(),
                 },
                 {
-                  text: "No",
-                  onPress: () => console.log("No Pressed"),
-                  style: "cancel"
-                }
+                  text: 'No',
+                  onPress: () => console.log('No Pressed'),
+                  style: 'cancel',
+                },
               ]
             ),
           1000
@@ -237,25 +237,25 @@ class MainExploreScreen extends Component {
       }
     });
 
-    BackgroundGeolocation.on("background", () => {
-      console.log("[INFO] App is in background");
+    BackgroundGeolocation.on('background', () => {
+      console.log('[INFO] App is in background');
     });
 
-    BackgroundGeolocation.on("foreground", () => {
-      console.log("[INFO] App is in foreground");
+    BackgroundGeolocation.on('foreground', () => {
+      console.log('[INFO] App is in foreground');
     });
 
-    BackgroundGeolocation.checkStatus(status => {
+    BackgroundGeolocation.checkStatus((status) => {
       console.log(
-        "[INFO] BackgroundGeolocation service is running",
+        '[INFO] BackgroundGeolocation service is running',
         status.isRunning
       );
       console.log(
-        "[INFO] BackgroundGeolocation services enabled",
+        '[INFO] BackgroundGeolocation services enabled',
         status.locationServicesEnabled
       );
       console.log(
-        "[INFO] BackgroundGeolocation auth status: " + status.authorization
+        '[INFO] BackgroundGeolocation auth status: ' + status.authorization
       );
 
       // you don't need to check status before start (this is just the example)
@@ -266,8 +266,10 @@ class MainExploreScreen extends Component {
   }
 
   componentWillUnmount() {
+    return;
+
     // unregister all event listeners
-    BackgroundGeolocation.events.forEach(event =>
+    BackgroundGeolocation.events.forEach((event) =>
       BackgroundGeolocation.removeAllListeners(event)
     );
   }
@@ -313,43 +315,43 @@ class MainExploreScreen extends Component {
 
 const styles = StyleSheet.create({
   shrink: {
-    flex: 0
+    flex: 0,
   },
   addressBar: {
     zIndex: 1,
-    position: "absolute",
+    position: 'absolute',
     top: 10 + Layout.statusBarHeight,
     left: 10,
     right: 10,
     borderRadius: 10,
     elevation: 2,
-    backgroundColor: "white"
+    backgroundColor: 'white',
   },
   startButton: {
     zIndex: 1,
-    backgroundColor: Colors.tintColor
+    backgroundColor: Colors.tintColor,
   },
   myLocationButton: {
     zIndex: 1,
-    backgroundColor: "white",
-    bottom: 75
+    backgroundColor: 'white',
+    bottom: 75,
   },
   rangeButton: {
     zIndex: 1,
-    backgroundColor: "white",
-    bottom: 150
-  }
+    backgroundColor: 'white',
+    bottom: 150,
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
   rangeOption: state.settingsReducer.rangeOption,
-  isDirect: state.exploreReducer.isDirect
+  isDirect: state.exploreReducer.isDirect,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setRangeOption: optionID => dispatch(setRangeOption(optionID)),
-  stopDirect: () => dispatch(stopDirect())
+const mapDispatchToProps = (dispatch) => ({
+  setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
+  stopDirect: () => dispatch(stopDirect()),
 });
 
 export default withNavigation(

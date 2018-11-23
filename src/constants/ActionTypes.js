@@ -9,7 +9,7 @@ export const CHANGE_RINGTONE = 'CHANGE_RINGTONE';
 export const CHANGE_VIBRATE = 'CHANGE_VIBRATE';
 
 export const ActionTypes = {
-  Favorite: {
+  Favorites: {
     ADD_FAVORITE,
     REMOVE_FAVORITE,
   },

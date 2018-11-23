@@ -4,7 +4,7 @@ const sampleData = [
   {
     favoriteID: 0,
     label: 'Home',
-    placeID:'ChIJczqvGDgpdTERi8wKGNEWjc0',
+    placeID: 'ChIJczqvGDgpdTERi8wKGNEWjc0',
     name: 'Khách sạn 5 sao',
     address: '123 Đường 456',
     latitude: 10.801465900000002,
@@ -13,7 +13,7 @@ const sampleData = [
   {
     favoriteID: 1,
     label: 'School',
-    placeID:'ChIJiQNpfm-sNTERrlkkElKydjU',
+    placeID: 'ChIJiQNpfm-sNTERrlkkElKydjU',
     name: 'Trường Đại học Công nghệ thông tin',
     address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
     latitude: 10.801465900000002,
@@ -36,7 +36,8 @@ const favoriteReducer = (state = initialState, action) => {
       } else {
         item.favoriteID = 0;
       }
-      newState.favorites.concat(item);
+      item.label = `My favorite ${item.favoriteID}`;
+      newState.favorites = newState.favorites.concat(item);
       return newState;
     }
 

@@ -3,25 +3,34 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import ResultListItem from './ResultListItem';
 import { propTypes as LocationProps } from '../model/Location';
+import { propTypes as SearchResultProps } from '../model/SearchResult';
 
 export default class ResultList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(['location', 'google', 'favorite']),
+        value: PropTypes.oneOfType([
+          PropTypes.shape(LocationProps),
+          PropTypes.shape(SearchResultProps),
+        ]),
+      })
+    ),
     onPress: PropTypes.func,
-    onSavePress:PropTypes.func
+    onChangeSave: PropTypes.func,
   };
 
   static defaultProps = {
     data: [],
     onPress: undefined,
-    onSavePress:undefined,
+    onChangeSave: undefined,
   };
 
   constructor() {
     super();
     this.onRenderItem = this.onRenderItem.bind(this);
     this.onPress = this.onPress.bind(this);
-    this.onSavePress = this.onSavePress.bind(this);
+    this.onChangeSave = this.onChangeSave.bind(this);
   }
 
   render() {
@@ -35,13 +44,28 @@ export default class ResultList extends Component {
   }
 
   onRenderItem({ item, index }) {
+    let label = '';
+    let address = '';
+    let saved = false;
+    if (item.type === 'favorite') {
+      label = item.value.label;
+      address = item.value.address;
+      saved = true;
+    } else if (item.type === 'google') {
+      label = item.value.primaryText;
+      address = item.value.fullText;
+    } else if (item.type === 'location') {
+      label = item.value.name;
+      address = item.value.address;
+    }
+
     return (
       <ResultListItem
-        label={item.label ? item.label : undefined}
-        name={item.primaryText}
-        address={item.fullText}
+        label={label}
+        address={address}
+        saved={saved}
         onPress={() => this.onPress(item)}
-        onSavePress={()=>this.onSavePress(item)}
+        onChangeSave={() => this.onChangeSave(item)}
       />
     );
   }
@@ -55,9 +79,10 @@ export default class ResultList extends Component {
       this.props.onPress(item);
     }
   }
-  onSavePress(item){
-    if (this.props.onSavePress) {
-      this.props.onSavePress(item);
+
+  onChangeSave(item) {
+    if (this.props.onChangeSave) {
+      this.props.onChangeSave(item);
     }
   }
 }
