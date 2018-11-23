@@ -7,15 +7,13 @@ import Colors from '../constants/Colors';
 export default class ResultListItem extends Component {
   static propTypes = {
     label: PropTypes.string,
-    name: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
     onSavePress: PropTypes.func,
   };
 
   static defaultProps = {
-    label: undefined,
-    name: '',
+    label: '',
     address: '',
     onPress: undefined,
     onSavePress: undefined,
@@ -35,7 +33,7 @@ export default class ResultListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.label ? this.props.label : this.props.name}
+            {this.props.label}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {this.props.address}
