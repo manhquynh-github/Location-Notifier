@@ -30,6 +30,7 @@ class DetailExploreScreen extends Component {
     };
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
+    this.onChangeSave = this.onChangeSave.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +90,11 @@ class DetailExploreScreen extends Component {
             </Button>
           </View>
           <View style={styles.resultList}>
-            <ResultList data={this.state.resultList} onPress={this.onPress} />
+            <ResultList
+              data={this.state.resultList}
+              onPress={this.onPress}
+              onChangeSave={this.onChangeSave}
+            />
           </View>
         </Content>
       </Container>
@@ -107,6 +112,18 @@ class DetailExploreScreen extends Component {
   onPress(item) {
     this.props.changeLocation(item);
     this.props.navigation.navigate('MainExplore');
+  }
+
+  onChangeSave(item) {
+    if (item.favoriteID === undefined) {
+      this.props.addFavorite(item);
+    } else if (item.favoriteID >= 0) {
+      // remove favorite from reducer
+      this.props.removeFavorite(item.favoriteID);
+      // because result item is not implemented with redux yet,
+      // its favoriteID must be manually removed
+      item.favoriteID = undefined;
+    }
   }
 
   search(value) {

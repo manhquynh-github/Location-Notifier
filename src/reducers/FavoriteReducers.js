@@ -30,7 +30,7 @@ const favoriteReducer = (state = initialState, action) => {
       } else {
         item.favoriteID = 0;
       }
-      newState.favorites.concat(item);
+      newState.favorites = newState.favorites.concat(item);
       return newState;
     }
 

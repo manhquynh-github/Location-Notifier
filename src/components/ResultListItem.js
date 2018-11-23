@@ -6,25 +6,26 @@ import Colors from '../constants/Colors';
 
 export default class ResultListItem extends Component {
   static propTypes = {
-    label: PropTypes.string,
+    saved: PropTypes.bool,
     name: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
-    onSavePress: PropTypes.func,
+    onChangeSave: PropTypes.func,
   };
 
   static defaultProps = {
-    label: undefined,
+    saved: undefined,
     name: '',
     address: '',
     onPress: undefined,
-    onSavePress: undefined,
+    onChangeSave: undefined,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.onPress = this.onPress.bind(this);
-    this.onSavePress = this.onSavePress.bind(this);
+    this.onChangeSave = this.onChangeSave.bind(this);
+    this.state = { saved: props.saved };
   }
 
   render() {
@@ -35,24 +36,26 @@ export default class ResultListItem extends Component {
             ellipsizeMode="tail"
             numberOfLines={1}
             style={{ fontWeight: 'bold' }}>
-            {this.props.label ? this.props.label : this.props.name}
+            {this.props.saved ? this.props.saved : this.props.name}
           </Text>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {this.props.address}
           </Text>
         </Body>
-        <Button
-          transparent
-          onPress={this.onSavePress}
-          delayPressIn={0}
-          rounded
-          androidRippleColor="lightgray">
-          <Icon
-            name="favorite"
-            type="MaterialIcons"
-            style={{ color: this.props.label ? Colors.primary : 'gray' }}
-          />
-        </Button>
+        {this.props.saved === undefined ? null : (
+          <Button
+            transparent
+            onPress={this.onChangeSave}
+            delayPressIn={0}
+            rounded
+            androidRippleColor="lightgray">
+            <Icon
+              name="favorite"
+              type="MaterialIcons"
+              style={{ color: this.state.saved ? Colors.primary : 'gray' }}
+            />
+          </Button>
+        )}
       </ListItem>
     );
   }
@@ -63,9 +66,13 @@ export default class ResultListItem extends Component {
     }
   }
 
-  onSavePress() {
-    if (this.props.onSavePress) {
-      this.props.onSavePress();
+  onChangeSave() {
+    if (this.props.onChangeSave) {
+      this.props.onChangeSave();
     }
+
+    this.setState({
+      saved: !this.state.saved,
+    });
   }
 }
