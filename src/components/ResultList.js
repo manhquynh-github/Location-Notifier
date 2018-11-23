@@ -8,17 +8,20 @@ export default class ResultList extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
     onPress: PropTypes.func,
+    onSavePress:PropTypes.func
   };
 
   static defaultProps = {
     data: [],
     onPress: undefined,
+    onSavePress:undefined,
   };
 
   constructor() {
     super();
     this.onRenderItem = this.onRenderItem.bind(this);
     this.onPress = this.onPress.bind(this);
+    this.onSavePress = this.onSavePress.bind(this);
   }
 
   render() {
@@ -38,6 +41,7 @@ export default class ResultList extends Component {
         name={item.primaryText}
         address={item.fullText}
         onPress={() => this.onPress(item)}
+        onSavePress={()=>this.onSavePress(item)}
       />
     );
   }
@@ -49,6 +53,11 @@ export default class ResultList extends Component {
   onPress(item) {
     if (this.props.onPress) {
       this.props.onPress(item);
+    }
+  }
+  onSavePress(item){
+    if (this.props.onSavePress) {
+      this.props.onSavePress(item);
     }
   }
 }

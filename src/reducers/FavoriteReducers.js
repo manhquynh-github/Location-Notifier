@@ -4,12 +4,14 @@ const sampleData = [
   {
     favoriteID: 0,
     label: 'Home',
+    placeID:'ChIJczqvGDgpdTERi8wKGNEWjc0',
     name: 'Khách sạn 5 sao',
     address: '123 Đường 456',
   },
   {
     favoriteID: 1,
     label: 'School',
+    placeID:'ChIJiQNpfm-sNTERrlkkElKydjU',
     name: 'Trường Đại học Công nghệ thông tin',
     address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
   },

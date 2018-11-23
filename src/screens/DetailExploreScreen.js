@@ -32,6 +32,7 @@ class DetailExploreScreen extends Component {
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
     this.onQueryChange = this.onQueryChange.bind(this);
+    this.onSavePress = this.onSavePress.bind(this);
   }
 
   componentDidMount() {
@@ -91,7 +92,7 @@ class DetailExploreScreen extends Component {
             </Button>
           </View>
           <View style={styles.resultList}>
-            <ResultList data={this.state.resultList} onPress={this.onPress} />
+            <ResultList data={this.state.resultList} onPress={this.onPress} onSavePress={this.onSavePress} />
           </View>
         </Content>
       </Container>
@@ -133,6 +134,15 @@ class DetailExploreScreen extends Component {
   onPress(item) {
     this.props.changeLocation(item);
     this.props.navigation.navigate('MainExplore');
+  }
+  onSavePress(item){
+    const favorite={
+      favoriteID: -1,
+      placeID:item.placeID,
+      name: item.primaryText,
+      address: item.fullText,
+    }
+    this.props.addFavorite(favorite);
   }
 
   search(value, resultsQuery) {
