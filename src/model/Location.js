@@ -9,6 +9,7 @@ export const propTypes = {
   types: PropTypes.arrayOf(PropTypes.string),
   latitude: PropTypes.number,
   longitude: PropTypes.number,
+  isDirect:PropTypes.bool
 };
 
 export const strictProps = {
@@ -20,6 +21,7 @@ export const strictProps = {
   types: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
+  isDirect:PropTypes.bool.isRequired
 };
 
 export default {

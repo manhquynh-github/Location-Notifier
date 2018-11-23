@@ -10,18 +10,17 @@ import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import { MapView } from "expo";
 import BackgroundGeolocation from "react-native-mauron85-background-geolocation";
-import MapViewDirections from "react-native-maps-directions";
 import DestinationDirect from "../components/DestinationDirect";
-import {RANGE_VALUES} from "../constants/RangeOptions"
-import { propTypes as LocationProps } from '../model/Location';
-
-
+import { RANGE_VALUES } from "../constants/RangeOptions";
+import { propTypes as LocationProps } from "../model/Location";
+import {stopDirect} from '../actions/ExploreActions'
 
 class MainExploreScreen extends Component {
   static propTypes = {
     location: PropTypes.shape(LocationProps),
     rangeOption: PropTypes.number.isRequired,
-    setRangeOption: PropTypes.func.isRequired
+    setRangeOption: PropTypes.func.isRequired,
+    stopDirect:PropTypes.func.isRequired
   };
 
   constructor() {
@@ -35,7 +34,7 @@ class MainExploreScreen extends Component {
         latitude: 10.866356,
         longitude: 106.792509
       },
-      distance: null
+      distance: null,
     };
 
     this.mapView = null;
@@ -44,7 +43,7 @@ class MainExploreScreen extends Component {
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
-    this.calcCrow =this.calcCrow.bind(this);
+    this.calcCrow = this.calcCrow.bind(this);
     this.toRad = this.toRad.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
@@ -57,15 +56,19 @@ class MainExploreScreen extends Component {
           full
           onPress={this.onSearchPress}
           style={styles.addressBar}
-          delayPressIn={0}>
+          delayPressIn={0}
+        >
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             uppercase={false}
-            style={{ color: Colors.darkGrayBackground }}>
+            style={{ color: Colors.darkGrayBackground }}
+          >
             {this.props.location
-              ? `${this.props.location.primaryText}, ${this.props.location.fullText}`
-              : 'Search...'}
+              ? `${this.props.location.primaryText}, ${
+                  this.props.location.fullText
+                }`
+              : "Search..."}
           </Text>
         </Button>
         <Fab
@@ -83,14 +86,15 @@ class MainExploreScreen extends Component {
         <Fab
           style={styles.myLocationButton}
           position="bottomRight"
-          onPress={this.fitToCurrentCoordinates}>
+          onPress={this.fitToCurrentCoordinates}
+        >
           <Icon
             name="my-location"
             type="MaterialIcons"
             style={{ color: "gray" }}
           />
         </Fab>
-        <Fab style={styles.startButton} position="bottomRight">
+        <Fab style={styles.startButton} position="bottomRight" onPress={()=>this.props.stopDirect()}>
           <Icon name="play" />
         </Fab>
         <MapView
@@ -104,17 +108,20 @@ class MainExploreScreen extends Component {
           ref={c => (this.mapView = c)}
           showsUserLocation
           showsMyLocationButton
-        ><DestinationDirect
+        >{
+          this.props.location.isDirect && <DestinationDirect
           currentLocation={this.state.currentLocation}
           destination={this.state.destination}
           fitToCoordinates={this.fitToCoordinates}
           checkAlarm={this.checkToAlarm}
           range={this.props.rangeOption}
-        /></MapView>
+        />
+          }
+        </MapView>
       </Container>
     );
   }
-  
+
   fitToCoordinates(result) {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -124,7 +131,7 @@ class MainExploreScreen extends Component {
         top: Layout.window.height / 20
       },
       animated: true
-    });    
+    });
   }
 
   fitToCurrentCoordinates() {
@@ -137,7 +144,7 @@ class MainExploreScreen extends Component {
         top: Layout.window.height / 20
       },
       animated: true
-    });    
+    });
   }
 
   onSearchPress() {
@@ -270,13 +277,19 @@ class MainExploreScreen extends Component {
   checkToAlarm() {
     const current = this.state.currentLocation;
     const des = this.state.destination;
-    const distance = this.calcCrow(current.latitude,current.longitude,des.latitude,des.longitude);
-    if(distance<=RANGE_VALUES[this.props.rangeOption]){
-        //PUSH NOTIFICATIONS
-        //ALARM
-        console.log("YOU ARE IN")
+    const distance = this.calcCrow(
+      current.latitude,
+      current.longitude,
+      des.latitude,
+      des.longitude
+    );
+    if (distance <= RANGE_VALUES[this.props.rangeOption]) {
+      //PUSH NOTIFICATIONS
+      //ALARM
+      //Stop direct
+      this.props.stopDirect();
     }
-    console.log("DISTANCE"+distance);
+    console.log("DISTANCE" + distance);
   }
 
   //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
@@ -287,7 +300,8 @@ class MainExploreScreen extends Component {
     var lat1 = this.toRad(lat1);
     var lat2 = this.toRad(lat2);
 
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c * 1000;
@@ -296,7 +310,7 @@ class MainExploreScreen extends Component {
 
   // Converts numeric degrees to radians
   toRad(Value) {
-    return Value * Math.PI / 180;
+    return (Value * Math.PI) / 180;
   }
 }
 
@@ -336,7 +350,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setRangeOption: optionID => dispatch(setRangeOption(optionID))
+  setRangeOption: optionID => dispatch(setRangeOption(optionID)),
+  stopDirect:() =>dispatch(stopDirect())
 });
 
 export default withNavigation(
