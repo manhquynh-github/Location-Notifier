@@ -6,8 +6,8 @@ import Colors from '../constants/Colors';
 
 export default class ResultListItem extends Component {
   static propTypes = {
+    label: PropTypes.string,
     saved: PropTypes.bool,
-    name: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
     onChangeSave: PropTypes.func,
@@ -15,7 +15,7 @@ export default class ResultListItem extends Component {
 
   static defaultProps = {
     saved: undefined,
-    name: '',
+    label: '',
     address: '',
     onPress: undefined,
     onChangeSave: undefined,

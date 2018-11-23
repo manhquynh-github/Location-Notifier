@@ -3,10 +3,19 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import ResultListItem from './ResultListItem';
 import { propTypes as LocationProps } from '../model/Location';
+import { propTypes as SearchResultProps } from '../model/SearchResult';
 
 export default class ResultList extends Component {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape(LocationProps)),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        sourceType: PropTypes.oneOf(['google', 'favorite']),
+        value: PropTypes.oneOfType([
+          PropTypes.shape(LocationProps),
+          PropTypes.shape(SearchResultProps),
+        ]),
+      })
+    ),
     onPress: PropTypes.func,
     onChangeSave: PropTypes.func,
   };
@@ -35,15 +44,23 @@ export default class ResultList extends Component {
   }
 
   onRenderItem({ item, index }) {
-    return (
-      <ResultListItem
-        saved={item.label ? true : false}
-        name={item.name}
-        address={item.address}
-        onPress={() => this.onPress(item)}
-        onChangeSave={() => this.onChangeSave(item)}
-      />
-    );
+    if (item.sourceType === 'favorite') {
+      return (
+        <ResultListItem
+          label={item.value.label}
+          address={item.value.address}
+          onPress={() => this.onPress(item)}
+        />
+      );
+    } else if (item.sourceType === 'google') {
+      return (
+        <ResultListItem
+          label={item.value.primaryText}
+          address={item.value.fullText}
+          onPress={() => this.onPress(item)}
+        />
+      );
+    }
   }
 
   onKeyExtractor(item, index) {

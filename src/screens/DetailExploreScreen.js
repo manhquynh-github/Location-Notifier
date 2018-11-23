@@ -137,8 +137,10 @@ class DetailExploreScreen extends Component {
   }
 
   onPress(item) {
-    this.props.changeLocation(item);
-    this.props.navigation.navigate('MainExplore');
+    if (item.sourceType === 'favorite') {
+      this.props.changeLocation(item.value);
+      this.props.navigation.navigate('MainExplore');
+    }
   }
 
   onChangeSave(item) {
@@ -186,7 +188,7 @@ class DetailExploreScreen extends Component {
         favorite.name.toLowerCase().includes(value) ||
         favorite.address.toLowerCase().includes(value)
       ) {
-        results.push(favorite);
+        results.push({ sourceType: 'favorite', value: favorite });
       }
     }
 
