@@ -44,6 +44,7 @@ export default class ResultListItem extends Component {
         </Body>
         {this.props.saved === undefined ? null : (
           <Button
+            icon
             transparent
             onPress={this.onChangeSave}
             delayPressIn={0}

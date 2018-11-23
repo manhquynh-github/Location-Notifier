@@ -39,6 +39,7 @@ class DetailExploreScreen extends Component {
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
     this.onChangeSave = this.onChangeSave.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
   componentDidMount() {
@@ -50,13 +51,25 @@ class DetailExploreScreen extends Component {
       <Container>
         <Content style={styles.page}>
           <StatusBarOverlay />
-          <Input
-            value={this.state.location}
-            style={styles.searchBar}
-            placeholder="Search..."
-            autoFocus={true}
-            onChangeText={this.onChangeText}
-          />
+          <View style={styles.searchBar}>
+            <Input
+              value={this.state.location}
+              style={{ flex: 1 }}
+              placeholder="Search..."
+              autoFocus={true}
+              onChangeText={this.onChangeText}
+            />
+            <Button
+              delayPressIn={0}
+              rounded
+              icon
+              transparent
+              style={{ alignSelf: 'center', marginLeft: -5 }}
+              androidRippleColor="lightgray"
+              onPress={this.onClear}>
+              <Icon name="close" style={{ color: '#000' }} />
+            </Button>
+          </View>
           <View style={styles.helperContainer}>
             <Button
               transparent
@@ -107,6 +120,12 @@ class DetailExploreScreen extends Component {
         </Content>
       </Container>
     );
+  }
+
+  onClear() {
+    this.setState({
+      location: '',
+    });
   }
 
   onChangeText(e) {
@@ -186,9 +205,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     paddingLeft: 15,
-    paddingRight: 15,
+    paddingRight: 0,
     borderColor: 'lightgray',
     backgroundColor: 'white',
+    flexDirection: 'row',
   },
   helperContainer: {
     marginVertical: 5,

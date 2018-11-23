@@ -153,6 +153,8 @@ class MainExploreScreen extends Component {
   }
 
   componentDidMount() {
+    return;
+
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
@@ -259,6 +261,8 @@ class MainExploreScreen extends Component {
   }
 
   componentWillUnmount() {
+    return;
+
     // unregister all event listeners
     BackgroundGeolocation.events.forEach((event) =>
       BackgroundGeolocation.removeAllListeners(event)
