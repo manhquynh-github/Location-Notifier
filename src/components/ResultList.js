@@ -49,7 +49,9 @@ export default class ResultList extends Component {
         <ResultListItem
           label={item.value.label}
           address={item.value.address}
+          saved={true}
           onPress={() => this.onPress(item)}
+          onChangeSave={() => this.onChangeSave(item)}
         />
       );
     } else if (item.sourceType === 'google') {
@@ -57,7 +59,9 @@ export default class ResultList extends Component {
         <ResultListItem
           label={item.value.primaryText}
           address={item.value.fullText}
+          saved={false}
           onPress={() => this.onPress(item)}
+          onChangeSave={() => this.onChangeSave(item)}
         />
       );
     }

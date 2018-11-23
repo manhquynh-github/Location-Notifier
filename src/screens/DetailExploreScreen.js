@@ -126,6 +126,8 @@ class DetailExploreScreen extends Component {
     this.setState({
       location: '',
     });
+
+    this.search('');
   }
 
   onChangeText(e) {
@@ -141,22 +143,41 @@ class DetailExploreScreen extends Component {
       this.props.changeLocation(item.value);
       this.props.navigation.navigate('MainExplore');
     } else if (item.sourceType === 'google') {
-      // TODO: Query google api for actual location
+      // TODO Query google api for actual location
       // item.value has the same shape as src/model/SearchResult
     }
   }
 
   onChangeSave(item) {
-    if (item.favoriteID === undefined) {
-      this.props.addFavorite(item);
+    let location = null;
+
+    if (item.sourceType === 'favorite') {
+      location = item.value;
+    }
+    // if source is not from favorite, try to retrieve the
+    // actual location which is the same as src/model/Location
+    else if (item.sourceType === 'google') {
+      // TODO Query google api for actual location
+      // item.value has the same shape as src/model/SearchResult
+      // then assign back to "location"
+    }
+
+    if (location == null) {
+      console.log('Unable to find location from result item.');
+      console.log(item);
+      return;
+    }
+
+    if (location.favoriteID === undefined) {
+      this.props.addFavorite(location);
       this.showAddFavorites();
-    } else if (item.favoriteID >= 0) {
+    } else if (location.favoriteID >= 0) {
       // remove favorite from reducer
-      this.props.removeFavorite(item.favoriteID);
+      this.props.removeFavorite(location.favoriteID);
       // because result item is not implemented with redux yet,
       // its favoriteID must be manually removed
-      item.favoriteID = undefined;
-      this.showRemoveFavorites(item);
+      location.favoriteID = undefined;
+      this.showRemoveFavorites(location);
     }
   }
 
