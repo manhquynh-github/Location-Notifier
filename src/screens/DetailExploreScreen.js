@@ -1,4 +1,12 @@
-import { Button, Container, Content, Icon, Input, Text } from 'native-base';
+import {
+  Button,
+  Container,
+  Content,
+  Icon,
+  Input,
+  Text,
+  Toast,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -117,13 +125,34 @@ class DetailExploreScreen extends Component {
   onChangeSave(item) {
     if (item.favoriteID === undefined) {
       this.props.addFavorite(item);
+      this.showAddFavorites();
     } else if (item.favoriteID >= 0) {
       // remove favorite from reducer
       this.props.removeFavorite(item.favoriteID);
       // because result item is not implemented with redux yet,
       // its favoriteID must be manually removed
       item.favoriteID = undefined;
+      this.showRemoveFavorites(item);
     }
+  }
+
+  showAddFavorites() {
+    Toast.show({
+      text: 'Added to Favorites!',
+      buttonText: 'OK',
+      buttonStyle: { color: Colors.primary },
+      duration: 3000,
+      type: 'success',
+    });
+  }
+
+  showRemoveFavorites(item) {
+    Toast.show({
+      text: 'Removed from Favorites!',
+      buttonText: 'OK',
+      duration: 3000,
+      type: 'danger',
+    });
   }
 
   search(value) {
