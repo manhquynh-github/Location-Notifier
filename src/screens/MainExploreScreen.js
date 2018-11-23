@@ -103,7 +103,7 @@ class MainExploreScreen extends Component {
           ref={c => (this.mapView = c)}
           showsUserLocation
         >
-          {this.props.isDirect && (
+          {this.props.isDirect && this.props.location && (
             <DestinationDirect
               currentLocation={this.state.currentLocation}
               destination={{
