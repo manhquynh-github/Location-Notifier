@@ -2,6 +2,7 @@ import { CHANGE_LOCATION, STOP_DIRECT } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
+  isDirect:false,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -10,11 +11,11 @@ const exploreReducer = (state = initialState, action) => {
     case CHANGE_LOCATION: {
       const value = action.payload.value;
       newState.location = value;
-      newState.location.isDirect=true;
+      newState.isDirect=true;
       return newState;
     }
     case STOP_DIRECT: {
-      newState.location.isDirect=false;
+      newState.isDirect=false;
       return newState;
     }
     default: {

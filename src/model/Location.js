@@ -8,8 +8,7 @@ export const propTypes = {
   phoneNumber: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string),
   latitude: PropTypes.number,
-  longitude: PropTypes.number,
-  isDirect:PropTypes.bool
+  longitude: PropTypes.number
 };
 
 export const strictProps = {
@@ -20,8 +19,7 @@ export const strictProps = {
   phoneNumber: PropTypes.string.isRequired,
   types: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   latitude: PropTypes.number.isRequired,
-  longitude: PropTypes.number.isRequired,
-  isDirect:PropTypes.bool.isRequired
+  longitude: PropTypes.number.isRequired
 };
 
 export default {

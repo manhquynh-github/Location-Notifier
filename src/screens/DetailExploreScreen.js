@@ -24,8 +24,8 @@ class DetailExploreScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: props.location
-        ? `${this.props.location.primaryText}, ${this.props.location.fullText}`
+      location: this.props.location
+        ? `${this.props.location.fullText}`
         : '',
       resultList: [],
     };
@@ -111,17 +111,36 @@ class DetailExploreScreen extends Component {
       .catch(error => console.log(error.message));
   }
 
-  onSelectSuggestion(placeID) {
-    console.log(placeID);
+  onSelectSuggestionFavorite(item) {
     // getPlaceByID call here
-    RNGooglePlaces.lookUpPlaceByID(placeID)
-    .then((results) => console.log(results))
+    RNGooglePlaces.lookUpPlaceByID(item.placeID)
+    .then((results) => {
+      let newItem={
+        favoriteID: -1,
+        placeID:item.placeID,
+        name: item.primaryText,
+        address: item.fullText,
+        latitude: results.latitude,
+        longitude: results.longitude,
+      }
+      this.props.addFavorite(newItem);
+    })
     .catch((error) => console.log(error.message));
+  }
 
-    this.setState({
-      showInput: false,
-      predictions: []
-    });
+  onSelectSuggestionDirection(item) {
+    // getPlaceByID call here
+    RNGooglePlaces.lookUpPlaceByID(item.placeID)
+    .then((results) => {
+      let newItem=item;
+      newItem.latitude = results.latitude;
+      newItem.longitude = results.longitude;
+
+      this.props.changeLocation(item);
+
+      this.props.navigation.navigate('MainExplore');
+    })
+    .catch((error) => console.log(error.message));
   }
 
   onChangeText(e) {
@@ -132,17 +151,10 @@ class DetailExploreScreen extends Component {
   }
 
   onPress(item) {
-    this.props.changeLocation(item);
-    this.props.navigation.navigate('MainExplore');
+    this.onSelectSuggestionDirection(item);
   }
-  onSavePress(item){
-    const favorite={
-      favoriteID: -1,
-      placeID:item.placeID,
-      name: item.primaryText,
-      address: item.fullText,
-    }
-    this.props.addFavorite(favorite);
+  onSavePress(item){    
+    this.onSelectSuggestionFavorite(item);
   }
 
   search(value, resultsQuery) {
@@ -160,7 +172,6 @@ class DetailExploreScreen extends Component {
       }
     }
     results = results.concat(resultsQuery);
-    console.log(results);
     this.setState({ resultList: results });
   }
 }

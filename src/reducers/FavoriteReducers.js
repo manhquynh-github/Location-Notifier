@@ -7,6 +7,8 @@ const sampleData = [
     placeID:'ChIJczqvGDgpdTERi8wKGNEWjc0',
     name: 'Khách sạn 5 sao',
     address: '123 Đường 456',
+    latitude: 10.801465900000002,
+    longitude: 106.65259739999999,
   },
   {
     favoriteID: 1,
@@ -14,6 +16,8 @@ const sampleData = [
     placeID:'ChIJiQNpfm-sNTERrlkkElKydjU',
     name: 'Trường Đại học Công nghệ thông tin',
     address: 'Khu phố 6 P, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam',
+    latitude: 10.801465900000002,
+    longitude: 106.65259739999999,
   },
 ];
 

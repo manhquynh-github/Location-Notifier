@@ -13,14 +13,15 @@ import BackgroundGeolocation from "react-native-mauron85-background-geolocation"
 import DestinationDirect from "../components/DestinationDirect";
 import { RANGE_VALUES } from "../constants/RangeOptions";
 import { propTypes as LocationProps } from "../model/Location";
-import {stopDirect} from '../actions/ExploreActions'
+import { stopDirect } from "../actions/ExploreActions";
 
 class MainExploreScreen extends Component {
   static propTypes = {
     location: PropTypes.shape(LocationProps),
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
-    stopDirect:PropTypes.func.isRequired
+    stopDirect: PropTypes.func.isRequired,
+    isDirect:PropTypes.bool
   };
 
   constructor() {
@@ -30,11 +31,7 @@ class MainExploreScreen extends Component {
         latitude: 10.8703,
         longitude: 106.8034513
       },
-      destination: {
-        latitude: 10.866356,
-        longitude: 106.792509
-      },
-      distance: null,
+      distance: null
     };
 
     this.mapView = null;
@@ -65,9 +62,7 @@ class MainExploreScreen extends Component {
             style={{ color: Colors.darkGrayBackground }}
           >
             {this.props.location
-              ? `${this.props.location.primaryText}, ${
-                  this.props.location.fullText
-                }`
+              ? `${this.props.location.fullText}`
               : "Search..."}
           </Text>
         </Button>
@@ -94,7 +89,7 @@ class MainExploreScreen extends Component {
             style={{ color: "gray" }}
           />
         </Fab>
-        <Fab style={styles.startButton} position="bottomRight" onPress={()=>this.props.stopDirect()}>
+        <Fab style={styles.startButton} position="bottomRight" onPress={()=>{this.props.stopDirect()}}>
           <Icon name="play" />
         </Fab>
         <MapView
@@ -107,16 +102,19 @@ class MainExploreScreen extends Component {
           }}
           ref={c => (this.mapView = c)}
           showsUserLocation
-          showsMyLocationButton
-        >{
-          this.props.location.isDirect && <DestinationDirect
-          currentLocation={this.state.currentLocation}
-          destination={this.state.destination}
-          fitToCoordinates={this.fitToCoordinates}
-          checkAlarm={this.checkToAlarm}
-          range={this.props.rangeOption}
-        />
-          }
+        >
+          {this.props.isDirect && (
+            <DestinationDirect
+              currentLocation={this.state.currentLocation}
+              destination={{
+                latitude: this.props.location.latitude,
+                longitude: this.props.location.longitude
+              }}
+              fitToCoordinates={this.fitToCoordinates}
+              checkAlarm={this.checkToAlarm}
+              range={this.props.rangeOption}
+            />
+          )}
         </MapView>
       </Container>
     );
@@ -276,7 +274,7 @@ class MainExploreScreen extends Component {
 
   checkToAlarm() {
     const current = this.state.currentLocation;
-    const des = this.state.destination;
+    const des = this.props.location;
     const distance = this.calcCrow(
       current.latitude,
       current.longitude,
@@ -289,7 +287,6 @@ class MainExploreScreen extends Component {
       //Stop direct
       this.props.stopDirect();
     }
-    console.log("DISTANCE" + distance);
   }
 
   //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
@@ -346,12 +343,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   location: state.exploreReducer.location,
-  rangeOption: state.settingsReducer.rangeOption
+  rangeOption: state.settingsReducer.rangeOption,
+  isDirect: state.exploreReducer.isDirect
 });
 
 const mapDispatchToProps = dispatch => ({
   setRangeOption: optionID => dispatch(setRangeOption(optionID)),
-  stopDirect:() =>dispatch(stopDirect())
+  stopDirect: () => dispatch(stopDirect())
 });
 
 export default withNavigation(
