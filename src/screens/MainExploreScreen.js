@@ -11,7 +11,6 @@ import Layout from "../constants/Layout";
 import { MapView } from "expo";
 import BackgroundGeolocation from "react-native-mauron85-background-geolocation";
 import MapViewDirections from "react-native-maps-directions";
-var { height, width } = Dimensions.get("window");
 import DestinationDirect from "../components/DestinationDirect";
 import {RANGE_VALUES} from "../constants/RangeOptions"
 import { propTypes as LocationProps } from '../model/Location';
@@ -65,7 +64,7 @@ class MainExploreScreen extends Component {
             uppercase={false}
             style={{ color: Colors.darkGrayBackground }}>
             {this.props.location
-              ? `${this.props.location.name}, ${this.props.location.address}`
+              ? `${this.props.location.primaryText}, ${this.props.location.fullText}`
               : 'Search...'}
           </Text>
         </Button>
@@ -119,10 +118,10 @@ class MainExploreScreen extends Component {
   fitToCoordinates(result) {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
-        right: width / 20,
-        bottom: height / 20,
-        left: width / 20,
-        top: height / 20
+        right: Layout.window.width / 20,
+        bottom: Layout.window.height / 20,
+        left: Layout.window.width / 20,
+        top: Layout.window.height / 20
       },
       animated: true
     });    
@@ -132,10 +131,10 @@ class MainExploreScreen extends Component {
     const current = this.state.currentLocation;
     this.mapView.fitToCoordinates([current], {
       edgePadding: {
-        right: width / 20,
-        bottom: height / 20,
-        left: width / 20,
-        top: height / 20
+        right: Layout.window.width / 20,
+        bottom: Layout.window.height / 20,
+        left: Layout.window.width / 20,
+        top: Layout.window.height / 20
       },
       animated: true
     });    

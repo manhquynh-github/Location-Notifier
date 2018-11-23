@@ -10,6 +10,7 @@ import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { propTypes as LocationProps } from '../model/Location';
+import RNGooglePlaces from 'react-native-google-places';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -24,16 +25,17 @@ class DetailExploreScreen extends Component {
     super(props);
     this.state = {
       location: props.location
-        ? `${this.props.location.name}, ${this.props.location.address}`
+        ? `${this.props.location.primaryText}, ${this.props.location.fullText}`
         : '',
       resultList: [],
     };
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
+    this.onQueryChange = this.onQueryChange.bind(this);
   }
 
   componentDidMount() {
-    this.search(this.props.location ? this.props.location.address : '');
+    this.search(this.props.location ? this.props.location.fullText : '',[]);
   }
 
   render() {
@@ -96,12 +98,36 @@ class DetailExploreScreen extends Component {
     );
   }
 
+  onQueryChange(text) {
+    let results = [];
+    RNGooglePlaces.getAutocompletePredictions(text, {
+      country: 'VN'
+    })
+      .then((places) => {
+        results = places;
+        this.search(text, results);
+      })
+      .catch(error => console.log(error.message));
+  }
+
+  onSelectSuggestion(placeID) {
+    console.log(placeID);
+    // getPlaceByID call here
+    RNGooglePlaces.lookUpPlaceByID(placeID)
+    .then((results) => console.log(results))
+    .catch((error) => console.log(error.message));
+
+    this.setState({
+      showInput: false,
+      predictions: []
+    });
+  }
+
   onChangeText(e) {
     this.setState({
       location: e,
     });
-
-    this.search(e);
+    this.onQueryChange(e);
   }
 
   onPress(item) {
@@ -109,10 +135,9 @@ class DetailExploreScreen extends Component {
     this.props.navigation.navigate('MainExplore');
   }
 
-  search(value) {
+  search(value, resultsQuery) {
     value = value.toLowerCase();
-    const results = [];
-
+    let results =[];
     // Search in favorites
     for (let i = 0; i < this.props.favorites.length; i++) {
       const favorite = this.props.favorites[i];
@@ -124,7 +149,8 @@ class DetailExploreScreen extends Component {
         results.push(favorite);
       }
     }
-
+    results = results.concat(resultsQuery);
+    console.log(results);
     this.setState({ resultList: results });
   }
 }

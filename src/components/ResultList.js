@@ -35,8 +35,8 @@ export default class ResultList extends Component {
     return (
       <ResultListItem
         label={item.label ? item.label : undefined}
-        name={item.name}
-        address={item.address}
+        name={item.primaryText}
+        address={item.fullText}
         onPress={() => this.onPress(item)}
       />
     );
