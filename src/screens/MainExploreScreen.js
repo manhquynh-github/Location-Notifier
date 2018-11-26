@@ -1,7 +1,13 @@
 import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Image, StyleSheet, Dimensions, ToastAndroid } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
@@ -38,6 +44,7 @@ class MainExploreScreen extends Component {
     this.isFitted = false;
 
     this.onSearchPress = this.onSearchPress.bind(this);
+    this.onPickPress = this.onPickPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
@@ -51,21 +58,36 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Button
-          full
-          onPress={this.onSearchPress}
-          style={styles.addressBar}
-          delayPressIn={0}>
-          <Text
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            uppercase={false}
-            style={{ color: Colors.darkGrayBackground }}>
-            {this.props.location
-              ? `${this.props.location.address}`
-              : 'Search...'}
-          </Text>
-        </Button>
+        <View style={styles.addressBar}>
+          <Button
+            delayPressIn={0}
+            rounded
+            transparent
+            full
+            androidRippleColor="lightgray"
+            onPress={this.onSearchPress}
+            style={{ flex: 1 }}>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              uppercase={false}
+              style={{ color: Colors.darkGrayBackground }}>
+              {this.props.location
+                ? `${this.props.location.address}`
+                : 'Search...'}
+            </Text>
+          </Button>
+          <Button
+            delayPressIn={0}
+            rounded
+            icon
+            transparent
+            style={styles.pickButton}
+            androidRippleColor="lightgray"
+            onPress={this.onPickPress}>
+            <Icon name="location" type="Entypo" style={{ color: '#000' }} />
+          </Button>
+        </View>
         <Fab
           active={false}
           style={styles.rangeButton}
@@ -93,7 +115,7 @@ class MainExploreScreen extends Component {
           onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
-        <MapView
+        {/* <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
             latitude: this.state.currentLocation.latitude,
@@ -115,18 +137,18 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
-        </MapView>
+        </MapView> */}
       </Container>
     );
   }
-  setCancelOrStart(){
+  setCancelOrStart() {
     //Just handle cancel
-    this.isFitted=false;
+    this.isFitted = false;
     this.props.stopDirect();
   }
 
   fitToCoordinates(result) {
-    if(!this.isFitted){
+    if (!this.isFitted) {
       this.isFitted = true;
 
       this.mapView.fitToCoordinates(result.coordinates, {
@@ -138,7 +160,7 @@ class MainExploreScreen extends Component {
         },
         animated: true,
       });
-    }    
+    }
   }
 
   fitToCurrentCoordinates() {
@@ -157,6 +179,8 @@ class MainExploreScreen extends Component {
   onSearchPress() {
     this.props.navigation.navigate('DetailExplore');
   }
+
+  onPickPress() {}
 
   onLocatePress() {}
 
@@ -272,15 +296,15 @@ class MainExploreScreen extends Component {
       }
     });
 
-    BackgroundGeolocation.getCurrentLocation((location)=>{
+    BackgroundGeolocation.getCurrentLocation((location) => {
       const newState = this.state;
       newState.currentLocation.latitude = location.latitude;
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
 
-      console.log("GET CURRENT SUCCESS");
-    })
+      console.log('GET CURRENT SUCCESS');
+    });
   }
 
   componentWillUnmount() {
@@ -306,7 +330,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
-      this.isFitted = false;  // Fit direction in new address
+      this.isFitted = false; // Fit direction in new address
     }
   }
 
@@ -345,6 +369,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     backgroundColor: 'white',
+    borderColor: 'lightgray',
+    flexDirection: 'row',
+  },
+  pickButton: {
+    alignSelf: 'center',
+    marginLeft: -5,
   },
   startButton: {
     zIndex: 1,
