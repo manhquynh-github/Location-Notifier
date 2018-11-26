@@ -61,9 +61,7 @@ class MainExploreScreen extends Component {
             numberOfLines={1}
             uppercase={false}
             style={{ color: Colors.darkGrayBackground }}>
-            {this.props.location
-              ? `${this.props.location.address}`
-              : 'Search...'}
+            {this.getLocationString()}
           </Text>
         </Button>
         <Fab
@@ -119,14 +117,26 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
-  setCancelOrStart(){
+
+  getLocationString() {
+    const location = this.props.location;
+    if (location) {
+      if (location.address.includes(location.name)) {
+        return location.address;
+      }
+      return `${this.props.location.name}, ${this.props.location.address}`;
+    }
+    return 'Search...';
+  }
+
+  setCancelOrStart() {
     //Just handle cancel
-    this.isFitted=false;
+    this.isFitted = false;
     this.props.stopDirect();
   }
 
   fitToCoordinates(result) {
-    if(!this.isFitted){
+    if (!this.isFitted) {
       this.isFitted = true;
 
       this.mapView.fitToCoordinates(result.coordinates, {
@@ -138,7 +148,7 @@ class MainExploreScreen extends Component {
         },
         animated: true,
       });
-    }    
+    }
   }
 
   fitToCurrentCoordinates() {
@@ -272,15 +282,15 @@ class MainExploreScreen extends Component {
       }
     });
 
-    BackgroundGeolocation.getCurrentLocation((location)=>{
+    BackgroundGeolocation.getCurrentLocation((location) => {
       const newState = this.state;
       newState.currentLocation.latitude = location.latitude;
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
 
-      console.log("GET CURRENT SUCCESS");
-    })
+      console.log('GET CURRENT SUCCESS');
+    });
   }
 
   componentWillUnmount() {
@@ -306,7 +316,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
-      this.isFitted = false;  // Fit direction in new address
+      this.isFitted = false; // Fit direction in new address
     }
   }
 
