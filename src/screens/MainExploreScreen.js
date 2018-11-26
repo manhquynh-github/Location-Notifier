@@ -145,10 +145,10 @@ class MainExploreScreen extends Component {
     const current = this.state.currentLocation;
     this.mapView.fitToCoordinates([current], {
       edgePadding: {
-        right: Layout.window.width / 20,
-        bottom: Layout.window.height / 20,
-        left: Layout.window.width / 20,
-        top: Layout.window.height / 20,
+        right: Layout.window.width / 15,
+        bottom: Layout.window.height / 15,
+        left: Layout.window.width / 15,
+        top: Layout.window.height / 15,
       },
       animated: true,
     });
@@ -271,6 +271,16 @@ class MainExploreScreen extends Component {
         BackgroundGeolocation.start(); //triggers start on start event
       }
     });
+
+    BackgroundGeolocation.getCurrentLocation((location)=>{
+      const newState = this.state;
+      newState.currentLocation.latitude = location.latitude;
+      newState.currentLocation.longitude = location.longitude;
+
+      this.setState(newState);
+
+      console.log("GET CURRENT SUCCESS");
+    })
   }
 
   componentWillUnmount() {
