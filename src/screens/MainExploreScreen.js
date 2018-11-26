@@ -93,7 +93,7 @@ class MainExploreScreen extends Component {
           onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
-        {/* <MapView
+        <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
             latitude: this.state.currentLocation.latitude,
@@ -115,7 +115,7 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
-        </MapView> */}
+        </MapView>
       </Container>
     );
   }

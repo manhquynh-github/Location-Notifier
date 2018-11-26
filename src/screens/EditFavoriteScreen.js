@@ -10,10 +10,11 @@ import {
   Right,
   Text,
   Title,
+  Toast,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Clipboard, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { editFavorite, removeFavorite } from '../actions/FavoriteActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
@@ -93,9 +94,7 @@ class EditFavoriteScreen extends Component {
           noIndent
           iconLeft
           button
-          delayLongPress={0}
           delayPressIn={0}
-          delayPressOut={0}
           androidRippleColor="lightgray"
           style={styles.listItem}
           onPress={this.onNamePress}>
@@ -112,9 +111,7 @@ class EditFavoriteScreen extends Component {
           noIndent
           iconLeft
           button
-          delayLongPress={0}
           delayPressIn={0}
-          delayPressOut={0}
           androidRippleColor="lightgray"
           style={styles.listItem}
           onPress={this.onAddressPress}>
@@ -146,9 +143,23 @@ class EditFavoriteScreen extends Component {
     });
   }
 
-  onNamePress(item) {}
+  async onNamePress(item) {
+    await Clipboard.setString(item.name);
+    this.showCopySuccessfully();
+  }
 
-  onAddressPress(item) {}
+  async onAddressPress(item) {
+    await Clipboard.setString(item.address);
+    this.showCopySuccessfully();
+  }
+
+  showCopySuccessfully() {
+    Toast.show({
+      text: 'Copied to clipboard!',
+      buttonText: 'OK',
+      duration: 3000,
+    });
+  }
 }
 
 const styles = StyleSheet.create({
