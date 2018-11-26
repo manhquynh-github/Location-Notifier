@@ -35,6 +35,7 @@ class MainExploreScreen extends Component {
     };
 
     this.mapView = null;
+    this.isFitted = false;
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
@@ -44,6 +45,7 @@ class MainExploreScreen extends Component {
     this.toRad = this.toRad.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
+    this.setCancelOrStart = this.setCancelOrStart.bind(this);
   }
 
   render() {
@@ -88,9 +90,7 @@ class MainExploreScreen extends Component {
         <Fab
           style={styles.startButton}
           position="bottomRight"
-          onPress={() => {
-            this.props.stopDirect();
-          }}>
+          onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
         <MapView
@@ -119,17 +119,26 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
+  setCancelOrStart(){
+    //Just handle cancel
+    this.isFitted=false;
+    this.props.stopDirect();
+  }
 
   fitToCoordinates(result) {
-    this.mapView.fitToCoordinates(result.coordinates, {
-      edgePadding: {
-        right: Layout.window.width / 20,
-        bottom: Layout.window.height / 20,
-        left: Layout.window.width / 20,
-        top: Layout.window.height / 20,
-      },
-      animated: true,
-    });
+    if(!this.isFitted){
+      this.isFitted = true;
+
+      this.mapView.fitToCoordinates(result.coordinates, {
+        edgePadding: {
+          right: Layout.window.width / 20,
+          bottom: Layout.window.height / 20,
+          left: Layout.window.width / 20,
+          top: Layout.window.height / 20,
+        },
+        animated: true,
+      });
+    }    
   }
 
   fitToCurrentCoordinates() {
@@ -167,11 +176,10 @@ class MainExploreScreen extends Component {
       notificationsEnabled: true,
       notificationTitle: 'Location Notifier',
       notificationText: 'Location Notifier is tracking your locations',
-      debug: true,
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 10000,
+      interval: 5000,
       fastestInterval: 5000,
       activitiesInterval: 10000,
       stopOnStillActivity: false,
@@ -266,7 +274,7 @@ class MainExploreScreen extends Component {
   }
 
   componentWillUnmount() {
-    return;
+    //return;
 
     // unregister all event listeners
     BackgroundGeolocation.events.forEach((event) =>
@@ -288,6 +296,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
+      this.isFitted = false;  // Fit direction in new address
     }
   }
 
