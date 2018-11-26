@@ -61,9 +61,7 @@ class MainExploreScreen extends Component {
             numberOfLines={1}
             uppercase={false}
             style={{ color: Colors.darkGrayBackground }}>
-            {this.props.location
-              ? `${this.props.location.address}`
-              : 'Search...'}
+            {this.getLocationString()}
           </Text>
         </Button>
         <Fab
@@ -119,6 +117,18 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
+
+  getLocationString() {
+    const location = this.props.location;
+    if (location) {
+      if (location.address.includes(location.name)) {
+        return location.address;
+      }
+      return `${this.props.location.name}, ${this.props.location.address}`;
+    }
+    return 'Search...';
+  }
+
   setCancelOrStart() {
     //Just handle cancel
     this.isFitted = false;
