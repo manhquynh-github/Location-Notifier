@@ -131,7 +131,7 @@ export class RingtoneSetting extends Component {
     if (this.playbackInstance != null) {
       this.playbackInstance.stopAsync();
     }
-    this.props.navigation.navigate('MainSetting');
+    this.props.navigation.goBack();
   }
 
   async loadNewPlaybackInstance(playing) {

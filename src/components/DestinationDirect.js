@@ -42,7 +42,7 @@ export default class DestinationDirect extends Component {
         />
         <MapView.Marker
           coordinate={this.props.destination}
-          title="Name"
+          title="Destination"
           description="Hello man"
         />
         <MapView.Circle

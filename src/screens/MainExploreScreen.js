@@ -35,6 +35,7 @@ class MainExploreScreen extends Component {
     };
 
     this.mapView = null;
+    this.isFitted = false;
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
@@ -44,6 +45,7 @@ class MainExploreScreen extends Component {
     this.toRad = this.toRad.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
+    this.setCancelOrStart = this.setCancelOrStart.bind(this);
   }
 
   render() {
@@ -60,7 +62,7 @@ class MainExploreScreen extends Component {
             uppercase={false}
             style={{ color: Colors.darkGrayBackground }}>
             {this.props.location
-              ? `${this.props.location.name}, ${this.props.location.address}`
+              ? `${this.props.location.address}`
               : 'Search...'}
           </Text>
         </Button>
@@ -88,9 +90,7 @@ class MainExploreScreen extends Component {
         <Fab
           style={styles.startButton}
           position="bottomRight"
-          onPress={() => {
-            this.props.stopDirect();
-          }}>
+          onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
         <MapView
@@ -119,27 +119,36 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
+  setCancelOrStart(){
+    //Just handle cancel
+    this.isFitted=false;
+    this.props.stopDirect();
+  }
 
   fitToCoordinates(result) {
-    this.mapView.fitToCoordinates(result.coordinates, {
-      edgePadding: {
-        right: Layout.window.width / 20,
-        bottom: Layout.window.height / 20,
-        left: Layout.window.width / 20,
-        top: Layout.window.height / 20,
-      },
-      animated: true,
-    });
+    if(!this.isFitted){
+      this.isFitted = true;
+
+      this.mapView.fitToCoordinates(result.coordinates, {
+        edgePadding: {
+          right: Layout.window.width / 20,
+          bottom: Layout.window.height / 20,
+          left: Layout.window.width / 20,
+          top: Layout.window.height / 20,
+        },
+        animated: true,
+      });
+    }    
   }
 
   fitToCurrentCoordinates() {
     const current = this.state.currentLocation;
     this.mapView.fitToCoordinates([current], {
       edgePadding: {
-        right: Layout.window.width / 20,
-        bottom: Layout.window.height / 20,
-        left: Layout.window.width / 20,
-        top: Layout.window.height / 20,
+        right: Layout.window.width / 15,
+        bottom: Layout.window.height / 15,
+        left: Layout.window.width / 15,
+        top: Layout.window.height / 15,
       },
       animated: true,
     });
@@ -167,11 +176,10 @@ class MainExploreScreen extends Component {
       notificationsEnabled: true,
       notificationTitle: 'Location Notifier',
       notificationText: 'Location Notifier is tracking your locations',
-      debug: true,
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 10000,
+      interval: 5000,
       fastestInterval: 5000,
       activitiesInterval: 10000,
       stopOnStillActivity: false,
@@ -263,10 +271,20 @@ class MainExploreScreen extends Component {
         BackgroundGeolocation.start(); //triggers start on start event
       }
     });
+
+    BackgroundGeolocation.getCurrentLocation((location)=>{
+      const newState = this.state;
+      newState.currentLocation.latitude = location.latitude;
+      newState.currentLocation.longitude = location.longitude;
+
+      this.setState(newState);
+
+      console.log("GET CURRENT SUCCESS");
+    })
   }
 
   componentWillUnmount() {
-    return;
+    //return;
 
     // unregister all event listeners
     BackgroundGeolocation.events.forEach((event) =>
@@ -288,6 +306,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
+      this.isFitted = false;  // Fit direction in new address
     }
   }
 

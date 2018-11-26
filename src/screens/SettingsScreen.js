@@ -159,7 +159,7 @@ export class SettingsScreen extends Component {
 
   onPressRingtone() {
     //start screen RingtoneSetting
-    this.props.navigation.navigate('RingtoneSetting');
+    this.props.navigation.navigate('Ringtone');
   }
 
   onPressRange() {
