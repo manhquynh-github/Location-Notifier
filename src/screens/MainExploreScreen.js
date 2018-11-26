@@ -93,7 +93,7 @@ class MainExploreScreen extends Component {
           onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
-        <MapView
+        {/* <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
             latitude: this.state.currentLocation.latitude,
@@ -115,18 +115,18 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
-        </MapView>
+        </MapView> */}
       </Container>
     );
   }
-  setCancelOrStart(){
+  setCancelOrStart() {
     //Just handle cancel
-    this.isFitted=false;
+    this.isFitted = false;
     this.props.stopDirect();
   }
 
   fitToCoordinates(result) {
-    if(!this.isFitted){
+    if (!this.isFitted) {
       this.isFitted = true;
 
       this.mapView.fitToCoordinates(result.coordinates, {
@@ -138,7 +138,7 @@ class MainExploreScreen extends Component {
         },
         animated: true,
       });
-    }    
+    }
   }
 
   fitToCurrentCoordinates() {
@@ -272,15 +272,15 @@ class MainExploreScreen extends Component {
       }
     });
 
-    BackgroundGeolocation.getCurrentLocation((location)=>{
+    BackgroundGeolocation.getCurrentLocation((location) => {
       const newState = this.state;
       newState.currentLocation.latitude = location.latitude;
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
 
-      console.log("GET CURRENT SUCCESS");
-    })
+      console.log('GET CURRENT SUCCESS');
+    });
   }
 
   componentWillUnmount() {
@@ -306,7 +306,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
-      this.isFitted = false;  // Fit direction in new address
+      this.isFitted = false; // Fit direction in new address
     }
   }
 

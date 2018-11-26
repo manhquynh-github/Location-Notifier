@@ -1,17 +1,12 @@
-import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
+import {
+  ADD_FAVORITE,
+  REMOVE_FAVORITE,
+  EDIT_FAVORITE,
+} from '../constants/ActionTypes';
 
 const sampleData = [
   {
     favoriteID: 0,
-    label: 'Home',
-    placeID: 'ChIJczqvGDgpdTERi8wKGNEWjc0',
-    name: 'Khách sạn 5 sao',
-    address: '123 Đường 456',
-    latitude: 10.801465900000002,
-    longitude: 106.65259739999999,
-  },
-  {
-    favoriteID: 1,
     label: 'School',
     placeID: 'ChIJiQNpfm-sNTERrlkkElKydjU',
     name: 'Trường Đại học Công nghệ thông tin',
@@ -56,6 +51,22 @@ const favoriteReducer = (state = initialState, action) => {
       newState.favorites.splice(arrIdx, 1);
       return newState;
     }
+
+    case EDIT_FAVORITE: {
+      const updatedFavorite = action.payload.favorite;
+      let oldFavoriteArrIdx = newState.favorites.findIndex(
+        (e) => e.favoriteID == updatedFavorite.favoriteID
+      );
+
+      if (oldFavoriteArrIdx < 0) {
+        throw 'ERR: No such favorite to edit.\n' +
+          JSON.stringify(updatedFavorite);
+      }
+
+      newState.favorites[oldFavoriteArrIdx] = { ...updatedFavorite };
+      return newState;
+    }
+
     default: {
       return newState;
     }

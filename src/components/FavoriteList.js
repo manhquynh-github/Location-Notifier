@@ -28,6 +28,9 @@ export default class FavoriteList extends Component {
 
   constructor() {
     super();
+    this.state = {
+      refresh: false,
+    };
     this.onRenderItem = this.onRenderItem.bind(this);
     this.onPress = this.onPress.bind(this);
     this.onLongPress = this.onLongPress.bind(this);
@@ -53,8 +56,15 @@ export default class FavoriteList extends Component {
         data={this.props.data}
         renderItem={this.onRenderItem}
         keyExtractor={this.onKeyExtractor}
+        extraData={this.state.refresh}
       />
     );
+  }
+
+  refresh() {
+    this.setState({
+      refresh: !this.state.refresh,
+    });
   }
 
   onRenderItem({ item, index }) {

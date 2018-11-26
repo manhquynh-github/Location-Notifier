@@ -19,11 +19,15 @@ class FavoriteScreen extends Component {
     favorites: [],
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.onPress = this.onPress.bind(this);
     this.onLongPress = this.onLongPress.bind(this);
     this.onMorePress = this.onMorePress.bind(this);
+
+    this.willFocus = props.navigation.addListener('willFocus', () => {
+      this.favoriteList.refresh();
+    });
   }
 
   render() {
@@ -36,6 +40,9 @@ class FavoriteScreen extends Component {
           </Body>
         </Header>
         <FavoriteList
+          ref={(ref) => {
+            this.favoriteList = ref;
+          }}
           data={this.props.favorites}
           onPress={this.onPress}
           onLongPress={this.onLongPress}
@@ -43,6 +50,10 @@ class FavoriteScreen extends Component {
         />
       </Container>
     );
+  }
+
+  componentWillUnmount() {
+    this.willFocus.remove();
   }
 
   onLongPress(item) {

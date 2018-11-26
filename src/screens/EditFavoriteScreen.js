@@ -44,7 +44,6 @@ class EditFavoriteScreen extends Component {
     this.onBackPress = this.onBackPress.bind(this);
     this.onChangeText = this.onChangeText.bind(this);
     this.onSavePress = this.onSavePress.bind(this);
-    this.onDeletePress = this.onDeletePress.bind(this);
     this.onNamePress = this.onNamePress.bind(this);
     this.onAddressPress = this.onAddressPress.bind(this);
   }
@@ -76,9 +75,6 @@ class EditFavoriteScreen extends Component {
               onPress={this.onSavePress}>
               <Icon name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'} />
             </Button>
-            <Button transparent onPress={this.onDeletePress}>
-              <Icon name="trash" />
-            </Button>
           </Right>
         </Header>
         <ListItem noIndent iconLeft style={styles.listItem}>
@@ -97,7 +93,9 @@ class EditFavoriteScreen extends Component {
           noIndent
           iconLeft
           button
+          delayLongPress={0}
           delayPressIn={0}
+          delayPressOut={0}
           androidRippleColor="lightgray"
           style={styles.listItem}
           onPress={this.onNamePress}>
@@ -114,7 +112,9 @@ class EditFavoriteScreen extends Component {
           noIndent
           iconLeft
           button
+          delayLongPress={0}
           delayPressIn={0}
+          delayPressOut={0}
           androidRippleColor="lightgray"
           style={styles.listItem}
           onPress={this.onAddressPress}>
@@ -136,12 +136,7 @@ class EditFavoriteScreen extends Component {
   }
 
   onSavePress() {
-    this.props.editFavorite(this.state.favoriteID);
-    this.props.navigation.goBack();
-  }
-
-  onDeletePress() {
-    this.props.removeFavorite(this.state.favoriteID);
+    this.props.editFavorite(this.state);
     this.props.navigation.goBack();
   }
 
@@ -174,7 +169,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
-  editFavorite: (favoriteID) => dispatch(editFavorite(favoriteID)),
+  editFavorite: (favorite) => dispatch(editFavorite(favorite)),
 });
 
 export default connect(

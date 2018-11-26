@@ -14,7 +14,7 @@ export const removeFavorite = (favoriteID) => ({
   payload: { favoriteID: favoriteID },
 });
 
-export const editFavorite = (favoriteID) => ({
+export const editFavorite = (favorite) => ({
   type: EDIT_FAVORITE,
-  payload: { favoriteID: favoriteID },
+  payload: { favorite: favorite },
 });
