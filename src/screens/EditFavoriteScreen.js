@@ -8,6 +8,9 @@ import {
   Right,
   Textarea,
   Title,
+  Button,
+  Text,
+  Input,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -28,7 +31,7 @@ class EditFavoriteScreen extends Component {
     favorites: [],
   };
 
-  constructor() {
+  constructor(props) {
     super();
     const item = props.navigation.getParam('item', null);
     if (item === null) {
@@ -40,7 +43,7 @@ class EditFavoriteScreen extends Component {
     };
 
     this.onBackPress = this.onBackPress.bind(this);
-    this.onTextChange = this.onTextChange.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
     this.onSavePress = this.onSavePress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
   }
@@ -63,30 +66,23 @@ class EditFavoriteScreen extends Component {
               <Icon name="trash" />
             </Button>
             <Button transparent onPress={this.onSavePress}>
-              <Icon
-                name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'}
-                type="Ionicons"
-              />
+              <Icon name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'} />
             </Button>
           </Right>
         </Header>
         <ListItem iconLeft style={styles.listItem} onPress={this.onCheck}>
-          <Left>
-            <Icon name="label" type="MaterialIcons" />
-          </Left>
+          <Icon name="label" type="MaterialIcons" />
           <Body>
-            <Textarea
+            <Input
               placeholder="Add a label..."
               value={this.state.label}
-              autoFocus
-              onChangeText={this.onTextChanged}
+              autoFocus={true}
+              onChangeText={this.onChangeText}
             />
           </Body>
         </ListItem>
         <ListItem iconLeft button style={styles.listItem}>
-          <Left>
-            <Icon name="location-on" type="MaterialIcons" />
-          </Left>
+          <Icon name="location-on" type="MaterialIcons" />
           <Body>
             <Text>{this.state.name}</Text>
             <Text>{this.state.address}</Text>
@@ -110,7 +106,7 @@ class EditFavoriteScreen extends Component {
     this.props.navigation.goBack();
   }
 
-  onTextChanged(e) {
+  onChangeText(e) {
     this.setState({
       label: e,
     });
@@ -138,4 +134,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FavoriteScreen);
+)(EditFavoriteScreen);

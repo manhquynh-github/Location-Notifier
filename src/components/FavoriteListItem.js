@@ -8,25 +8,34 @@ export default class FavoriteListItem extends Component {
     label: PropTypes.string,
     address: PropTypes.string,
     onPress: PropTypes.func,
-    onRemovePress: PropTypes.func,
+    onLongPress: PropTypes.func,
+    onMorePress: PropTypes.func,
   };
 
   static defaultProps = {
     label: '',
     address: '',
     onPress: undefined,
-    onRemovePress: undefined,
+    onLongPress: undefined,
+    onMorePress: undefined,
   };
 
   constructor() {
     super();
     this.onPress = this.onPress.bind(this);
-    this.onRemovePress = this.onRemovePress.bind(this);
+    this.onLongPress = this.onLongPress.bind(this);
+    this.onMorePress = this.onMorePress.bind(this);
   }
 
   render() {
     return (
-      <ListItem noIndent button onPress={this.onPress} delayPressIn={0}>
+      <ListItem
+        noIndent
+        button
+        onPress={this.onPress}
+        onLongPress={this.onLongPress}
+        delayPressIn={0}
+        delayLongPress={0}>
         <Body>
           <Text
             ellipsizeMode="tail"
@@ -41,11 +50,11 @@ export default class FavoriteListItem extends Component {
         <Button
           icon
           transparent
-          onPress={this.onRemovePress}
+          onPress={this.onMorePress}
           delayPressIn={0}
           rounded
           androidRippleColor="lightgray">
-          <Icon name="trash" style={styles.trashIcon} />
+          <Icon name="more" style={styles.moreIcon} />
         </Button>
       </ListItem>
     );
@@ -57,15 +66,21 @@ export default class FavoriteListItem extends Component {
     }
   }
 
-  onRemovePress() {
-    if (this.props.onRemovePress) {
-      this.props.onRemovePress();
+  onLongPress() {
+    if (this.props.onLongPress) {
+      this.props.onLongPress();
+    }
+  }
+
+  onMorePress() {
+    if (this.props.onMorePress) {
+      this.props.onMorePress();
     }
   }
 }
 
 const styles = StyleSheet.create({
-  trashIcon: {
+  moreIcon: {
     color: 'gray',
   },
 });

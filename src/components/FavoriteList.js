@@ -15,20 +15,23 @@ export default class FavoriteList extends Component {
       })
     ),
     onPress: PropTypes.func,
-    onRemovePress: PropTypes.func,
+    onLongPress: PropTypes.func,
+    onMorePress: PropTypes.func,
   };
 
   static defaultProps = {
     data: [],
     onPress: undefined,
-    onRemovePress: undefined,
+    onLongPress: undefined,
+    onMorePress: undefined,
   };
 
   constructor() {
     super();
     this.onRenderItem = this.onRenderItem.bind(this);
     this.onPress = this.onPress.bind(this);
-    this.onRemovePress = this.onRemovePress.bind(this);
+    this.onLongPress = this.onLongPress.bind(this);
+    this.onMorePress = this.onMorePress.bind(this);
   }
 
   render() {
@@ -60,7 +63,8 @@ export default class FavoriteList extends Component {
         label={item.label}
         address={item.address}
         onPress={() => this.onPress(item)}
-        onRemovePress={() => this.onRemovePress(item)}
+        onLongPress={() => this.onLongPress(item)}
+        onMorePress={() => this.onMorePress(item)}
       />
     );
   }
@@ -75,9 +79,15 @@ export default class FavoriteList extends Component {
     }
   }
 
-  onRemovePress(item) {
-    if (this.props.onRemovePress) {
-      this.props.onRemovePress(item);
+  onLongPress(item) {
+    if (this.props.onLongPress) {
+      this.props.onLongPress(item);
+    }
+  }
+
+  onMorePress(item) {
+    if (this.props.onMorePress) {
+      this.props.onMorePress(item);
     }
   }
 }
