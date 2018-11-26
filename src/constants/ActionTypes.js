@@ -1,5 +1,6 @@
 export const ADD_FAVORITE = 'ADD_FAVORITE';
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
+export const EDIT_FAVORITE = 'EDIT_FAVORITE';
 
 export const CHANGE_LOCATION = 'CHANGE_LOCATION';
 export const STOP_DIRECT = 'STOP_DIRECT';
@@ -12,10 +13,11 @@ export const ActionTypes = {
   Favorites: {
     ADD_FAVORITE,
     REMOVE_FAVORITE,
+    EDIT_FAVORITE,
   },
   Explore: {
     CHANGE_LOCATION,
-    STOP_DIRECT
+    STOP_DIRECT,
   },
   Settings: {
     CHANGE_RANGE,

@@ -1,4 +1,8 @@
-import { ADD_FAVORITE, REMOVE_FAVORITE } from '../constants/ActionTypes';
+import {
+  ADD_FAVORITE,
+  REMOVE_FAVORITE,
+  EDIT_FAVORITE,
+} from '../constants/ActionTypes';
 
 export const addFavorite = (favorite) => ({
   type: ADD_FAVORITE,
@@ -7,5 +11,10 @@ export const addFavorite = (favorite) => ({
 
 export const removeFavorite = (favoriteID) => ({
   type: REMOVE_FAVORITE,
+  payload: { favoriteID: favoriteID },
+});
+
+export const editFavorite = (favoriteID) => ({
+  type: EDIT_FAVORITE,
   payload: { favoriteID: favoriteID },
 });
