@@ -1,20 +1,19 @@
 import {
   Body,
+  Button,
   Container,
   Header,
   Icon,
+  Input,
   Left,
   ListItem,
   Right,
-  Textarea,
-  Title,
-  Button,
   Text,
-  Input,
+  Title,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { editFavorite, removeFavorite } from '../actions/FavoriteActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
@@ -46,15 +45,22 @@ class EditFavoriteScreen extends Component {
     this.onChangeText = this.onChangeText.bind(this);
     this.onSavePress = this.onSavePress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
+    this.onNamePress = this.onNamePress.bind(this);
+    this.onAddressPress = this.onAddressPress.bind(this);
   }
 
   render() {
     return (
       <Container>
         <StatusBarOverlay />
-        <Header style={styles.header} noLeft>
+        <Header style={styles.header}>
           <Left>
-            <Button transparent onPress={this.onBackPress}>
+            <Button
+              transparent
+              rounded
+              delayPressIn={0}
+              androidRippleColor="lightgray"
+              onPress={this.onBackPress}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -62,18 +68,24 @@ class EditFavoriteScreen extends Component {
             <Title>Edit Favorites</Title>
           </Body>
           <Right>
+            <Button
+              transparent
+              rounded
+              delayPressIn={0}
+              androidRippleColor="lightgray"
+              onPress={this.onSavePress}>
+              <Icon name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'} />
+            </Button>
             <Button transparent onPress={this.onDeletePress}>
               <Icon name="trash" />
             </Button>
-            <Button transparent onPress={this.onSavePress}>
-              <Icon name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'} />
-            </Button>
           </Right>
         </Header>
-        <ListItem iconLeft style={styles.listItem} onPress={this.onCheck}>
-          <Icon name="label" type="MaterialIcons" />
+        <ListItem noIndent iconLeft style={styles.listItem}>
+          <Icon name="label" type="MaterialIcons" style={styles.listItemIcon} />
           <Body>
             <Input
+              style={{ marginLeft: 5 }}
               placeholder="Add a label..."
               value={this.state.label}
               autoFocus={true}
@@ -81,10 +93,37 @@ class EditFavoriteScreen extends Component {
             />
           </Body>
         </ListItem>
-        <ListItem iconLeft button style={styles.listItem}>
-          <Icon name="location-on" type="MaterialIcons" />
+        <ListItem
+          noIndent
+          iconLeft
+          button
+          delayPressIn={0}
+          androidRippleColor="lightgray"
+          style={styles.listItem}
+          onPress={this.onNamePress}>
+          <Icon
+            name="location-on"
+            type="MaterialIcons"
+            style={styles.listItemIcon}
+          />
           <Body>
             <Text>{this.state.name}</Text>
+          </Body>
+        </ListItem>
+        <ListItem
+          noIndent
+          iconLeft
+          button
+          delayPressIn={0}
+          androidRippleColor="lightgray"
+          style={styles.listItem}
+          onPress={this.onAddressPress}>
+          <Icon
+            name="location-on"
+            type="MaterialIcons"
+            style={styles.listItemIcon}
+          />
+          <Body>
             <Text>{this.state.address}</Text>
           </Body>
         </ListItem>
@@ -111,6 +150,10 @@ class EditFavoriteScreen extends Component {
       label: e,
     });
   }
+
+  onNamePress(item) {}
+
+  onAddressPress(item) {}
 }
 
 const styles = StyleSheet.create({
@@ -119,6 +162,9 @@ const styles = StyleSheet.create({
   },
   listItem: {
     height: 50,
+  },
+  listItemIcon: {
+    color: 'gray',
   },
 });
 
