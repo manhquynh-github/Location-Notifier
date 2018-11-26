@@ -62,7 +62,7 @@ class MainExploreScreen extends Component {
             uppercase={false}
             style={{ color: Colors.darkGrayBackground }}>
             {this.props.location
-              ? `${this.props.location.name}, ${this.props.location.address}`
+              ? `${this.props.location.address}`
               : 'Search...'}
           </Text>
         </Button>
