@@ -173,8 +173,7 @@ class DetailExploreScreen extends Component {
       console.log(item);
       return;
     }
-
-    this.props.changeLocation(item.value);
+    this.props.changeLocation(location);
     this.props.navigation.navigate('MainExplore');
   }
 
