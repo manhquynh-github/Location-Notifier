@@ -149,10 +149,6 @@ class DetailExploreScreen extends Component {
       await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
         .then((result) => {
           location = result;
-
-          console.log("SUCCESS PLACE SELECT");
-          this.props.changeLocation(result);
-          this.props.navigation.navigate('MainExplore');
         })
         .catch((error) => console.log(error.message));
     }
@@ -162,6 +158,8 @@ class DetailExploreScreen extends Component {
       console.log(item);
       return;
     }
+    this.props.changeLocation(location);
+    this.props.navigation.navigate('MainExplore');
   }
 
   async onChangeSave(item) {
