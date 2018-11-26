@@ -1,10 +1,17 @@
 import { createStackNavigator } from 'react-navigation';
 import DetailExploreScreen from '../screens/DetailExploreScreen';
+import EditFavoriteScreen from '../screens/EditFavoriteScreen';
 import RingtoneScreen from '../screens/RingtoneScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 
 export default createStackNavigator(
   {
+    EditFavorite: {
+      screen: EditFavoriteScreen,
+      navigationOptions: {
+        title: 'Edit Favorite',
+      },
+    },
     MainScreen: {
       screen: BottomTabNavigator,
       navigationOptions: {
@@ -23,7 +30,7 @@ export default createStackNavigator(
         title: 'Ringtone Screen',
       },
     },
-    // TODO EditFavoriteScreen, AlarmScreen
+    // TODO AlarmScreen
   },
   {
     initialRouteName: 'MainScreen',
