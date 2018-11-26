@@ -1,10 +1,9 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import FavoriteScreen from '../screens/FavoriteScreen';
-import ExploreStackNavigation from './ExploreStackNavigation';
-import SettingStackNavigation from './SettingStackNavigator';
+import MainExploreScreen from '../screens/MainExploreScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import Colors from '../constants/Colors';
 
 export default createBottomTabNavigator(
@@ -18,17 +17,17 @@ export default createBottomTabNavigator(
         ),
       },
     },
-    Explore: {
-      screen: ExploreStackNavigation,
+    MainExplore: {
+      screen: MainExploreScreen,
       navigationOptions: {
-        title: 'Explore',
+        title: 'Main Explore',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="explore" type="MaterialIcons" />
         ),
       },
     },
     Settings: {
-      screen: SettingStackNavigation,
+      screen: SettingsScreen,
       navigationOptions: {
         title: 'Settings',
         tabBarIcon: ({ focused }) => (
@@ -38,7 +37,7 @@ export default createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Explore',
+    initialRouteName: 'MainExplore',
     tabBarOptions: {
       style: {
         backgroundColor: Colors.tabBar,
