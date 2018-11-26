@@ -39,6 +39,7 @@ export default class FavoriteListItem extends Component {
           </Text>
         </Body>
         <Button
+          icon
           transparent
           onPress={this.onRemovePress}
           delayPressIn={0}

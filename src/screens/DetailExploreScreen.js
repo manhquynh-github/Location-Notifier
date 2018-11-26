@@ -1,4 +1,12 @@
-import { Button, Container, Content, Icon, Input, Text } from 'native-base';
+import {
+  Button,
+  Container,
+  Content,
+  Icon,
+  Input,
+  Text,
+  Toast,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -10,6 +18,7 @@ import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { propTypes as LocationProps } from '../model/Location';
+import RNGooglePlaces from 'react-native-google-places';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -23,13 +32,16 @@ class DetailExploreScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: props.location
+      location: this.props.location
         ? `${this.props.location.name}, ${this.props.location.address}`
         : '',
       resultList: [],
     };
+
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
+    this.onChangeSave = this.onChangeSave.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
   componentDidMount() {
@@ -41,13 +53,25 @@ class DetailExploreScreen extends Component {
       <Container>
         <Content style={styles.page}>
           <StatusBarOverlay />
-          <Input
-            value={this.state.location}
-            style={styles.searchBar}
-            placeholder="Search..."
-            autoFocus={true}
-            onChangeText={this.onChangeText}
-          />
+          <View style={styles.searchBar}>
+            <Input
+              value={this.state.location}
+              style={{ flex: 1 }}
+              placeholder="Search..."
+              autoFocus={true}
+              onChangeText={this.onChangeText}
+            />
+            <Button
+              delayPressIn={0}
+              rounded
+              icon
+              transparent
+              style={{ alignSelf: 'center', marginLeft: -5 }}
+              androidRippleColor="lightgray"
+              onPress={this.onClear}>
+              <Icon name="close" style={{ color: '#000' }} />
+            </Button>
+          </View>
           <View style={styles.helperContainer}>
             <Button
               transparent
@@ -89,11 +113,23 @@ class DetailExploreScreen extends Component {
             </Button>
           </View>
           <View style={styles.resultList}>
-            <ResultList data={this.state.resultList} onPress={this.onPress} />
+            <ResultList
+              data={this.state.resultList}
+              onPress={this.onPress}
+              onChangeSave={this.onChangeSave}
+            />
           </View>
         </Content>
       </Container>
     );
+  }
+
+  onClear() {
+    this.setState({
+      location: '',
+    });
+
+    this.search('');
   }
 
   onChangeText(e) {
@@ -104,16 +140,87 @@ class DetailExploreScreen extends Component {
     this.search(e);
   }
 
-  onPress(item) {
-    if (item.sourceType === 'favorite') {
-      this.props.changeLocation(item.value);
-      this.props.navigation.navigate('MainExplore');
+  async onPress(item) {
+    let location = null;
+
+    if (item.type === 'favorite' || item.type === 'location') {
+      location = item.value;
+    } else if (item.type === 'google') {
+      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+        .then((result) => {
+          location = result;
+        })
+        .catch((error) => console.log(error.message));
+    }
+
+    if (location == null) {
+      console.log('Unable to find location from result item.');
+      console.log(item);
+      return;
+    }
+
+    this.props.changeLocation(item.value);
+    this.props.navigation.navigate('MainExplore');
+  }
+
+  async onChangeSave(item) {
+    let location = null;
+
+    if (item.type === 'favorite' || item.type === 'location') {
+      location = item.value;
+    }
+    // if source is not from favorite, try to retrieve the
+    // actual location which is the same as src/model/Location
+    else if (item.type === 'google') {
+      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+        .then((result) => {
+          location = result;
+        })
+        .catch((error) => console.log(error.message));
+    }
+
+    if (location == null) {
+      console.log('Unable to find location from result item.');
+      console.log(item);
+      return;
+    }
+
+    // add to favorite
+    if (item.type !== 'favorite') {
+      this.props.addFavorite(location);
+      item.type = 'favorite';
+      item.value = location;
+      this.showAddFavorites();
+    } else {
+      // remove favorite from reducer
+      this.props.removeFavorite(location.favoriteID);
+      item.type = 'location';
+      this.showRemoveFavorites(location);
     }
   }
 
-  search(value) {
+  showAddFavorites() {
+    Toast.show({
+      text: 'Added to Favorites!',
+      buttonText: 'OK',
+      buttonStyle: { color: Colors.primary },
+      duration: 3000,
+      type: 'success',
+    });
+  }
+
+  showRemoveFavorites(item) {
+    Toast.show({
+      text: 'Removed from Favorites!',
+      buttonText: 'OK',
+      duration: 3000,
+      type: 'danger',
+    });
+  }
+
+  async search(value) {
     value = value.toLowerCase();
-    const results = [];
+    let results = [];
 
     // Search in favorites
     for (let i = 0; i < this.props.favorites.length; i++) {
@@ -123,10 +230,24 @@ class DetailExploreScreen extends Component {
         favorite.name.toLowerCase().includes(value) ||
         favorite.address.toLowerCase().includes(value)
       ) {
-        results.push({ sourceType: 'favorite', value: favorite });
+        results.push({ type: 'favorite', value: favorite });
       }
     }
 
+    if (value !== '') {
+      // Search using Google API
+      await RNGooglePlaces.getAutocompletePredictions(value, { country: 'VN' })
+        .then((places) => {
+          const searchResults = places.map((e, i) => ({
+            type: 'google',
+            value: e,
+          }));
+          results = results.concat(searchResults);
+        })
+        .catch((error) => console.log(error.message));
+    }
+
+    // Set new state with new results
     this.setState({ resultList: results });
   }
 }
@@ -142,9 +263,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     paddingLeft: 15,
-    paddingRight: 15,
+    paddingRight: 0,
     borderColor: 'lightgray',
     backgroundColor: 'white',
+    flexDirection: 'row',
   },
   helperContainer: {
     marginVertical: 5,

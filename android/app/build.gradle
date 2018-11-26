@@ -95,12 +95,18 @@ configurations.all {
 
 apply from: 'expo.gradle'
 
-
 dependencies {
+  compile(project(':react-native-google-places')){
+    exclude group: 'com.google.android.gms', module: 'play-services-base'
+    exclude group: 'com.google.android.gms', module: 'play-services-places'
+    exclude group: 'com.google.android.gms', module: 'play-services-location'
+  }
+  implementation 'com.google.android.gms:play-services-base:16.0.1'
+  implementation 'com.google.android.gms:play-services-places:16.0.0'
     compile project(':react-native-mauron85-background-geolocation')
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation 'com.android.support:multidex:1.0.1'
+  implementation 'com.android.support:multidex:1.0.3'
 
   // Our dependencies
   implementation 'com.android.support:appcompat-v7:27.1.1'
