@@ -41,6 +41,7 @@ class DetailExploreScreen extends Component {
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
     this.onChangeSave = this.onChangeSave.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
     this.onClear = this.onClear.bind(this);
   }
 
@@ -54,6 +55,16 @@ class DetailExploreScreen extends Component {
         <Content style={styles.page}>
           <StatusBarOverlay />
           <View style={styles.searchBar}>
+            <Button
+              delayPressIn={0}
+              rounded
+              icon
+              transparent
+              style={styles.backButton}
+              androidRippleColor="lightgray"
+              onPress={this.onBackPress}>
+              <Icon name="arrow-back" style={{ color: '#000' }} />
+            </Button>
             <Input
               value={this.state.location}
               style={{ flex: 1 }}
@@ -66,7 +77,7 @@ class DetailExploreScreen extends Component {
               rounded
               icon
               transparent
-              style={{ alignSelf: 'center', marginLeft: -5 }}
+              style={styles.clearButton}
               androidRippleColor="lightgray"
               onPress={this.onClear}>
               <Icon name="close" style={{ color: '#000' }} />
@@ -122,6 +133,10 @@ class DetailExploreScreen extends Component {
         </Content>
       </Container>
     );
+  }
+
+  onBackPress() {
+    this.props.navigation.goBack();
   }
 
   onClear() {
@@ -256,17 +271,23 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: Colors.lightGrayBackground,
   },
+  backButton: {
+    alignSelf: 'center',
+    marginRight: -5,
+  },
   searchBar: {
     marginTop: 10,
     marginBottom: 5,
     marginHorizontal: 10,
     borderRadius: 10,
     elevation: 2,
-    paddingLeft: 15,
-    paddingRight: 0,
     borderColor: 'lightgray',
     backgroundColor: 'white',
     flexDirection: 'row',
+  },
+  clearButton: {
+    alignSelf: 'center',
+    marginLeft: -5,
   },
   helperContainer: {
     marginVertical: 5,

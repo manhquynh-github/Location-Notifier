@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
+import Colors from '../constants/Colors';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import MainExploreScreen from '../screens/MainExploreScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import Colors from '../constants/Colors';
 
 export default createBottomTabNavigator(
   {

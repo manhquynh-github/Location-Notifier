@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
-import BottomTabNavigator from './BottomTabNavigator';
 import DetailExploreScreen from '../screens/DetailExploreScreen';
 import RingtoneScreen from '../screens/RingtoneScreen';
+import BottomTabNavigator from './BottomTabNavigator';
 
 export default createStackNavigator(
   {
