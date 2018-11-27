@@ -1,5 +1,6 @@
 package host.exp.exponent;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.facebook.react.ReactPackage;

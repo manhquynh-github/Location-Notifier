@@ -20,6 +20,8 @@ import DestinationDirect from '../components/DestinationDirect';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
 import { stopDirect } from '../actions/ExploreActions';
+import RNGooglePlaces from 'react-native-google-places';
+import { changeLocation } from '../actions/ExploreActions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -28,6 +30,7 @@ class MainExploreScreen extends Component {
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
     isDirect: PropTypes.bool,
+    changeLocation: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -115,7 +118,7 @@ class MainExploreScreen extends Component {
           onPress={this.setCancelOrStart}>
           <Icon name="play" />
         </Fab>
-        {/* <MapView
+        <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
           initialRegion={{
             latitude: this.state.currentLocation.latitude,
@@ -137,7 +140,7 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
-        </MapView> */}
+        </MapView>
       </Container>
     );
   }
@@ -180,7 +183,23 @@ class MainExploreScreen extends Component {
     this.props.navigation.navigate('DetailExplore');
   }
 
-  onPickPress() {}
+  async onPickPress() {
+    let location = null;
+    await RNGooglePlaces.openPlacePickerModal()
+      .then((place) => {
+        location = place;
+        console.log('SUCCESS'+location.address);
+      })
+      .catch(error => console.log('ERRORRRRRRRRR'));
+
+    if (location == null) {
+      console.log('Unable to find location from result item.');
+      ToastAndroid.show("ERROR", ToastAndroid.SHORT);
+      return;
+    }
+
+    this.props.changeLocation(location);
+  }
 
   onLocatePress() {}
 
@@ -302,9 +321,7 @@ class MainExploreScreen extends Component {
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
-
-      console.log('GET CURRENT SUCCESS');
-    });
+    })
   }
 
   componentWillUnmount() {
@@ -401,6 +418,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
   stopDirect: () => dispatch(stopDirect()),
+  changeLocation: (location) => dispatch(changeLocation(location)),
 });
 
 export default withNavigation(
