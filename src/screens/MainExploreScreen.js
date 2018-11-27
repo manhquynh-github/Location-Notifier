@@ -1,7 +1,13 @@
 import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Image, StyleSheet, Dimensions, ToastAndroid } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
@@ -14,6 +20,8 @@ import DestinationDirect from '../components/DestinationDirect';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
 import { stopDirect } from '../actions/ExploreActions';
+import RNGooglePlaces from 'react-native-google-places';
+import { changeLocation } from '../actions/ExploreActions';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -22,6 +30,7 @@ class MainExploreScreen extends Component {
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
     isDirect: PropTypes.bool,
+    changeLocation: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -38,6 +47,7 @@ class MainExploreScreen extends Component {
     this.isFitted = false;
 
     this.onSearchPress = this.onSearchPress.bind(this);
+    this.onPickPress = this.onPickPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
@@ -51,21 +61,36 @@ class MainExploreScreen extends Component {
   render() {
     return (
       <Container>
-        <Button
-          full
-          onPress={this.onSearchPress}
-          style={styles.addressBar}
-          delayPressIn={0}>
-          <Text
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            uppercase={false}
-            style={{ color: Colors.darkGrayBackground }}>
-            {this.props.location
-              ? `${this.props.location.address}`
-              : 'Search...'}
-          </Text>
-        </Button>
+        <View style={styles.addressBar}>
+          <Button
+            delayPressIn={0}
+            rounded
+            transparent
+            full
+            androidRippleColor="lightgray"
+            onPress={this.onSearchPress}
+            style={{ flex: 1 }}>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              uppercase={false}
+              style={{ color: Colors.darkGrayBackground }}>
+              {this.props.location
+                ? `${this.props.location.address}`
+                : 'Search...'}
+            </Text>
+          </Button>
+          <Button
+            delayPressIn={0}
+            rounded
+            icon
+            transparent
+            style={styles.pickButton}
+            androidRippleColor="lightgray"
+            onPress={this.onPickPress}>
+            <Icon name="location" type="Entypo" style={{ color: '#000' }} />
+          </Button>
+        </View>
         <Fab
           active={false}
           style={styles.rangeButton}
@@ -119,14 +144,14 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
-  setCancelOrStart(){
+  setCancelOrStart() {
     //Just handle cancel
-    this.isFitted=false;
+    this.isFitted = false;
     this.props.stopDirect();
   }
 
   fitToCoordinates(result) {
-    if(!this.isFitted){
+    if (!this.isFitted) {
       this.isFitted = true;
 
       this.mapView.fitToCoordinates(result.coordinates, {
@@ -138,7 +163,7 @@ class MainExploreScreen extends Component {
         },
         animated: true,
       });
-    }    
+    }
   }
 
   fitToCurrentCoordinates() {
@@ -156,6 +181,24 @@ class MainExploreScreen extends Component {
 
   onSearchPress() {
     this.props.navigation.navigate('DetailExplore');
+  }
+
+  async onPickPress() {
+    let location = null;
+    await RNGooglePlaces.openPlacePickerModal()
+      .then((place) => {
+        location = place;
+        console.log('SUCCESS'+location.address);
+      })
+      .catch(error => console.log('ERRORRRRRRRRR'));
+
+    if (location == null) {
+      console.log('Unable to find location from result item.');
+      ToastAndroid.show("ERROR", ToastAndroid.SHORT);
+      return;
+    }
+
+    this.props.changeLocation(location);
   }
 
   onLocatePress() {}
@@ -272,14 +315,12 @@ class MainExploreScreen extends Component {
       }
     });
 
-    BackgroundGeolocation.getCurrentLocation((location)=>{
+    BackgroundGeolocation.getCurrentLocation((location) => {
       const newState = this.state;
       newState.currentLocation.latitude = location.latitude;
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
-
-      console.log("GET CURRENT SUCCESS");
     })
   }
 
@@ -306,7 +347,7 @@ class MainExploreScreen extends Component {
       //ALARM
       //Stop direct
       this.props.stopDirect();
-      this.isFitted = false;  // Fit direction in new address
+      this.isFitted = false; // Fit direction in new address
     }
   }
 
@@ -345,6 +386,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     backgroundColor: 'white',
+    borderColor: 'lightgray',
+    flexDirection: 'row',
+  },
+  pickButton: {
+    alignSelf: 'center',
+    marginLeft: -5,
   },
   startButton: {
     zIndex: 1,
@@ -371,6 +418,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
   stopDirect: () => dispatch(stopDirect()),
+  changeLocation: (location) => dispatch(changeLocation(location)),
 });
 
 export default withNavigation(

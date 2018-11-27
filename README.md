@@ -126,7 +126,7 @@ You can use any text editor to edit source code and any command line program to 
 - PropTypes ([eng](https://reactjs.org/docs/typechecking-with-proptypes.html)/[vie](<(https://viblo.asia/p/react-proptypes-khai-bao-kieu-du-lieu-cho-component-naQZR1aPKvx)>))
 - [FlatList](https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6)
 - [Expo SDK](https://docs.expo.io/versions/latest/sdk)
-
+- [Places](https://github.com/manhquynh-github/React-Native-Project/PlacesProblem.md) Only Expo, solving error with places module
 # Appstore
 
 [https://vietpano.com](https://vietpano.com)
