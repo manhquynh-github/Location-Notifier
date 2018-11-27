@@ -32,9 +32,7 @@ class DetailExploreScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: this.props.location
-        ? `${this.props.location.name}, ${this.props.location.address}`
-        : '',
+      location: this.getLocationString(),
       resultList: [],
     };
 
@@ -133,6 +131,17 @@ class DetailExploreScreen extends Component {
         </Content>
       </Container>
     );
+  }
+
+  getLocationString() {
+    const location = this.props.location;
+    if (location) {
+      if (location.address.includes(location.name)) {
+        return location.address;
+      }
+      return `${this.props.location.name}, ${this.props.location.address}`;
+    }
+    return '';
   }
 
   onBackPress() {
