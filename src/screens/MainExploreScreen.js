@@ -92,6 +92,7 @@ class MainExploreScreen extends Component {
           </Button>
         </View>
         <Fab
+          delayPressIn={0}
           active={false}
           style={styles.rangeButton}
           position="bottomRight"
@@ -103,6 +104,7 @@ class MainExploreScreen extends Component {
           />
         </Fab>
         <Fab
+          delayPressIn={0}
           style={styles.myLocationButton}
           position="bottomRight"
           onPress={this.fitToCurrentCoordinates}>
@@ -113,6 +115,7 @@ class MainExploreScreen extends Component {
           />
         </Fab>
         <Fab
+          delayPressIn={0}
           style={styles.startButton}
           position="bottomRight"
           onPress={this.setCancelOrStart}>
@@ -200,13 +203,13 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.log('SUCCESS'+location.address);
+        console.log('SUCCESS' + location.address);
       })
-      .catch(error => console.log('ERRORRRRRRRRR'));
+      .catch((error) => console.log('ERRORRRRRRRRR'));
 
     if (location == null) {
       console.log('Unable to find location from result item.');
-      ToastAndroid.show("ERROR", ToastAndroid.SHORT);
+      ToastAndroid.show('ERROR', ToastAndroid.SHORT);
       return;
     }
 
@@ -333,7 +336,7 @@ class MainExploreScreen extends Component {
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
-    })
+    });
   }
 
   componentWillUnmount() {
