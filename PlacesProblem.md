@@ -34,7 +34,7 @@ _After sync gradle, add Exponent below to library module_
     }
 ```
 
-_Implement interface ActivityResultListener, that's mean you attached onActivityOnResult to RNGooglePlacesModule_
+_Add variable interface ActivityResultListener, that's mean you attached onActivityOnResult to RNGooglePlacesModule_
 
 ```sh
 private final ActivityResultListener mActivityEventListener = new ActivityResultListener() {
