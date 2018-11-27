@@ -44,6 +44,7 @@ export default class App extends React.Component {
         require('./src/assets/images/robot-prod.png'),
         require('./src/assets/images/GoogleMapLogo.png'),
         require('./src/assets/images/EmptyFavorite.png'),
+        require('./src/assets/images/Arrive.png'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
