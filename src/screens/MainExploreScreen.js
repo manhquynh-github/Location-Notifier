@@ -1,4 +1,4 @@
-import { Button, Container, Content, Fab, Icon, Text } from 'native-base';
+import { Button, Container, Content, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -143,7 +143,7 @@ class MainExploreScreen extends Component {
                 longitude: this.props.location.longitude,
               }}
               fitToCoordinates={this.fitToCoordinates}
-              // checkAlarm={this.checkToAlarm}
+              //checkAlarm={this.checkToAlarm}
               range={this.props.rangeOption}
             />
           )}
@@ -166,20 +166,25 @@ class MainExploreScreen extends Component {
   setCancelOrStart() {
     //Cancel
     if (this.props.isDirect && this.props.location) { 
-      //Just handle cancel, flag: dont zoom map
+      //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
       //Turn of draw direction
       this.props.stopDirect();
-      ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
+      //ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
+      Toast.show({text: "Stop tracking your location!",buttonText: "Okay", type: "success", duration: 2000});
     }
 
     //Start
     else if(!this.props.isDirect && this.props.location){
       this.props.startDirect();
-      this.isFitted = true;
-      ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
+      this.isFitted = false;
+      //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
+      Toast.show({text: "Start tracking your location",buttonText: "Okay", type: "success", duration: 2000});
+    }
+    else{
+      Toast.show({text: "Enter your destination",buttonText: "Okay", type: "warning", duration: 2000});
     }  
   }
 
@@ -258,9 +263,9 @@ class MainExploreScreen extends Component {
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 5000,
-      fastestInterval: 5000,
-      activitiesInterval: 20000,
+      interval: 4000,
+      fastestInterval: 4000,
+      activitiesInterval: 10000,
       stopOnStillActivity: false,
     });
 
@@ -393,7 +398,7 @@ class MainExploreScreen extends Component {
 
       //Stop direct
       this.props.stopDirect();
-      this.isFitted = false; // Fit direction in new address
+      this.isFitted = false; // Will be fit direction in new address
 
       console.log("Send notification successfully");
       this.props.navigation.navigate('Alarm');

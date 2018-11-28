@@ -57,9 +57,9 @@ export default class DestinationDirect extends Component {
   }
 
   fitToCoordinates(result) {
-    if (this.props.fitToCoordinates && this.props.checkAlarm) {
+    if (this.props.fitToCoordinates){// && this.props.checkAlarm) {
       this.props.fitToCoordinates(result);       
-      this.props.checkAlarm();     
+      //this.props.checkAlarm();     
     }
   }
 }
