@@ -12,3 +12,5 @@ android/\.idea/workspace\.xml
 android/\.idea/
 
 yarn\.lock
+
+android/app/app\.iml
