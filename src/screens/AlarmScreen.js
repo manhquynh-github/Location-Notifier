@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
+import ReactNativeAN from 'react-native-alarm-notification';
 
 class AlarmScreen extends Component {
   static propTypes = {
@@ -43,7 +44,7 @@ class AlarmScreen extends Component {
   }
 
   onDismissPress() {
-    // TODO Do something here
+    ReactNativeAN.stopAlarm();
     this.props.navigation.navigate('MainExplore');
   }
 }

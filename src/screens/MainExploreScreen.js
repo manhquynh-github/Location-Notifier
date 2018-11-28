@@ -33,6 +33,7 @@ class MainExploreScreen extends Component {
     isDirect: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
+    vibrate:PropTypes.bool.isRequired
   };
 
   constructor() {
@@ -47,7 +48,6 @@ class MainExploreScreen extends Component {
 
     this.mapView = null;
     this.isFitted = false;
-    this.alarmNotifData=null;
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onPickPress = this.onPickPress.bind(this);
@@ -209,13 +209,13 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.log('SUCCESS' + location.address);
+        console.log('SUCCESS'+location.address);
       })
-      .catch((error) => console.log('ERRORRRRRRRRR'));
+      .catch(error => console.log('ERRORRRRRRRRR'));
 
     if (location == null) {
       console.log('Unable to find location from result item.');
-      ToastAndroid.show('ERROR', ToastAndroid.SHORT);
+      ToastAndroid.show("ERROR", ToastAndroid.SHORT);
       return;
     }
 
@@ -233,25 +233,6 @@ class MainExploreScreen extends Component {
   }
 
   componentDidMount() {
-    const soundName = 'alarm'+this.props.soundID+'.mp3';
-
-    this.alarmNotifData = {
-      id: "1997",                                 
-      title: "Location Notifier",               
-      message: "You're IN",          
-      channel: "1997",                     // Required. Same id as specified in MainApplication's onCreate method
-      ticker: "Let's make a favorites",
-      vibrate: true,
-      vibration: 10000,                              
-      small_icon: "ic_launcher",                    
-      large_icon: "ic_launcher",
-      play_sound: true,
-      sound_name: soundName, // Plays custom notification ringtone if sound_name: null
-      color: "red",
-    };
-
-
-
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
@@ -264,7 +245,7 @@ class MainExploreScreen extends Component {
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
       interval: 5000,
       fastestInterval: 5000,
-      activitiesInterval: 10000,
+      activitiesInterval: 20000,
       stopOnStillActivity: false,
     });
 
@@ -376,6 +357,9 @@ class MainExploreScreen extends Component {
   }
 
   checkToAlarm() {
+    if(!this.props.isDirect || !this.props.location){ //Have no destination
+      return;
+    }
     const current = this.state.currentLocation;
     const des = this.props.location;
     const distance = this.calcCrow(
@@ -389,15 +373,35 @@ class MainExploreScreen extends Component {
     if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isDirect) {
       //PUSH NOTIFICATIONS
       //ALARM
-      ReactNativeAN.sendNotification(this.alarmNotifData);
+      const alarmNotifData = this.configAlarmNotification();
+      ReactNativeAN.sendNotification(alarmNotifData);
 
       //Stop direct
       this.props.stopDirect();
       this.isFitted = false; // Fit direction in new address
 
       console.log("Send notification successfully");
-      return;
+      this.props.navigation.navigate('Alarm');
     }    
+  }
+  
+  configAlarmNotification(){
+    const soundName = 'alarm'+this.props.soundID+'.mp3';
+    const alarmNotifData = {
+      id: "1997",                                 
+      title: "Location Notifier",               
+      message: "You're IN",          
+      channel: "1997",                     // Required. Same id as specified in MainApplication's onCreate method
+      ticker: "Let's make a favorites",
+      vibrate: this.props.vibrate,
+      vibration: 10000,                              
+      small_icon: "ic_launcher",                    
+      large_icon: "ic_launcher",
+      play_sound: true,
+      sound_name: soundName, // Plays custom notification ringtone if sound_name: null
+      color: "red",
+    };
+    return alarmNotifData;
   }
 
   //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
@@ -463,6 +467,7 @@ const mapStateToProps = (state) => ({
   rangeOption: state.settingsReducer.rangeOption,
   soundID: state.settingsReducer.soundID,
   isDirect: state.exploreReducer.isDirect,
+  vibrate: state.settingsReducer.vibrate,
 });
 
 const mapDispatchToProps = (dispatch) => ({
