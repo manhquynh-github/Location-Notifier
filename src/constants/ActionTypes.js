@@ -4,6 +4,7 @@ export const EDIT_FAVORITE = 'EDIT_FAVORITE';
 
 export const CHANGE_LOCATION = 'CHANGE_LOCATION';
 export const STOP_DIRECT = 'STOP_DIRECT';
+export const START_DIRECT = 'START_DIRECT';
 
 export const CHANGE_RANGE = 'CHANGE_RANGE';
 export const CHANGE_RINGTONE = 'CHANGE_RINGTONE';
@@ -18,6 +19,7 @@ export const ActionTypes = {
   Explore: {
     CHANGE_LOCATION,
     STOP_DIRECT,
+    START_DIRECT,
   },
   Settings: {
     CHANGE_RANGE,

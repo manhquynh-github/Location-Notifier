@@ -1,4 +1,4 @@
-import { CHANGE_LOCATION, STOP_DIRECT } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT } from '../constants/ActionTypes';
 
 export const changeLocation = (value) => ({
   type: CHANGE_LOCATION,
@@ -6,5 +6,9 @@ export const changeLocation = (value) => ({
 });
 export const stopDirect = () => ({
   type: STOP_DIRECT,
+  payload: {  },
+});
+export const startDirect = () => ({
+  type: START_DIRECT,
   payload: {  },
 });

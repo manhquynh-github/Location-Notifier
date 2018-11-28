@@ -1,4 +1,4 @@
-import { CHANGE_LOCATION, STOP_DIRECT } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
@@ -16,6 +16,10 @@ const exploreReducer = (state = initialState, action) => {
     }
     case STOP_DIRECT: {
       newState.isDirect=false;
+      return newState;
+    }
+    case START_DIRECT: {
+      newState.isDirect=true;
       return newState;
     }
     default: {

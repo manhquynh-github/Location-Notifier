@@ -19,7 +19,7 @@ import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import DestinationDirect from '../components/DestinationDirect';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
-import { stopDirect } from '../actions/ExploreActions';
+import { stopDirect, startDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
@@ -30,6 +30,7 @@ class MainExploreScreen extends Component {
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
+    startDirect: PropTypes.func.isRequired,
     isDirect: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
@@ -163,12 +164,23 @@ class MainExploreScreen extends Component {
   }
 
   setCancelOrStart() {
-    //Just handle cancel
-    this.isFitted = false;
-    //immediately stop sound alarm
-    ReactNativeAN.stopAlarm();
-    //Turn of draw direction
-    this.props.stopDirect();
+    //Cancel
+    if (this.props.isDirect && this.props.location) { 
+      //Just handle cancel, flag: dont zoom map
+      this.isFitted = false;
+      //immediately stop sound alarm
+      ReactNativeAN.stopAlarm();
+      //Turn of draw direction
+      this.props.stopDirect();
+      ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.TOP);
+    }
+
+    //Start
+    else if(!this.props.isDirect && this.props.location){
+      this.props.startDirect();
+      this.isFitted = true;
+      ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.TOP);
+    }  
   }
 
   fitToCoordinates(result) {
@@ -476,6 +488,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
   stopDirect: () => dispatch(stopDirect()),
+  startDirect: () => dispatch(startDirect()),
   changeLocation: (location) => dispatch(changeLocation(location)),
 });
 
