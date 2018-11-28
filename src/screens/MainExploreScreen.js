@@ -233,6 +233,9 @@ class MainExploreScreen extends Component {
   }
 
   componentDidMount() {
+    //Reset destination location
+    this.props.changeLocation(null);
+
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
