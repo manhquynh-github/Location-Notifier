@@ -143,7 +143,7 @@ class MainExploreScreen extends Component {
                 longitude: this.props.location.longitude,
               }}
               fitToCoordinates={this.fitToCoordinates}
-              checkAlarm={this.checkToAlarm}
+              // checkAlarm={this.checkToAlarm}
               range={this.props.rangeOption}
             />
           )}
@@ -172,14 +172,14 @@ class MainExploreScreen extends Component {
       ReactNativeAN.stopAlarm();
       //Turn of draw direction
       this.props.stopDirect();
-      ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.TOP);
+      ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
     }
 
     //Start
     else if(!this.props.isDirect && this.props.location){
       this.props.startDirect();
       this.isFitted = true;
-      ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.TOP);
+      ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
     }  
   }
 
