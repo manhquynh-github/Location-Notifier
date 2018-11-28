@@ -1,5 +1,5 @@
 //For ringtones
-
+import {Audio} from 'expo';
 
 export class PlaylistItem {
   constructor(name, asset) {
@@ -25,6 +25,52 @@ export const PLAYLIST = [
   {"item":new PlaylistItem("Alarm 13", require("../../android/app/src/main/res/raw/alarm13.mp3"))},
 ];
 
-export const LOADING_STRING = "... loading ...";
-export const LOOPING_TYPE_ALL = 0;
-export const LOOPING_TYPE_ONE = 1;
+const SOUNDS = {};
+
+let SOURCES = {};
+
+export async function prepareSound() {
+  await Audio.setIsEnabledAsync(true);
+  //console.log('Set Expo.Audio enabled');
+  await Audio.setAudioModeAsync({
+    playsInSilentModeIOS: true,
+    allowsRecordingIOS: false,
+    interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+    shouldDuckAndroid: false,
+    interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+    playThroughEarpieceAndroid: false,
+  });
+  //console.log('Set Expo.Audio mode');
+}
+
+export function loadSounds(sources) {
+  SOURCES = {...SOURCES, ...sources};
+}
+
+export async function playSound(key) {
+  if (SOUNDS[key]) {
+    //console.log("That sound has already been played, let's reload.");
+    await SOUNDS[key].unloadAsync();
+    //console.log('Sound unloaded successfully!');
+  } else {
+    //console.log('New sound to play!');
+    SOUNDS[key] = new Audio.Sound();
+  }
+  
+  await SOUNDS[key].loadAsync(SOURCES[key]);
+  //console.log('Sound loaded successfully!');
+  SOUNDS[key].playAsync();
+  //console.log('Playing...');
+}
+
+export async function stopSound(key) {
+  const status = await SOUNDS[key].getStatusAsync();
+  if (!status.isLoaded) {
+    console.warn('[stopMusic] not loaded');
+    return false;
+  }
+  
+  //console.log('Stopping...');
+  await SOUNDS[key].stopAsync();
+  return true;
+}
