@@ -1,6 +1,12 @@
 package host.exp.exponent;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+
 import com.facebook.react.ReactPackage;
 
 import java.util.Arrays;
@@ -10,10 +16,36 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.emekalites.react.alarm.notification.ANPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 
 public class MainApplication extends ExpoApplication {
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    String id = "1997";					// The id of the channel.
+    CharSequence name = "Địa điểm";			// The user-visible name of the channel.
+    String description = "Địa điểm sắp tới";	// The user-visible description of the channel.
+
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_DEFAULT);
+
+      // Configure the notification channel.
+      mChannel.setDescription(description);
+
+      mChannel.enableLights(true);
+      // Sets the notification light color for notifications posted to this
+      // channel, if the device supports this feature.
+      mChannel.setLightColor(Color.RED);
+
+      mChannel.enableVibration(true);
+      mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+      NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+      mNotificationManager.createNotificationChannel(mChannel);
+    }
+  }
 
   @Override
   public boolean isDebug() {
@@ -28,6 +60,7 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new ANPackage(),
             new RNGooglePlacesPackage(),
             new BackgroundGeolocationPackage()
     );

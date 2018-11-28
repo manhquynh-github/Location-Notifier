@@ -7,3 +7,10 @@ npm-debug.*
 android/app/build/
 android/.gradle/
 android/local.properties
+android/\.idea/workspace\.xml
+
+android/\.idea/
+
+yarn\.lock
+
+android/app/app\.iml
