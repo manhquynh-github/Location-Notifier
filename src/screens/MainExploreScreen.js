@@ -22,6 +22,7 @@ import { propTypes as LocationProps } from '../model/Location';
 import { stopDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation } from '../actions/ExploreActions';
+import ReactNativeAN from 'react-native-alarm-notification';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class MainExploreScreen extends Component {
     stopDirect: PropTypes.func.isRequired,
     isDirect: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
+    soundID: PropTypes.number.isRequired,
   };
 
   constructor() {
@@ -45,6 +47,7 @@ class MainExploreScreen extends Component {
 
     this.mapView = null;
     this.isFitted = false;
+    this.alarmNotifData=null;
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onPickPress = this.onPickPress.bind(this);
@@ -159,6 +162,9 @@ class MainExploreScreen extends Component {
   setCancelOrStart() {
     //Just handle cancel
     this.isFitted = false;
+    //immediately stop sound alarm
+    ReactNativeAN.stopAlarm();
+    //Turn of draw direction
     this.props.stopDirect();
   }
 
@@ -224,6 +230,25 @@ class MainExploreScreen extends Component {
   }
 
   componentDidMount() {
+    const soundName = 'alarm'+this.props.soundID+'.mp3';
+
+    this.alarmNotifData = {
+      id: "1997",                                 
+      title: "Location Notifier",               
+      message: "You're IN",          
+      channel: "1997",                     // Required. Same id as specified in MainApplication's onCreate method
+      ticker: "Let's make a favorites",
+      vibrate: true,
+      vibration: 10000,                              
+      small_icon: "ic_launcher",                    
+      large_icon: "ic_launcher",
+      play_sound: true,
+      sound_name: soundName, // Plays custom notification ringtone if sound_name: null
+      color: "red",
+    };
+
+
+
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
@@ -250,6 +275,8 @@ class MainExploreScreen extends Component {
         const newLocation = location;
         newState.currentLocation = newLocation;
         this.setState(newState);
+
+        this.checkToAlarm();
 
         BackgroundGeolocation.endTask(taskKey);
       });
@@ -301,7 +328,7 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('background', () => {
-      console.log('[INFO] App is in background');
+      console.log('[INFO] App is in background');    
     });
 
     BackgroundGeolocation.on('foreground', () => {
@@ -354,13 +381,20 @@ class MainExploreScreen extends Component {
       des.latitude,
       des.longitude
     );
-    if (distance <= RANGE_VALUES[this.props.rangeOption]) {
+    console.log("Checking to alarm");
+    // Only check and push notifications once if your're inside range
+    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isDirect) {
       //PUSH NOTIFICATIONS
       //ALARM
+      ReactNativeAN.sendNotification(this.alarmNotifData);
+
       //Stop direct
       this.props.stopDirect();
       this.isFitted = false; // Fit direction in new address
-    }
+
+      console.log("Send notification successfully");
+      return;
+    }    
   }
 
   //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
@@ -424,6 +458,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
   rangeOption: state.settingsReducer.rangeOption,
+  soundID: state.settingsReducer.soundID,
   isDirect: state.exploreReducer.isDirect,
 });
 
