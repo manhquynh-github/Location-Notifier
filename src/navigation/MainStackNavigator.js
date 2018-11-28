@@ -1,4 +1,5 @@
 import { createStackNavigator } from 'react-navigation';
+import AlarmScreen from '../screens/AlarmScreen';
 import DetailExploreScreen from '../screens/DetailExploreScreen';
 import EditFavoriteScreen from '../screens/EditFavoriteScreen';
 import RingtoneScreen from '../screens/RingtoneScreen';
@@ -30,7 +31,12 @@ export default createStackNavigator(
         title: 'Ringtone Screen',
       },
     },
-    // TODO AlarmScreen
+    Alarm: {
+      screen: AlarmScreen,
+      navigationOptions: {
+        title: 'Alarm Screen',
+      },
+    },
   },
   {
     initialRouteName: 'MainScreen',

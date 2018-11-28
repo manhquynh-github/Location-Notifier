@@ -78,7 +78,12 @@ export class RingtoneSetting extends Component {
         <StatusBarOverlay />
         <Header style={styles.header}>
           <Left>
-            <Button transparent onPress={this.onBackPress}>
+            <Button
+              transparent
+              rounded
+              delayPressIn={0}
+              androidRippleColor="lightgray"
+              onPress={this.onBackPress}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -87,7 +92,6 @@ export class RingtoneSetting extends Component {
           </Body>
           <Right />
         </Header>
-
         <Content>
           <FlatList
             data={PLAYLIST}

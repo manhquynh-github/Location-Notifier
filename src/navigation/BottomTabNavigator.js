@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableNativeFeedback, View } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import Colors from '../constants/Colors';
@@ -44,6 +45,16 @@ export default createBottomTabNavigator(
         elevation: 10,
         borderTopWidth: 0,
       },
+    },
+    navigationOptions: {
+      tabBarButtonComponent: (props) => (
+        <TouchableNativeFeedback
+          delayPressIn={0}
+          onPress={props.onPress}
+          background={TouchableNativeFeedback.Ripple('lightgray')}>
+          <View {...props} />
+        </TouchableNativeFeedback>
+      ),
     },
   }
 );
