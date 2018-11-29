@@ -7,6 +7,7 @@ import {
   Dimensions,
   ToastAndroid,
   View,
+  NetInfo,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -39,12 +40,13 @@ class MainExploreScreen extends Component {
 
   constructor() {
     super();
+    
     this.state = {
       currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513,
       },
-      distance: null,
+      isConnected:false,
     };
 
     this.mapView = null;
@@ -60,6 +62,7 @@ class MainExploreScreen extends Component {
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
     this.setCancelOrStart = this.setCancelOrStart.bind(this);
+    this.handleFirstConnectivityChange = this.handleFirstConnectivityChange.bind(this);
   }
 
   render() {
@@ -365,6 +368,18 @@ class MainExploreScreen extends Component {
 
       this.setState(newState);
     });
+
+    //Network
+    NetInfo.isConnected.fetch().then(isConnected => {
+      const connectState = this.state;
+      connectState.isConnected = isConnected;
+      this.setState(connectState);
+    });
+    
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleFirstConnectivityChange
+    );
   }
 
   componentWillUnmount() {
@@ -374,6 +389,15 @@ class MainExploreScreen extends Component {
     BackgroundGeolocation.events.forEach((event) =>
       BackgroundGeolocation.removeAllListeners(event)
     );
+  }
+
+  handleFirstConnectivityChange(isConnected) {
+    const connectState = this.state;
+    console.log(isConnected);
+    connectState.isConnected = isConnected;
+    this.setState(connectState);
+    if(!isConnected)
+        Toast.show({ text: "Your connection's not available", buttonText: "Okay", type: "warning", duration: 2000 });
   }
 
   checkToAlarm() {
