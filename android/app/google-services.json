@@ -1,50 +1,42 @@
 {
   "project_info": {
-    "project_id": "exponent-5dd6d",
-    "project_number": "367315174693",
-    "name": "Exponent Play Services"
+    "project_number": "359210477373",
+    "firebase_url": "https://location-notifier-8994c.firebaseio.com",
+    "project_id": "location-notifier-8994c",
+    "storage_bucket": "location-notifier-8994c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:367315174693:android:f968efbb41d1fa7a",
-        "client_id": "android:host.exp.exponent",
-        "client_type": 1,
+        "mobilesdk_app_id": "1:359210477373:android:7e3cc04d489a49ef",
         "android_client_info": {
-          "package_name": "com.uit.LocationNotifier",
-          "certificate_hash": ""
+          "package_name": "com.uit.LocationNotifier"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "359210477373-0go7n76jr78a3c8ltomn054b8co000oo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "AIzaSyD9g6MmoJtr4RQtN5tAbB-cs_T9kkcSUNI"
         }
       ],
       "services": {
         "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-76673608-1"
-          }
-        },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
+          "status": 1
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
         },
-        "google_signin_service": {
-          "status": 1
-        },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

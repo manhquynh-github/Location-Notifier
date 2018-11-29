@@ -28,6 +28,7 @@ import { setVibrate, setRangeOption } from '../actions/SettingsActions';
 import { PLAYLIST } from '../constants/Sound';
 import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
+import {rootRef, verRef, atmRef} from '../config/FirebaseConfig';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -43,6 +44,7 @@ export class SettingsScreen extends Component {
     this.onPressRange = this.onPressRange.bind(this);
     this.onPressRingtone = this.onPressRingtone.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
+    this.onPressUpdate = this.onPressUpdate.bind(this);
   }
 
   render() {
@@ -122,6 +124,31 @@ export class SettingsScreen extends Component {
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
+          <ListItem
+            icon
+            last
+            button
+            onPress={this.onPressUpdate}
+            delayPressIn={0}>
+            <Left>
+              <Button style={styles.rangeButton}>
+                <Icon
+                  active
+                  name="map-marker-distance"
+                  type="MaterialCommunityIcons"
+                />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Update station</Text>
+            </Body>
+            <Right style={{ flex: 0 }}>
+              <Text style={styles.nameRingtone} ellipsizeMode="tail">
+                {RANGE_OPTIONS[this.props.rangeOption]}
+              </Text>
+              {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
+            </Right>
+          </ListItem>
           <Separator />
           <ListItem icon last>
             <Left>
@@ -167,6 +194,16 @@ export class SettingsScreen extends Component {
       if (selectedIndex !== undefined) {
         this.props.setRangeOption(selectedIndex);
       }
+    });
+  }
+  onPressUpdate(){
+    verRef.set(0.1,(result)=>{
+      console.log(result);
+    })
+    atmRef.on("value", (child)=>{
+      child.forEach((item)=>{
+        console.log(item.val());
+      })
     });
   }
 }
