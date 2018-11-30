@@ -1,8 +1,9 @@
-import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT, ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
   isDirect:false,
+  typeStation: NONE_STATION, //NO STATION
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -20,6 +21,10 @@ const exploreReducer = (state = initialState, action) => {
     }
     case START_DIRECT: {
       newState.isDirect=true;
+      return newState;
+    }
+    case CHANGE_TYPE_STATION:{
+      newState.typeStation = value;
       return newState;
     }
     default: {
