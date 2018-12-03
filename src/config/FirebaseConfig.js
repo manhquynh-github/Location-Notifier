@@ -22,3 +22,4 @@ const stationApp = firebase.initializeApp(
 export const rootRef = stationApp.database().ref();
 export const verRef = rootRef.child('version');
 export const atmRef = rootRef.child("ATM");
+export const gasRef = rootRef.child("GAS");

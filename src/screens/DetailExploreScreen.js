@@ -12,13 +12,14 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import { changeLocation } from '../actions/ExploreActions';
+import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { propTypes as LocationProps } from '../model/Location';
 import RNGooglePlaces from 'react-native-google-places';
+import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -27,6 +28,7 @@ class DetailExploreScreen extends Component {
     removeFavorite: PropTypes.func.isRequired,
     location: PropTypes.shape(LocationProps),
     changeLocation: PropTypes.func.isRequired,
+    changeStationType:PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -41,6 +43,8 @@ class DetailExploreScreen extends Component {
     this.onChangeSave = this.onChangeSave.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.gasStationPress = this.gasStationPress.bind(this);
+    this.atmStationPress = this.atmStationPress.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +91,7 @@ class DetailExploreScreen extends Component {
               bordered
               rounded
               iconLeft
+              onPress={this.gasStationPress}
               style={styles.helperItemContainer}
               androidRippleColor="lightgray"
               delayPressIn={0}>
@@ -106,6 +111,7 @@ class DetailExploreScreen extends Component {
               bordered
               rounded
               iconLeft
+              onPress={this.atmStationPress}
               style={styles.helperItemContainer}
               androidRippleColor="lightgray"
               delayPressIn={0}>
@@ -145,6 +151,14 @@ class DetailExploreScreen extends Component {
   }
 
   onBackPress() {
+    this.props.navigation.goBack();
+  }
+  gasStationPress(){
+    this.props.changeStationType(GAS_STATION);
+    this.props.navigation.goBack();
+  }
+  atmStationPress(){
+    this.props.changeStationType(ATM_STATION);
     this.props.navigation.goBack();
   }
 
@@ -333,6 +347,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeLocation: (location) => dispatch(changeLocation(location)),
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
+  changeStationType:(type)=>dispatch(changeStationType(type)),
 });
 
 export default withNavigation(

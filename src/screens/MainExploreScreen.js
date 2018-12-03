@@ -24,6 +24,7 @@ import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
 import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
+import MarkerStations from '../components/MarkerStations'
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -149,6 +150,9 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
+          {<MarkerStations
+              stationType={this.props.stationType}
+              />}
         </MapView>
       </Container>
     );
@@ -254,6 +258,7 @@ class MainExploreScreen extends Component {
   componentDidMount() {
     //Reset destination location
     this.props.changeLocation(null);
+    this.props.changeStationType(NONE_STATION);
 
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
