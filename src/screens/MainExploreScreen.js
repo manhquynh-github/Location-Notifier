@@ -21,10 +21,8 @@ import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
 import { stopDirect, startDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
-import { changeLocation } from '../actions/ExploreActions';
+import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
-import atmJson from '../assets/data/atm.json'
-import {changeStationType} from '../reducers/ExploreReducers'
 import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
 
 class MainExploreScreen extends Component {
@@ -37,7 +35,8 @@ class MainExploreScreen extends Component {
     isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
-    vibrate:PropTypes.bool.isRequired
+    vibrate:PropTypes.bool.isRequired,
+    stationType: PropTypes.number.isRequired,
   };
 
   constructor() {
@@ -491,6 +490,7 @@ const mapStateToProps = (state) => ({
   soundID: state.settingsReducer.soundID,
   isNavigating: state.exploreReducer.isNavigating,
   vibrate: state.settingsReducer.vibrate,
+  stationType: state.exploreReducer.stationType,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -498,6 +498,7 @@ const mapDispatchToProps = (dispatch) => ({
   stopDirect: () => dispatch(stopDirect()),
   startDirect: () => dispatch(startDirect()),
   changeLocation: (location) => dispatch(changeLocation(location)),
+  changeStationType: (type) => dispatch(changeStationType(type)),
 });
 
 export default withNavigation(

@@ -1,4 +1,4 @@
-import { CHANGE_LOCATION, STOP_NAVIGATING,START_NAVIGATING, ATM_STATION, GAS_STATION, NONE_STATION } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_NAVIGATING,START_NAVIGATING, ATM_STATION, GAS_STATION, NONE_STATION, CHANGE_STATION_TYPE } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
@@ -23,7 +23,7 @@ const exploreReducer = (state = initialState, action) => {
       newState.isNavigating=true;
       return newState;
     }
-    case CHANGE_TYPE_STATION:{
+    case CHANGE_STATION_TYPE:{
       newState.stationType = value;
       return newState;
     }
