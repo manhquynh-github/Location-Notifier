@@ -34,7 +34,7 @@ class MainExploreScreen extends Component {
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
     startDirect: PropTypes.func.isRequired,
-    isDirect: PropTypes.bool,
+    isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
     vibrate:PropTypes.bool.isRequired
@@ -138,7 +138,7 @@ class MainExploreScreen extends Component {
           }}
           ref={(c) => (this.mapView = c)}
           showsUserLocation>
-          {this.props.isDirect && this.props.location && (
+          {this.props.isNavigating && this.props.location && (
             <DestinationDirect
               currentLocation={this.state.currentLocation}
               destination={{
@@ -168,7 +168,7 @@ class MainExploreScreen extends Component {
 
   setCancelOrStart() {
     //Cancel
-    if (this.props.isDirect && this.props.location) { 
+    if (this.props.isNavigating && this.props.location) { 
       //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
@@ -180,7 +180,7 @@ class MainExploreScreen extends Component {
     }
 
     //Start
-    else if(!this.props.isDirect && this.props.location){
+    else if(!this.props.isNavigating && this.props.location){
       this.props.startDirect();
       this.isFitted = false;
       //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
@@ -380,7 +380,7 @@ class MainExploreScreen extends Component {
   }
 
   checkToAlarm() {
-    if(!this.props.isDirect || !this.props.location){ //Have no destination
+    if(!this.props.isNavigating || !this.props.location){ //Have no destination
       return;
     }
     const current = this.state.currentLocation;
@@ -393,7 +393,7 @@ class MainExploreScreen extends Component {
     );
     console.log("Checking to alarm");
     // Only check and push notifications once if your're inside range
-    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isDirect) {
+    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isNavigating) {
       //PUSH NOTIFICATIONS
       //ALARM
       const alarmNotifData = this.configAlarmNotification();
@@ -489,7 +489,7 @@ const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
   rangeOption: state.settingsReducer.rangeOption,
   soundID: state.settingsReducer.soundID,
-  isDirect: state.exploreReducer.isDirect,
+  isNavigating: state.exploreReducer.isNavigating,
   vibrate: state.settingsReducer.vibrate,
 });
 

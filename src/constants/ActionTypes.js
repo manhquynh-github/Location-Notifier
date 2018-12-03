@@ -3,8 +3,8 @@ export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
 export const EDIT_FAVORITE = 'EDIT_FAVORITE';
 
 export const CHANGE_LOCATION = 'CHANGE_LOCATION';
-export const STOP_DIRECT = 'STOP_DIRECT';
-export const START_DIRECT = 'START_DIRECT';
+export const STOP_NAVIGATING = 'STOP_NAVIGATING';
+export const START_NAVIGATING = 'START_NAVIGATING';
 export const CHANGE_STATION_TYPE = 'CHANGE_STATION_TYPE';
 export const NONE_STATION = 0;
 export const ATM_STATION = 1;
@@ -22,8 +22,8 @@ export const ActionTypes = {
   },
   Explore: {
     CHANGE_LOCATION,
-    STOP_DIRECT,
-    START_DIRECT,
+    STOP_NAVIGATING,
+    START_NAVIGATING,
     CHANGE_STATION_TYPE,
   },
   Settings: {

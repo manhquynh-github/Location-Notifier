@@ -1,8 +1,8 @@
-import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT, ATM_STATION, GAS_STATION, NONE_STATION } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_NAVIGATING,START_NAVIGATING, ATM_STATION, GAS_STATION, NONE_STATION } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
-  isDirect:false,
+  isNavigating:false,
   stationType: NONE_STATION, //NO STATION
 };
 
@@ -12,15 +12,15 @@ const exploreReducer = (state = initialState, action) => {
     case CHANGE_LOCATION: {
       const value = action.payload.value;
       newState.location = value;
-      newState.isDirect=true;
+      newState.isNavigating=true;
       return newState;
     }
-    case STOP_DIRECT: {
-      newState.isDirect=false;
+    case STOP_NAVIGATING: {
+      newState.isNavigating=false;
       return newState;
     }
-    case START_DIRECT: {
-      newState.isDirect=true;
+    case START_NAVIGATING: {
+      newState.isNavigating=true;
       return newState;
     }
     case CHANGE_TYPE_STATION:{
