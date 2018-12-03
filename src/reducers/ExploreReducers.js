@@ -3,7 +3,7 @@ import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT, ATM_STATION, GAS_STATION, NO
 const initialState = {
   location: null,
   isDirect:false,
-  typeStation: NONE_STATION, //NO STATION
+  stationType: NONE_STATION, //NO STATION
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -24,7 +24,7 @@ const exploreReducer = (state = initialState, action) => {
       return newState;
     }
     case CHANGE_TYPE_STATION:{
-      newState.typeStation = value;
+      newState.stationType = value;
       return newState;
     }
     default: {

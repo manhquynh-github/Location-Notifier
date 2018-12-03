@@ -24,6 +24,8 @@ import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
 import atmJson from '../assets/data/atm.json'
+import {changeStationType} from '../reducers/ExploreReducers'
+import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
 
 class MainExploreScreen extends Component {
   static propTypes = {
