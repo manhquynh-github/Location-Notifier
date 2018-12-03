@@ -23,6 +23,7 @@ import { stopDirect, startDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
+import atmJson from '../assets/data/atm.json'
 
 class MainExploreScreen extends Component {
   static propTypes = {

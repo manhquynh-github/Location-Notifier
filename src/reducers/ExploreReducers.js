@@ -1,4 +1,4 @@
-import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT, ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
+import { CHANGE_LOCATION, STOP_DIRECT,START_DIRECT, ATM_STATION, GAS_STATION, NONE_STATION } from '../constants/ActionTypes';
 
 const initialState = {
   location: null,
