@@ -52,7 +52,7 @@ export default class MarkerStations extends Component {
         console.log(error);
       }
     );
-    
+
     this.onStationPress = this.onStationPress.bind(this);
   }
 
