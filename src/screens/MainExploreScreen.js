@@ -21,8 +21,10 @@ import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
 import { stopDirect, startDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
-import { changeLocation } from '../actions/ExploreActions';
+import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
+import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
+import MarkerStations from '../components/MarkerStations'
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -31,10 +33,11 @@ class MainExploreScreen extends Component {
     setRangeOption: PropTypes.func.isRequired,
     stopDirect: PropTypes.func.isRequired,
     startDirect: PropTypes.func.isRequired,
-    isDirect: PropTypes.bool,
+    isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
-    vibrate:PropTypes.bool.isRequired
+    vibrate:PropTypes.bool.isRequired,
+    stationType: PropTypes.number.isRequired,
   };
 
   constructor() {
@@ -60,6 +63,7 @@ class MainExploreScreen extends Component {
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
     this.setCancelOrStart = this.setCancelOrStart.bind(this);
+    this.onStationPress = this.onStationPress.bind(this);
   }
 
   render() {
@@ -135,7 +139,7 @@ class MainExploreScreen extends Component {
           }}
           ref={(c) => (this.mapView = c)}
           showsUserLocation>
-          {this.props.isDirect && this.props.location && (
+          {this.props.isNavigating && this.props.location && (
             <DestinationDirect
               currentLocation={this.state.currentLocation}
               destination={{
@@ -147,9 +151,23 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
+          {<MarkerStations
+              stationType={this.props.stationType}
+              onStationPress={this.onStationPress}
+              />}
         </MapView>
       </Container>
     );
+  }
+  onStationPress(marker){
+    const station = {
+      name: marker.title,
+      address:marker.title,
+      latitude: marker.lat,
+      longitude: marker.lng,
+    };
+    this.props.changeLocation(station);
+    this.props.changeStationType(NONE_STATION);
   }
 
   getLocationString() {
@@ -165,7 +183,7 @@ class MainExploreScreen extends Component {
 
   setCancelOrStart() {
     //Cancel
-    if (this.props.isDirect && this.props.location) { 
+    if (this.props.isNavigating && this.props.location) { 
       //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
@@ -177,7 +195,7 @@ class MainExploreScreen extends Component {
     }
 
     //Start
-    else if(!this.props.isDirect && this.props.location){
+    else if(!this.props.isNavigating && this.props.location){
       this.props.startDirect();
       this.isFitted = false;
       //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
@@ -252,6 +270,7 @@ class MainExploreScreen extends Component {
   componentDidMount() {
     //Reset destination location
     this.props.changeLocation(null);
+    this.props.changeStationType(NONE_STATION);
 
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -377,7 +396,7 @@ class MainExploreScreen extends Component {
   }
 
   checkToAlarm() {
-    if(!this.props.isDirect || !this.props.location){ //Have no destination
+    if(!this.props.isNavigating || !this.props.location){ //Have no destination
       return;
     }
     const current = this.state.currentLocation;
@@ -390,7 +409,7 @@ class MainExploreScreen extends Component {
     );
     console.log("Checking to alarm");
     // Only check and push notifications once if your're inside range
-    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isDirect) {
+    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isNavigating) {
       //PUSH NOTIFICATIONS
       //ALARM
       const alarmNotifData = this.configAlarmNotification();
@@ -486,8 +505,9 @@ const mapStateToProps = (state) => ({
   location: state.exploreReducer.location,
   rangeOption: state.settingsReducer.rangeOption,
   soundID: state.settingsReducer.soundID,
-  isDirect: state.exploreReducer.isDirect,
+  isNavigating: state.exploreReducer.isNavigating,
   vibrate: state.settingsReducer.vibrate,
+  stationType: state.exploreReducer.stationType,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -495,6 +515,7 @@ const mapDispatchToProps = (dispatch) => ({
   stopDirect: () => dispatch(stopDirect()),
   startDirect: () => dispatch(startDirect()),
   changeLocation: (location) => dispatch(changeLocation(location)),
+  changeStationType: (type) => dispatch(changeStationType(type)),
 });
 
 export default withNavigation(

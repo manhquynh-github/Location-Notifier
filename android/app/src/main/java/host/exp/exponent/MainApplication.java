@@ -16,6 +16,9 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+
 import com.emekalites.react.alarm.notification.ANPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
@@ -60,6 +63,8 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNFirebasePackage(),
+            new RNFirebaseDatabasePackage(),
             new ANPackage(),
             new RNGooglePlacesPackage(),
             new BackgroundGeolocationPackage()
