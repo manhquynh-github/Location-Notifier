@@ -1,7 +1,7 @@
-import { Body, Button, Icon, ListItem, Text } from "native-base";
+import { Body, Button, Icon, ListItem, Text, Toast } from "native-base";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { StyleSheet,View } from "react-native";
+import { StyleSheet,View,NetInfo } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
 import { MapView } from "expo";
 import {RANGE_VALUES} from "../constants/RangeOptions"
@@ -25,12 +25,19 @@ export default class DestinationDirect extends Component {
   
   constructor() {
     super();
+    this.state={
+      isConnected:false,
+    };    
+    
+    this.handleFirstConnectivityChange = this.handleFirstConnectivityChange.bind(this);
   }
-
+  
   render() {
+    console.log("internet: "+this.state.isConnected);
+
     return (
       <View>
-        <MapViewDirections
+        {this.state.isConnected && <MapViewDirections
           origin={this.props.currentLocation}
           destination={this.props.destination}
           apikey={GOOGLE_MAPS_APIKEY}
@@ -39,7 +46,7 @@ export default class DestinationDirect extends Component {
           onReady={result => {
             this.fitToCoordinates(result);
           }}
-        />
+        />}
         <MapView.Marker
           coordinate={this.props.destination}
           title="Destination"
@@ -54,6 +61,33 @@ export default class DestinationDirect extends Component {
         />
       </View>
     );
+  }
+
+  componentDidMount(){
+    //Network
+    NetInfo.isConnected.fetch().then(isConnected => {
+      const connectState = this.state;
+      connectState.isConnected = isConnected;
+      this.setState(connectState);
+    });
+    
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleFirstConnectivityChange
+    );
+  }
+
+  handleFirstConnectivityChange(isConnected) {
+    const connectState = this.state;
+    console.log(isConnected);
+    connectState.isConnected = isConnected;
+    this.setState(connectState);
+    if (!isConnected) {
+      if(this.props.isDirect)
+        Toast.show({ text: "Still navigating offline", buttonText: "Okay", type: "warning", duration: 2000 });
+      else
+        Toast.show({ text: "Internet's not availabel", buttonText: "Okay", type: "warning", duration: 2000 });
+    }
   }
 
   fitToCoordinates(result) {
