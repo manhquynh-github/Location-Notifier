@@ -24,6 +24,7 @@ const exploreReducer = (state = initialState, action) => {
       return newState;
     }
     case CHANGE_STATION_TYPE:{
+      const value = action.payload.value;
       newState.stationType = value;
       return newState;
     }

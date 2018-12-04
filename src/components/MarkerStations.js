@@ -77,7 +77,8 @@ export default class MarkerStations extends Component {
           title={marker.title}
           key={index}
           image={require('../assets/images/gasstation.png')}
-        />
+        >
+        </MapView.Marker>
       ))
     );
   };
