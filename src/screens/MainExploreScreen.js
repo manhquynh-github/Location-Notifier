@@ -15,6 +15,7 @@ import {
   Dimensions,
   ToastAndroid,
   View,
+  NetInfo,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -54,12 +55,12 @@ class MainExploreScreen extends Component {
 
   constructor() {
     super();
+    
     this.state = {
       currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513,
-      },
-      distance: null,
+      }
     };
 
     this.mapView = null;
@@ -411,7 +412,7 @@ class MainExploreScreen extends Component {
       newState.currentLocation.longitude = location.longitude;
 
       this.setState(newState);
-    });
+    });    
   }
 
   componentWillUnmount() {
@@ -422,6 +423,7 @@ class MainExploreScreen extends Component {
       BackgroundGeolocation.removeAllListeners(event)
     );
   }
+
 
   checkToAlarm() {
     if (!this.props.isNavigating || !this.props.location) {
