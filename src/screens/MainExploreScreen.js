@@ -1,4 +1,12 @@
-import { Button, Container, Content, Fab, Icon, Text, Toast } from 'native-base';
+import {
+  Button,
+  Container,
+  Content,
+  Fab,
+  Icon,
+  Text,
+  Toast,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -23,8 +31,12 @@ import { stopDirect, startDirect } from '../actions/ExploreActions';
 import RNGooglePlaces from 'react-native-google-places';
 import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import ReactNativeAN from 'react-native-alarm-notification';
-import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
-import MarkerStations from '../components/MarkerStations'
+import {
+  NONE_STATION,
+  ATM_STATION,
+  GAS_STATION,
+} from '../constants/ActionTypes';
+import MarkerStations from '../components/MarkerStations';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -36,7 +48,7 @@ class MainExploreScreen extends Component {
     isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
-    vibrate:PropTypes.bool.isRequired,
+    vibrate: PropTypes.bool.isRequired,
     stationType: PropTypes.number.isRequired,
   };
 
@@ -127,7 +139,7 @@ class MainExploreScreen extends Component {
           style={styles.startButton}
           position="bottomRight"
           onPress={this.setCancelOrStart}>
-          <Icon name="play" />
+          <Icon name={this.props.isNavigating ? 'pause' : 'play'} />
         </Fab>
         <MapView
           style={{ flex: 1, alignSelf: 'stretch' }}
@@ -151,18 +163,20 @@ class MainExploreScreen extends Component {
               range={this.props.rangeOption}
             />
           )}
-          {<MarkerStations
+          {
+            <MarkerStations
               stationType={this.props.stationType}
               onStationPress={this.onStationPress}
-              />}
+            />
+          }
         </MapView>
       </Container>
     );
   }
-  onStationPress(marker){
+  onStationPress(marker) {
     const station = {
       name: marker.title,
-      address:marker.title,
+      address: marker.title,
       latitude: marker.lat,
       longitude: marker.lng,
     };
@@ -183,7 +197,7 @@ class MainExploreScreen extends Component {
 
   setCancelOrStart() {
     //Cancel
-    if (this.props.isNavigating && this.props.location) { 
+    if (this.props.isNavigating && this.props.location) {
       //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
@@ -191,19 +205,33 @@ class MainExploreScreen extends Component {
       //Turn of draw direction
       this.props.stopDirect();
       //ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
-      Toast.show({text: "Stop tracking your location!",buttonText: "Okay", type: "success", duration: 2000});
+      Toast.show({
+        text: 'Stop tracking your location!',
+        buttonText: 'Okay',
+        type: 'success',
+        duration: 2000,
+      });
     }
 
     //Start
-    else if(!this.props.isNavigating && this.props.location){
+    else if (!this.props.isNavigating && this.props.location) {
       this.props.startDirect();
       this.isFitted = false;
       //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
-      Toast.show({text: "Start tracking your location",buttonText: "Okay", type: "success", duration: 2000});
+      Toast.show({
+        text: 'Start tracking your location',
+        buttonText: 'Okay',
+        type: 'success',
+        duration: 2000,
+      });
+    } else {
+      Toast.show({
+        text: 'Enter your destination',
+        buttonText: 'Okay',
+        type: 'warning',
+        duration: 2000,
+      });
     }
-    else{
-      Toast.show({text: "Enter your destination",buttonText: "Okay", type: "warning", duration: 2000});
-    }  
   }
 
   fitToCoordinates(result) {
@@ -244,13 +272,13 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.log('SUCCESS'+location.address);
+        console.log('SUCCESS' + location.address);
       })
-      .catch(error => console.log('ERRORRRRRRRRR'));
+      .catch((error) => console.log('ERRORRRRRRRRR'));
 
     if (location == null) {
       console.log('Unable to find location from result item.');
-      ToastAndroid.show("ERROR", ToastAndroid.SHORT);
+      ToastAndroid.show('ERROR', ToastAndroid.SHORT);
       return;
     }
 
@@ -351,7 +379,7 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('background', () => {
-      console.log('[INFO] App is in background');    
+      console.log('[INFO] App is in background');
     });
 
     BackgroundGeolocation.on('foreground', () => {
@@ -396,7 +424,8 @@ class MainExploreScreen extends Component {
   }
 
   checkToAlarm() {
-    if(!this.props.isNavigating || !this.props.location){ //Have no destination
+    if (!this.props.isNavigating || !this.props.location) {
+      //Have no destination
       return;
     }
     const current = this.state.currentLocation;
@@ -407,9 +436,12 @@ class MainExploreScreen extends Component {
       des.latitude,
       des.longitude
     );
-    console.log("Checking to alarm");
+    console.log('Checking to alarm');
     // Only check and push notifications once if your're inside range
-    if (distance <= RANGE_VALUES[this.props.rangeOption] && this.props.isNavigating) {
+    if (
+      distance <= RANGE_VALUES[this.props.rangeOption] &&
+      this.props.isNavigating
+    ) {
       //PUSH NOTIFICATIONS
       //ALARM
       const alarmNotifData = this.configAlarmNotification();
@@ -419,26 +451,26 @@ class MainExploreScreen extends Component {
       this.props.stopDirect();
       this.isFitted = false; // Will be fit direction in new address
 
-      console.log("Send notification successfully");
+      console.log('Send notification successfully');
       this.props.navigation.navigate('Alarm');
-    }    
+    }
   }
-  
-  configAlarmNotification(){
-    const soundName = 'alarm'+this.props.soundID+'.mp3';
+
+  configAlarmNotification() {
+    const soundName = 'alarm' + this.props.soundID + '.mp3';
     const alarmNotifData = {
-      id: "1997",                                 
-      title: "Location Notifier",               
-      message: "You're IN",          
-      channel: "1997",                     // Required. Same id as specified in MainApplication's onCreate method
+      id: '1997',
+      title: 'Location Notifier',
+      message: "You're IN",
+      channel: '1997', // Required. Same id as specified in MainApplication's onCreate method
       ticker: "Let's make a favorites",
       vibrate: this.props.vibrate,
-      vibration: 10000,                              
-      small_icon: "ic_launcher",                    
-      large_icon: "ic_launcher",
+      vibration: 10000,
+      small_icon: 'ic_launcher',
+      large_icon: 'ic_launcher',
       play_sound: true,
       sound_name: soundName, // Plays custom notification ringtone if sound_name: null
-      color: "red",
+      color: 'red',
     };
     return alarmNotifData;
   }
