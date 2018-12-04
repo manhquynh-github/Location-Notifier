@@ -63,6 +63,7 @@ class MainExploreScreen extends Component {
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
     this.setCancelOrStart = this.setCancelOrStart.bind(this);
+    this.onStationPress = this.onStationPress.bind(this);
   }
 
   render() {
@@ -152,10 +153,21 @@ class MainExploreScreen extends Component {
           )}
           {<MarkerStations
               stationType={this.props.stationType}
+              onStationPress={this.onStationPress}
               />}
         </MapView>
       </Container>
     );
+  }
+  onStationPress(marker){
+    const station = {
+      name: marker.title,
+      address:marker.title,
+      latitude: marker.lat,
+      longitude: marker.lng,
+    };
+    this.props.changeLocation(station);
+    this.props.changeStationType(NONE_STATION);
   }
 
   getLocationString() {

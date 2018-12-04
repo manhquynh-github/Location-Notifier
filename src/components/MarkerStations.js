@@ -11,7 +11,8 @@ import { rootRef, atmRef, gasRef } from "../config/FirebaseConfig";
 
 export default class MarkerStations extends Component {
   static propTypes = {
-    stationType: PropTypes.number.isRequired
+    stationType: PropTypes.number.isRequired,
+    onStationPress: PropTypes.func,
   };
 
   constructor() {
@@ -51,6 +52,8 @@ export default class MarkerStations extends Component {
         console.log(error);
       }
     );
+    
+    this.onStationPress = this.onStationPress.bind(this);
   }
 
   renderAtm = () => {
@@ -63,6 +66,7 @@ export default class MarkerStations extends Component {
           title={marker.title}
           key={index}
           image={require('../assets/images/atm.png')}
+          onCalloutPress={()=>this.onStationPress(marker)}
         />
       ))
     );
@@ -77,8 +81,8 @@ export default class MarkerStations extends Component {
           title={marker.title}
           key={index}
           image={require('../assets/images/gasstation.png')}
-        >
-        </MapView.Marker>
+          onCalloutPress={()=>this.onStationPress(marker)}
+        />
       ))
     );
   };
@@ -93,9 +97,9 @@ export default class MarkerStations extends Component {
     );
   }
 
-  fitToCoordinates(result) {
-    if (this.props.fitToCoordinates) {
-      this.props.fitToCoordinates(result);
+  onStationPress(marker) {
+    if (this.props.onStationPress) {
+      this.props.onStationPress(marker);
     }
   }
 }
