@@ -20,7 +20,8 @@ export default class DestinationDirect extends Component {
     }).isRequired,
     fitToCoordinates: PropTypes.func,
     checkAlarm:PropTypes.func,
-    range:PropTypes.number.isRequired
+    range:PropTypes.number.isRequired,
+    isNavigating: PropTypes.bool.isRequired,
   };
   
   constructor() {
@@ -83,7 +84,7 @@ export default class DestinationDirect extends Component {
     connectState.isConnected = isConnected;
     this.setState(connectState);
     if (!isConnected) {
-      if(this.props.isDirect)
+      if(this.props.isNavigating)
         Toast.show({ text: "Still navigating offline", buttonText: "Okay", type: "warning", duration: 2000 });
       else
         Toast.show({ text: "Internet's not availabel", buttonText: "Okay", type: "warning", duration: 2000 });

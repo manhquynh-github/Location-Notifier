@@ -162,6 +162,7 @@ class MainExploreScreen extends Component {
               fitToCoordinates={this.fitToCoordinates}
               //checkAlarm={this.checkToAlarm}
               range={this.props.rangeOption}
+              isNavigating={this.props.isNavigating}
             />
           )}
           {
