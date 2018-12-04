@@ -124,31 +124,6 @@ export class SettingsScreen extends Component {
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
           </ListItem>
-          <ListItem
-            icon
-            last
-            button
-            onPress={this.onPressUpdate}
-            delayPressIn={0}>
-            <Left>
-              <Button style={styles.rangeButton}>
-                <Icon
-                  active
-                  name="map-marker-distance"
-                  type="MaterialCommunityIcons"
-                />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Update station</Text>
-            </Body>
-            <Right style={{ flex: 0 }}>
-              <Text style={styles.nameRingtone} ellipsizeMode="tail">
-                {RANGE_OPTIONS[this.props.rangeOption]}
-              </Text>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
-            </Right>
-          </ListItem>
           <Separator />
           <ListItem icon last>
             <Left>

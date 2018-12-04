@@ -301,6 +301,7 @@ class MainExploreScreen extends Component {
     //Reset destination location
     this.props.changeLocation(null);
     this.props.changeStationType(NONE_STATION);
+    this.props.stopDirect();
 
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -451,7 +452,7 @@ class MainExploreScreen extends Component {
       ReactNativeAN.sendNotification(alarmNotifData);
 
       //Stop direct
-      this.props.stopDirect();
+      //this.props.stopDirect();
       this.isFitted = false; // Will be fit direction in new address
 
       console.log('Send notification successfully');
@@ -468,7 +469,7 @@ class MainExploreScreen extends Component {
       channel: '1997', // Required. Same id as specified in MainApplication's onCreate method
       ticker: "Let's make a favorites",
       vibrate: this.props.vibrate,
-      vibration: 10000,
+      vibration: 3000,
       small_icon: 'ic_launcher',
       large_icon: 'ic_launcher',
       play_sound: true,

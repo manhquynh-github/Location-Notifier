@@ -34,9 +34,7 @@ export default class FavoriteListItem extends Component {
         button
         onPress={this.onPress}
         onLongPress={this.onLongPress}
-        delayLongPress={0}
-        delayPressIn={0}
-        delayPressOut={0}>
+        delayPressIn={0}>
         <Body>
           <Text
             ellipsizeMode="tail"
