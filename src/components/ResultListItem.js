@@ -61,6 +61,12 @@ export default class ResultListItem extends Component {
     );
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.saved != nextProps.saved) {
+      nextState.saved = nextProps.saved;
+    }
+  }
+
   onPress() {
     if (this.props.onPress) {
       this.props.onPress();
