@@ -1,8 +1,12 @@
-import { CHANGE_RANGE, CHANGE_RINGTONE, CHANGE_VIBRATE } from '../constants/ActionTypes';
+import {
+  CHANGE_RANGE,
+  CHANGE_RINGTONE,
+  CHANGE_VIBRATE,
+} from '../constants/ActionTypes';
 
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
-import {PLAYLIST} from '../constants/Sound'
+import { PLAYLIST } from '../constants/Sound';
 
 const initialState = {
   rangeOption: 0,
