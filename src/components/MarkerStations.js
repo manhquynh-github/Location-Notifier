@@ -3,93 +3,93 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { atmRef, gasRef } from '../config/FirebaseConfig';
-import { ATM, GAS } from '../constants/StationTypes';
+import { NONE, ATM, GAS } from '../constants/StationTypes';
 
 export default class MarkerStations extends Component {
   static propTypes = {
-    stationType: PropTypes.number.isRequired,
+    stationType: PropTypes.oneOf([ATM, GAS]),
     onStationPress: PropTypes.func,
   };
 
+  static defaultProps = { stationType: NONE };
+
   constructor() {
     super();
-
-    this.arrATM = [
-      {
-        lng: 106.65259739999999,
-        lat: 10.801465900000002,
-        title: 'ATM VietComBank',
-      },
-    ];
-    const atmMarkers = atmRef.child('thuduc');
-    atmMarkers.once('value').then(
-      (markers) => {
-        this.arrATM = markers.val();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    this.gasStations = [
-      {
-        lng: 106.65259739999999,
-        lat: 10.801465900000002,
-        title: 'GAS station',
-      },
-    ];
-    const gasMarkers = gasRef.child('thuduc');
-    atmMarkers.once('value').then(
-      (markers) => {
-        this.gasStations = markers.val();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
+    this.initStations();
+    this.initMarkerImages();
     this.onStationPress = this.onStationPress.bind(this);
   }
 
-  renderAtm = () => {
-    return (
-      this.arrATM &&
-      this.arrATM.lenght != 0 &&
-      this.arrATM.map((marker, index) => (
-        <MapView.Marker
-          coordinate={{ latitude: marker.lat, longitude: marker.lng }}
-          title={marker.title}
-          key={index}
-          image={require('../assets/images/atm.png')}
-          onCalloutPress={() => this.onStationPress(marker)}
-        />
-      ))
-    );
-  };
-  renderGas = () => {
-    return (
-      this.gasStations &&
-      this.gasStations.lenght != 0 &&
-      this.gasStations.map((marker, index) => (
-        <MapView.Marker
-          coordinate={{ latitude: marker.lat, longitude: marker.lng }}
-          title={marker.title}
-          key={index}
-          image={require('../assets/images/gasstation.png')}
-          onCalloutPress={() => this.onStationPress(marker)}
-        />
-      ))
-    );
-  };
-
   render() {
-    const stations = this.props.stationType;
+    const type = this.props.stationType;
+    if (type === NONE) {
+      return null;
+    }
+
+    const markerImage = this.markerImages[type];
+
     return (
       <View>
-        {stations === ATM ? this.renderAtm() : <View />}
-        {stations === GAS ? this.renderGas() : <View />}
+        {this.stations[type].map((marker, index) => (
+          <MapView.Marker
+            coordinate={{
+              latitude: marker.lat,
+              longitude: marker.lng,
+            }}
+            title={marker.title}
+            key={`marker-${type}-${index}`}
+            image={markerImage}
+            onCalloutPress={() => this.onStationPress(marker)}
+          />
+        ))}
       </View>
     );
+  }
+
+  initStations() {
+    this.stations = {
+      [ATM]: [
+        {
+          lng: 106.65259739999999,
+          lat: 10.801465900000002,
+          title: 'ATM VietComBank',
+        },
+      ],
+      [GAS]: [
+        {
+          lng: 106.65259739999999,
+          lat: 10.801465900000002,
+          title: 'GAS station',
+        },
+      ],
+    };
+
+    const atmMarkers = atmRef.child('thuduc');
+    atmMarkers.once('value').then(
+      (markers) => {
+        this.stations[ATM] = markers.val();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    const gasMarkers = gasRef.child('thuduc');
+    gasMarkers.once('value').then(
+      (markers) => {
+        this.stations[GAS] = markers.val();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  initMarkerImages() {
+    this.markerImages = {
+      [ATM]: require('../assets/images/atm.png'),
+      [GAS]: require('../assets/images/gasstation.png'),
+    };
   }
 
   onStationPress(marker) {
