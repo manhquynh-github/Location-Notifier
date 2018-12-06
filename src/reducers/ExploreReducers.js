@@ -1,11 +1,9 @@
 import {
   CHANGE_LOCATION,
-  STOP_NAVIGATING,
-  START_NAVIGATING,
-  ATM_STATION,
-  GAS_STATION,
-  NONE_STATION,
   CHANGE_STATION_TYPE,
+  NONE_STATION,
+  START_NAVIGATING,
+  STOP_NAVIGATING,
 } from '../constants/ActionTypes';
 
 const initialState = {
