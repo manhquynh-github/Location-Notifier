@@ -1,43 +1,28 @@
-import {
-  Button,
-  Container,
-  Content,
-  Fab,
-  Icon,
-  Text,
-  Toast,
-} from 'native-base';
+import { MapView } from 'expo';
+import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Dimensions,
-  ToastAndroid,
-  View,
-  NetInfo,
-} from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
+import ReactNativeAN from 'react-native-alarm-notification';
+import RNGooglePlaces from 'react-native-google-places';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
+import {
+  changeLocation,
+  changeStationType,
+  startDirect,
+  stopDirect,
+} from '../actions/ExploreActions';
+import DestinationDirect from '../components/DestinationDirect';
+import MarkerStations from '../components/MarkerStations';
 import showRangeOptions from '../components/RangeOptions';
+import { NONE_STATION } from '../constants/ActionTypes';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { MapView } from 'expo';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import DestinationDirect from '../components/DestinationDirect';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 import { propTypes as LocationProps } from '../model/Location';
-import { stopDirect, startDirect } from '../actions/ExploreActions';
-import RNGooglePlaces from 'react-native-google-places';
-import { changeLocation, changeStationType } from '../actions/ExploreActions';
-import ReactNativeAN from 'react-native-alarm-notification';
-import {
-  NONE_STATION,
-  ATM_STATION,
-  GAS_STATION,
-} from '../constants/ActionTypes';
-import MarkerStations from '../components/MarkerStations';
 
 class MainExploreScreen extends Component {
   static propTypes = {

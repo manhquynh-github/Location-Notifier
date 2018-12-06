@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
   Body,
-  Picker,
-  List,
-  ListItem,
-  Text,
   Button,
+  Container,
+  Content,
+  Header,
   Icon,
+  Left,
+  ListItem,
+  Right,
+  Text,
+  Title,
 } from 'native-base';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { setRingtone } from '../actions/SettingsActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-import { Asset, Audio } from 'expo';
+import Colors from '../constants/Colors';
 import {
-  PLAYLIST,
-  PlaylistItem,
-  prepareSound,
   loadSounds,
+  PLAYLIST,
   playSound,
+  prepareSound,
   stopSound,
 } from '../constants/Sound';
-import { setRingtone } from '../actions/SettingsActions';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Colors from '../constants/Colors';
 
 export class RingtoneSetting extends Component {
   static propTypes = {

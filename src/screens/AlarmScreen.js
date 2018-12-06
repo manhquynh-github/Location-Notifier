@@ -2,12 +2,12 @@ import { Button, Container, H1, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import ReactNativeAN from 'react-native-alarm-notification';
 import { connect } from 'react-redux';
+import { stopDirect } from '../actions/ExploreActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
-import ReactNativeAN from 'react-native-alarm-notification';
-import { stopDirect } from '../actions/ExploreActions';
 
 class AlarmScreen extends Component {
   static propTypes = {

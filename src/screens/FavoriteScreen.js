@@ -1,4 +1,4 @@
-import { Body, Container, Header, Title, ActionSheet } from 'native-base';
+import { ActionSheet, Body, Container, Header, Title } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';

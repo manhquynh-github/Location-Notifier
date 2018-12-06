@@ -1,34 +1,30 @@
+import {
+  Body,
+  Button,
+  Container,
+  Content,
+  Header,
+  Icon,
+  Left,
+  ListItem,
+  Right,
+  Separator,
+  Switch,
+  Text,
+  Title,
+  View,
+} from 'native-base';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  ListItem,
-  Text,
-  Badge,
-  Left,
-  Right,
-  Body,
-  Switch,
-  Radio,
-  Picker,
-  Separator,
-  View,
-  ActionSheet,
-} from 'native-base';
-import StatusBarOverlay from '../components/StatusBarOverlay';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { setVibrate, setRangeOption } from '../actions/SettingsActions';
-import { PLAYLIST } from '../constants/Sound';
+import { setRangeOption, setVibrate } from '../actions/SettingsActions';
 import showRangeOptions from '../components/RangeOptions';
+import StatusBarOverlay from '../components/StatusBarOverlay';
+import { atmRef, verRef } from '../config/FirebaseConfig';
 import Colors from '../constants/Colors';
-import { rootRef, verRef, atmRef } from '../config/FirebaseConfig';
+import { RANGE_OPTIONS } from '../constants/RangeOptions';
+import { PLAYLIST } from '../constants/Sound';
 
 export class SettingsScreen extends Component {
   static propTypes = {

@@ -10,20 +10,16 @@ import {
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
+import RNGooglePlaces from 'react-native-google-places';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
+import { ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
 import Colors from '../constants/Colors';
 import { propTypes as LocationProps } from '../model/Location';
-import RNGooglePlaces from 'react-native-google-places';
-import {
-  NONE_STATION,
-  ATM_STATION,
-  GAS_STATION,
-} from '../constants/ActionTypes';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
