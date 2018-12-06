@@ -1,11 +1,10 @@
-import { Body, Button, Icon, ListItem, Text, Toast } from 'native-base';
+import { MapView } from 'expo';
+import { Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View, NetInfo } from 'react-native';
+import { NetInfo, View } from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
-import { MapView } from 'expo';
 import { RANGE_VALUES } from '../constants/RangeOptions';
-import { primaryRBGA, primary } from '../constants/Colors';
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ';
 
 export default class DestinationDirect extends Component {

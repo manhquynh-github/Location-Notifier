@@ -1,6 +1,6 @@
 import { ActionSheet } from 'native-base';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
 import Colors from '../constants/Colors';
+import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
 const showRangeOptions = (currentIndex, callback) => {
   // Generate new range options, where

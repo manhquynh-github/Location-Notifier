@@ -1,13 +1,9 @@
+import { MapView } from 'expo';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { MapView } from 'expo';
-import {
-  NONE_STATION,
-  ATM_STATION,
-  GAS_STATION,
-} from '../constants/ActionTypes';
-import { rootRef, atmRef, gasRef } from '../config/FirebaseConfig';
+import { View } from 'react-native';
+import { atmRef, gasRef } from '../config/FirebaseConfig';
+import { ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
 
 export default class MarkerStations extends Component {
   static propTypes = {

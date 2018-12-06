@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
-import ResultListItem from './ResultListItem';
 import { propTypes as LocationProps } from '../model/Location';
 import { propTypes as SearchResultProps } from '../model/SearchResult';
+import ResultListItem from './ResultListItem';
 
 export default class ResultList extends Component {
   static propTypes = {
