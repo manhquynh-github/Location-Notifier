@@ -1,5 +1,5 @@
 const primary = '#2196f3';
-const primaryRBGA = "rgba(33, 150, 243, 0.5)"
+const primaryRBGA = 'rgba(33, 150, 243, 0.5)';
 
 const darkPrimary = '#1769aa';
 const lightPrimary = '#4dabf5';
