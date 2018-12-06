@@ -1,13 +1,13 @@
-import { createStore } from 'redux';
-import combinedReducer from '../reducers/combinedReducer';
-import { persistReducer, persistStore } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
-import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/hardSet';
+import { createStore } from 'redux';
+import { persistReducer, persistStore } from 'redux-persist';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
+import combinedReducer from '../reducers/combinedReducer';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  stateReconciler: autoMergeLevel1,
+  stateReconciler: hardSet,
 };
 
 const persistedReducer = persistReducer(persistConfig, combinedReducer);
