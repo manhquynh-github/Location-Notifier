@@ -17,8 +17,8 @@ import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-import { ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
 import Colors from '../constants/Colors';
+import { ATM, GAS } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
 
 class DetailExploreScreen extends Component {
@@ -154,11 +154,11 @@ class DetailExploreScreen extends Component {
     this.props.navigation.goBack();
   }
   gasStationPress() {
-    this.props.changeStationType(GAS_STATION);
+    this.props.changeStationType(GAS);
     this.props.navigation.goBack();
   }
   atmStationPress() {
-    this.props.changeStationType(ATM_STATION);
+    this.props.changeStationType(ATM);
     this.props.navigation.goBack();
   }
 

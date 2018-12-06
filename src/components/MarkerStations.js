@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { atmRef, gasRef } from '../config/FirebaseConfig';
-import { ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
+import { ATM, GAS } from '../constants/StationTypes';
 
 export default class MarkerStations extends Component {
   static propTypes = {
@@ -86,8 +86,8 @@ export default class MarkerStations extends Component {
     const stations = this.props.stationType;
     return (
       <View>
-        {stations === ATM_STATION ? this.renderAtm() : <View />}
-        {stations === GAS_STATION ? this.renderGas() : <View />}
+        {stations === ATM ? this.renderAtm() : <View />}
+        {stations === GAS ? this.renderGas() : <View />}
       </View>
     );
   }
