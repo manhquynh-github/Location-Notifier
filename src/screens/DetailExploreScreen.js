@@ -19,7 +19,11 @@ import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { propTypes as LocationProps } from '../model/Location';
 import RNGooglePlaces from 'react-native-google-places';
-import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
+import {
+  NONE_STATION,
+  ATM_STATION,
+  GAS_STATION,
+} from '../constants/ActionTypes';
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -28,7 +32,7 @@ class DetailExploreScreen extends Component {
     removeFavorite: PropTypes.func.isRequired,
     location: PropTypes.shape(LocationProps),
     changeLocation: PropTypes.func.isRequired,
-    changeStationType:PropTypes.func.isRequired,
+    changeStationType: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -153,11 +157,11 @@ class DetailExploreScreen extends Component {
   onBackPress() {
     this.props.navigation.goBack();
   }
-  gasStationPress(){
+  gasStationPress() {
     this.props.changeStationType(GAS_STATION);
     this.props.navigation.goBack();
   }
-  atmStationPress(){
+  atmStationPress() {
     this.props.changeStationType(ATM_STATION);
     this.props.navigation.goBack();
   }
@@ -347,7 +351,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeLocation: (location) => dispatch(changeLocation(location)),
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
-  changeStationType:(type)=>dispatch(changeStationType(type)),
+  changeStationType: (type) => dispatch(changeStationType(type)),
 });
 
 export default withNavigation(

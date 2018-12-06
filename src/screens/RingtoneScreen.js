@@ -23,7 +23,7 @@ import {
   prepareSound,
   loadSounds,
   playSound,
-  stopSound
+  stopSound,
 } from '../constants/Sound';
 import { setRingtone } from '../actions/SettingsActions';
 import PropTypes from 'prop-types';
@@ -76,7 +76,7 @@ export class RingtoneSetting extends Component {
             // extraData={this.state}
             renderItem={this.renderSoundItem}
             keyExtractor={this.keyExtractor}
-            attachStateToRender={this.state}  //Just make render with state, not implement
+            attachStateToRender={this.state} //Just make render with state, not implement
           />
         </Content>
       </Container>
@@ -90,7 +90,9 @@ export class RingtoneSetting extends Component {
         iconRight
         button
         delayPressIn={0}
-        style={data.index == this.state.soundSelected ? styles.selectedItem : {}}
+        style={
+          data.index == this.state.soundSelected ? styles.selectedItem : {}
+        }
         onPress={() => {
           this.onPlayPausePressItem(data.index);
         }}>
@@ -126,10 +128,10 @@ export class RingtoneSetting extends Component {
       this.setState(newState);
     }
     loadSounds({
-      song : PLAYLIST[index].item.asset,
+      song: PLAYLIST[index].item.asset,
     });
-    playSound('song');    
-  };
+    playSound('song');
+  }
 }
 
 const styles = StyleSheet.create({

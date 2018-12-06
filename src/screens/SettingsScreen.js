@@ -28,7 +28,7 @@ import { setVibrate, setRangeOption } from '../actions/SettingsActions';
 import { PLAYLIST } from '../constants/Sound';
 import showRangeOptions from '../components/RangeOptions';
 import Colors from '../constants/Colors';
-import {rootRef, verRef, atmRef} from '../config/FirebaseConfig';
+import { rootRef, verRef, atmRef } from '../config/FirebaseConfig';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -171,14 +171,14 @@ export class SettingsScreen extends Component {
       }
     });
   }
-  onPressUpdate(){
-    verRef.set(0.1,(result)=>{
+  onPressUpdate() {
+    verRef.set(0.1, (result) => {
       console.log(result);
-    })
-    atmRef.on("value", (child)=>{
-      child.forEach((item)=>{
+    });
+    atmRef.on('value', (child) => {
+      child.forEach((item) => {
         console.log(item.val());
-      })
+      });
     });
   }
 }
