@@ -23,6 +23,7 @@ import Layout from '../constants/Layout';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 import { ATM, GAS, NONE } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
+import { computeDistanceBetween } from '../common/HelperFunction';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -56,8 +57,6 @@ class MainExploreScreen extends Component {
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
-    this.calcCrow = this.calcCrow.bind(this);
-    this.toRad = this.toRad.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
     this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
     this.setCancelOrStart = this.setCancelOrStart.bind(this);
@@ -418,7 +417,7 @@ class MainExploreScreen extends Component {
     }
     const current = this.state.currentLocation;
     const des = this.props.location;
-    const distance = this.calcCrow(
+    const distance = computeDistanceBetween(
       current.latitude,
       current.longitude,
       des.latitude,
@@ -461,27 +460,6 @@ class MainExploreScreen extends Component {
       color: 'red',
     };
     return alarmNotifData;
-  }
-
-  //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
-  calcCrow(lat1, lon1, lat2, lon2) {
-    var R = 6371; // km
-    var dLat = this.toRad(lat2 - lat1);
-    var dLon = this.toRad(lon2 - lon1);
-    var lat1 = this.toRad(lat1);
-    var lat2 = this.toRad(lat2);
-
-    var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c * 1000;
-    return d;
-  }
-
-  // Converts numeric degrees to radians
-  toRad(Value) {
-    return (Value * Math.PI) / 180;
   }
 }
 
