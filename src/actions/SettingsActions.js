@@ -1,4 +1,8 @@
-import { CHANGE_RANGE, CHANGE_RINGTONE, CHANGE_VIBRATE } from '../constants/ActionTypes';
+import {
+  CHANGE_RANGE,
+  CHANGE_RINGTONE,
+  CHANGE_VIBRATE,
+} from '../constants/ActionTypes';
 
 export const setRangeOption = (optionID) => ({
   type: CHANGE_RANGE,
