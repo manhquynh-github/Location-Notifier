@@ -1,13 +1,13 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
-import { MapView } from "expo";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { MapView } from 'expo';
 import {
   NONE_STATION,
   ATM_STATION,
-  GAS_STATION
-} from "../constants/ActionTypes";
-import { rootRef, atmRef, gasRef } from "../config/FirebaseConfig";
+  GAS_STATION,
+} from '../constants/ActionTypes';
+import { rootRef, atmRef, gasRef } from '../config/FirebaseConfig';
 
 export default class MarkerStations extends Component {
   static propTypes = {
@@ -18,37 +18,36 @@ export default class MarkerStations extends Component {
   constructor() {
     super();
 
-    this.arrATM=[
+    this.arrATM = [
       {
         lng: 106.65259739999999,
         lat: 10.801465900000002,
         title: 'ATM VietComBank',
       },
     ];
-    const atmMarkers = atmRef.child("thuduc");
-    atmMarkers.once("value").then(
-      markers => {
-        this.arrATM=markers.val();
+    const atmMarkers = atmRef.child('thuduc');
+    atmMarkers.once('value').then(
+      (markers) => {
+        this.arrATM = markers.val();
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
 
-
-    this.gasStations=[
+    this.gasStations = [
       {
         lng: 106.65259739999999,
         lat: 10.801465900000002,
         title: 'GAS station',
       },
     ];
-    const gasMarkers = gasRef.child("thuduc");
-    atmMarkers.once("value").then(
-      markers => {
-        this.gasStations=markers.val();
+    const gasMarkers = gasRef.child('thuduc');
+    atmMarkers.once('value').then(
+      (markers) => {
+        this.gasStations = markers.val();
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
@@ -59,14 +58,14 @@ export default class MarkerStations extends Component {
   renderAtm = () => {
     return (
       this.arrATM &&
-      this.arrATM.lenght!=0 &&
-      this.arrATM.map((marker,index) => (
+      this.arrATM.lenght != 0 &&
+      this.arrATM.map((marker, index) => (
         <MapView.Marker
-          coordinate={{latitude: marker.lat, longitude: marker.lng}}
+          coordinate={{ latitude: marker.lat, longitude: marker.lng }}
           title={marker.title}
           key={index}
           image={require('../assets/images/atm.png')}
-          onCalloutPress={()=>this.onStationPress(marker)}
+          onCalloutPress={() => this.onStationPress(marker)}
         />
       ))
     );
@@ -74,14 +73,14 @@ export default class MarkerStations extends Component {
   renderGas = () => {
     return (
       this.gasStations &&
-      this.gasStations.lenght!=0 &&
-      this.gasStations.map((marker,index) => (
+      this.gasStations.lenght != 0 &&
+      this.gasStations.map((marker, index) => (
         <MapView.Marker
-          coordinate={{latitude: marker.lat, longitude: marker.lng}}
+          coordinate={{ latitude: marker.lat, longitude: marker.lng }}
           title={marker.title}
           key={index}
           image={require('../assets/images/gasstation.png')}
-          onCalloutPress={()=>this.onStationPress(marker)}
+          onCalloutPress={() => this.onStationPress(marker)}
         />
       ))
     );
