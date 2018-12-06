@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { atmRef, gasRef } from '../config/FirebaseConfig';
-import { NONE, ATM, GAS } from '../constants/StationTypes';
+import { NONE, ATM, GAS } from '../constants/types';
 
-export default class MarkerStations extends Component {
+export default class StationMarkers extends Component {
   static propTypes = {
-    stationType: PropTypes.oneOf([ATM, GAS]),
+    type: PropTypes.oneOf([ATM, GAS]),
     onStationPress: PropTypes.func,
   };
 
-  static defaultProps = { stationType: NONE };
+  static defaultProps = { type: NONE };
 
   constructor() {
     super();
@@ -21,7 +21,7 @@ export default class MarkerStations extends Component {
   }
 
   render() {
-    const type = this.props.stationType;
+    const type = this.props.type;
     if (type === NONE) {
       return null;
     }

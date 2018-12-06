@@ -16,7 +16,7 @@ import {
   stopNavigating,
 } from '../actions/ExploreActions';
 import DestinationDirect from '../components/DestinationDirect';
-import MarkerStations from '../components/MarkerStations';
+import StationMarkers from '../components/StationMarkers';
 import showRangeOptions from '../components/RangeOptions';
 import { NONE_STATION } from '../constants/ActionTypes';
 import Colors from '../constants/Colors';
@@ -151,8 +151,8 @@ class MainExploreScreen extends Component {
             />
           )}
           {
-            <MarkerStations
-              stationType={this.props.stationType}
+            <StationMarkers
+              type={this.props.stationType}
               onStationPress={this.onStationPress}
             />
           }
