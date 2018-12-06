@@ -6,7 +6,7 @@ import {
   changeLocation,
   stopNavigating,
   startNavigating,
-  changeTypeStation,
+  changeStationType,
 } from './ExploreActions';
 
 export {
@@ -18,5 +18,5 @@ export {
   changeLocation,
   stopNavigating,
   startNavigating,
-  changeTypeStation,
+  changeStationType,
 };
