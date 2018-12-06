@@ -1,15 +1,16 @@
 import {
   CHANGE_LOCATION,
   CHANGE_STATION_TYPE,
-  NONE_STATION,
   START_NAVIGATING,
   STOP_NAVIGATING,
 } from '../constants/ActionTypes';
 
+import { NONE } from '../constants/StationTypes';
+
 const initialState = {
   location: null,
   isNavigating: false,
-  stationType: NONE_STATION, //NO STATION
+  stationType: NONE,
 };
 
 const exploreReducer = (state = initialState, action) => {

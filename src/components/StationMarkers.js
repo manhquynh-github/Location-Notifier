@@ -67,7 +67,10 @@ export default class StationMarkers extends Component {
     const atmMarkers = atmRef.child('thuduc');
     atmMarkers.once('value').then(
       (markers) => {
-        this.stations[ATM] = markers.val();
+        const results = markers.val();
+        if (results != null) {
+          this.stations[ATM] = results;
+        }
       },
       (error) => {
         console.log(error);
@@ -77,7 +80,10 @@ export default class StationMarkers extends Component {
     const gasMarkers = gasRef.child('thuduc');
     gasMarkers.once('value').then(
       (markers) => {
-        this.stations[GAS] = markers.val();
+        const results = markers.val();
+        if (results != null) {
+          this.stations[GAS] = results;
+        }
       },
       (error) => {
         console.log(error);

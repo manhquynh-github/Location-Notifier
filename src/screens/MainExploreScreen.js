@@ -18,7 +18,7 @@ import {
 import DestinationDirect from '../components/DestinationDirect';
 import StationMarkers from '../components/StationMarkers';
 import showRangeOptions from '../components/RangeOptions';
-import { NONE_STATION } from '../constants/ActionTypes';
+import { NONE } from '../constants/StationTypes';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { RANGE_VALUES } from '../constants/RangeOptions';
@@ -168,7 +168,7 @@ class MainExploreScreen extends Component {
       longitude: marker.lng,
     };
     this.props.changeLocation(station);
-    this.props.changeStationType(NONE_STATION);
+    this.props.changeStationType(NONE);
   }
 
   getLocationString() {
@@ -285,7 +285,7 @@ class MainExploreScreen extends Component {
   componentDidMount() {
     //Reset destination location
     this.props.changeLocation(null);
-    this.props.changeStationType(NONE_STATION);
+    this.props.changeStationType(NONE);
     this.props.stopNavigating();
 
     BackgroundGeolocation.configure({
