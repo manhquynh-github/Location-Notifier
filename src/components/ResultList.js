@@ -22,8 +22,6 @@ export default class ResultList extends Component {
 
   static defaultProps = {
     data: [],
-    onPress: undefined,
-    onChangeSave: undefined,
   };
 
   constructor() {

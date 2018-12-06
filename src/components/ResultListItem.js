@@ -15,9 +15,6 @@ export default class ResultListItem extends Component {
   static defaultProps = {
     label: '',
     address: '',
-    saved: undefined,
-    onPress: undefined,
-    onChangeSave: undefined,
   };
 
   constructor(props) {
