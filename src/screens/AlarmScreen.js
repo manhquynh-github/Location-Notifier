@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import ReactNativeAN from 'react-native-alarm-notification';
 import { connect } from 'react-redux';
-import { stopDirect } from '../actions/ExploreActions';
+import { stopNavigating } from '../actions/ExploreActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
@@ -12,7 +12,7 @@ import { RANGE_OPTIONS } from '../constants/RangeOptions';
 class AlarmScreen extends Component {
   static propTypes = {
     rangeOption: PropTypes.number.isRequired,
-    stopDirect: PropTypes.func.isRequired,
+    stopNavigating: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -47,7 +47,7 @@ class AlarmScreen extends Component {
 
   onDismissPress() {
     ReactNativeAN.stopAlarm();
-    this.props.stopDirect();
+    this.props.stopNavigating();
     this.props.navigation.navigate('MainExplore');
   }
 }
@@ -76,7 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  stopDirect: () => dispatch(stopDirect()),
+  stopNavigating: () => dispatch(stopNavigating()),
 });
 
 export default connect(

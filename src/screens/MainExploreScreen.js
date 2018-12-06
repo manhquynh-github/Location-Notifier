@@ -13,7 +13,7 @@ import {
   changeLocation,
   changeStationType,
   startDirect,
-  stopDirect,
+  stopNavigating,
 } from '../actions/ExploreActions';
 import DestinationDirect from '../components/DestinationDirect';
 import MarkerStations from '../components/MarkerStations';
@@ -29,7 +29,7 @@ class MainExploreScreen extends Component {
     location: PropTypes.shape(LocationProps),
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
-    stopDirect: PropTypes.func.isRequired,
+    stopNavigating: PropTypes.func.isRequired,
     startDirect: PropTypes.func.isRequired,
     isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
@@ -190,7 +190,7 @@ class MainExploreScreen extends Component {
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
       //Turn of draw direction
-      this.props.stopDirect();
+      this.props.stopNavigating();
       //ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
       Toast.show({
         text: 'Stop tracking your location!',
@@ -286,7 +286,7 @@ class MainExploreScreen extends Component {
     //Reset destination location
     this.props.changeLocation(null);
     this.props.changeStationType(NONE_STATION);
-    this.props.stopDirect();
+    this.props.stopNavigating();
 
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -436,7 +436,7 @@ class MainExploreScreen extends Component {
       ReactNativeAN.sendNotification(alarmNotifData);
 
       //Stop direct
-      //this.props.stopDirect();
+      //this.props.stopNavigating();
       this.isFitted = false; // Will be fit direction in new address
 
       console.log('Send notification successfully');
@@ -532,7 +532,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
-  stopDirect: () => dispatch(stopDirect()),
+  stopNavigating: () => dispatch(stopNavigating()),
   startDirect: () => dispatch(startDirect()),
   changeLocation: (location) => dispatch(changeLocation(location)),
   changeStationType: (type) => dispatch(changeStationType(type)),

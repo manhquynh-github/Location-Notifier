@@ -9,7 +9,7 @@ export const changeLocation = (value) => ({
   type: CHANGE_LOCATION,
   payload: { value: value },
 });
-export const stopDirect = () => ({
+export const stopNavigating = () => ({
   type: STOP_NAVIGATING,
   payload: {},
 });

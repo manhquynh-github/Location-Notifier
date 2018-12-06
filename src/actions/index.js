@@ -4,7 +4,7 @@ import { setRangeOption, setRingtone, setVibrate } from './SettingsActions';
 
 import {
   changeLocation,
-  stopDirect,
+  stopNavigating,
   startDirect,
   changeTypeStation,
 } from './ExploreActions';
@@ -16,7 +16,7 @@ export {
   setRingtone,
   setVibrate,
   changeLocation,
-  stopDirect,
+  stopNavigating,
   startDirect,
   changeTypeStation,
 };
