@@ -12,7 +12,7 @@ import { setRangeOption } from '../actions';
 import {
   changeLocation,
   changeStationType,
-  startDirect,
+  startNavigating,
   stopNavigating,
 } from '../actions/ExploreActions';
 import DestinationDirect from '../components/DestinationDirect';
@@ -30,7 +30,7 @@ class MainExploreScreen extends Component {
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
     stopNavigating: PropTypes.func.isRequired,
-    startDirect: PropTypes.func.isRequired,
+    startNavigating: PropTypes.func.isRequired,
     isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
@@ -202,7 +202,7 @@ class MainExploreScreen extends Component {
 
     //Start
     else if (!this.props.isNavigating && this.props.location) {
-      this.props.startDirect();
+      this.props.startNavigating();
       this.isFitted = false;
       //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
       Toast.show({
@@ -533,7 +533,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
   stopNavigating: () => dispatch(stopNavigating()),
-  startDirect: () => dispatch(startDirect()),
+  startNavigating: () => dispatch(startNavigating()),
   changeLocation: (location) => dispatch(changeLocation(location)),
   changeStationType: (type) => dispatch(changeStationType(type)),
 });

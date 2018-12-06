@@ -13,7 +13,7 @@ export const stopNavigating = () => ({
   type: STOP_NAVIGATING,
   payload: {},
 });
-export const startDirect = () => ({
+export const startNavigating = () => ({
   type: START_NAVIGATING,
   payload: {},
 });
