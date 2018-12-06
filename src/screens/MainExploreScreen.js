@@ -16,12 +16,12 @@ import {
   stopNavigating,
 } from '../actions/ExploreActions';
 import DestinationDirect from '../components/DestinationDirect';
-import StationMarkers from '../components/StationMarkers';
 import showRangeOptions from '../components/RangeOptions';
-import { NONE } from '../constants/StationTypes';
+import StationMarkers from '../components/StationMarkers';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { RANGE_VALUES } from '../constants/RangeOptions';
+import { ATM, GAS, NONE } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
 
 class MainExploreScreen extends Component {
@@ -35,7 +35,7 @@ class MainExploreScreen extends Component {
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
     vibrate: PropTypes.bool.isRequired,
-    stationType: PropTypes.number.isRequired,
+    stationType: PropTypes.oneOf([ATM, GAS, NONE]).isRequired,
   };
 
   constructor() {
