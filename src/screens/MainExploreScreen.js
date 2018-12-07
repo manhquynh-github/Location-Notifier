@@ -51,14 +51,13 @@ class MainExploreScreen extends Component {
     };
 
     this.mapView = null;
-    this.isFitted = false;
     this.configBackgroundGeolocation();
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onPickPress = this.onPickPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
-    this.fitToCoordinates = this.fitToCoordinates.bind(this);
+    this.onNavigationRouteReady = this.onNavigationRouteReady.bind(this);
     this.startNavigating = this.startNavigating.bind(this);
     this.stopNavigating = this.stopNavigating.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
@@ -146,7 +145,7 @@ class MainExploreScreen extends Component {
                 latitude: this.props.location.latitude,
                 longitude: this.props.location.longitude,
               }}
-              onReady={this.fitToCoordinates}
+              onReady={this.onNavigationRouteReady}
               radius={RANGE_VALUES[this.props.rangeOption]}
             />
           )}
@@ -234,7 +233,6 @@ class MainExploreScreen extends Component {
     } else {
       this.startBackgroundGeolocation();
       this.props.startNavigating();
-      this.isFitted = false;
 
       Toast.show({
         text: 'Alarm set!',
@@ -258,8 +256,6 @@ class MainExploreScreen extends Component {
       );
       this.props.stopNavigating();
     } else {
-      //Fit to coornidate in another address
-      this.isFitted = false;
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
 
@@ -275,20 +271,16 @@ class MainExploreScreen extends Component {
     }
   }
 
-  fitToCoordinates(result) {
-    if (!this.isFitted) {
-      this.isFitted = true;
-
-      this.mapView.fitToCoordinates(result.coordinates, {
-        edgePadding: {
-          right: Layout.window.width / 20,
-          bottom: Layout.window.height / 20,
-          left: Layout.window.width / 20,
-          top: Layout.window.height / 20,
-        },
-        animated: true,
-      });
-    }
+  onNavigationRouteReady(result) {
+    this.mapView.fitToCoordinates(result.coordinates, {
+      edgePadding: {
+        right: Layout.window.width / 20,
+        bottom: Layout.window.height / 20,
+        left: Layout.window.width / 20,
+        top: Layout.window.height / 20,
+      },
+      animated: true,
+    });
   }
 
   onSearchPress() {
@@ -355,7 +347,6 @@ class MainExploreScreen extends Component {
     //ALARM
     const alarmNotifData = this.configAlarmNotification();
     ReactNativeAN.sendNotification(alarmNotifData);
-    this.isFitted = false; // Will be fit direction in new address
     this.props.navigation.navigate('Alarm');
     console.info('[INFO] Send notification successfully');
   }
