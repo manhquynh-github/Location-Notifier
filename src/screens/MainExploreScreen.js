@@ -20,7 +20,7 @@ import showRangeOptions from '../components/RangeOptions';
 import StationMarkers from '../components/StationMarkers';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { RANGE_VALUES } from '../constants/RangeOptions';
+import { RANGE_OPTIONS, RANGE_VALUES } from '../constants/RangeOptions';
 import { ATM, GAS, NONE } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
 import { computeDistanceBetween } from '../common/HelperFunction';
@@ -165,6 +165,8 @@ class MainExploreScreen extends Component {
     this.props.changeLocation(null);
     this.props.changeStationType(NONE);
     this.props.stopNavigating();
+    this.stopBackgroundGeolocation();
+
     BackgroundGeolocation.getCurrentLocation((location) => {
       this.setState({
         currentLocation: {
@@ -176,6 +178,12 @@ class MainExploreScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.isNavigating != this.props.isNavigating) {
+      if (!this.props.isNavigating) {
+        this.stopBackgroundGeolocation();
+      }
+    }
+
     if (
       this.props.isNavigating &&
       JSON.stringify(prevState.currentLocation) !==
@@ -191,6 +199,8 @@ class MainExploreScreen extends Component {
   }
 
   componentWillUnmount() {
+    console.info('[INFO] ComponentWillUnmount.');
+
     this.stopBackgroundGeolocation();
 
     // unregister all event listeners
@@ -263,7 +273,8 @@ class MainExploreScreen extends Component {
     } else {
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
-
+      ReactNativeAN.removeFiredNotification('1997');
+      this.setState({ isNotifying: false });
       this.stopBackgroundGeolocation();
       this.props.stopNavigating();
 
@@ -389,7 +400,7 @@ class MainExploreScreen extends Component {
 
     BackgroundGeolocation.on('stationary', (stationaryLocation) => {
       // handle stationary locations here
-      Actions.sendLocation(stationaryLocation);
+      //Actions.sendLocation(stationaryLocation);
     });
 
     BackgroundGeolocation.on('error', (error) => {
@@ -397,11 +408,11 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('start', () => {
-      console.log('[INFO] BackgroundGeolocation service has been started');
+      console.log('[INFO] BackgroundGeolocation service has started.');
     });
 
     BackgroundGeolocation.on('stop', () => {
-      console.log('[INFO] BackgroundGeolocation service has been stopped');
+      console.log('[INFO] BackgroundGeolocation service has stopped.');
     });
 
     BackgroundGeolocation.on('authorization', (status) => {
@@ -451,7 +462,6 @@ class MainExploreScreen extends Component {
 
       if (!status.isRunning) {
         BackgroundGeolocation.start(); //triggers start on start event
-        console.info('[INFO] Started.');
       }
     });
   }
@@ -466,27 +476,29 @@ class MainExploreScreen extends Component {
 
       if (status.isRunning) {
         BackgroundGeolocation.stop();
-        console.info('[INFO] Stopped.');
       }
     });
   }
 
   configAlarmNotification() {
-    const soundName = 'alarm' + this.props.soundID + '.mp3';
+    const soundName = `alarm${this.props.soundID}.mp3`;
     const alarmNotifData = {
-      id: '1997',
+      id: '1997', // Required.
       title: 'Location Notifier',
-      message: "You're IN",
-      channel: '1997', // Required. Same id as specified in MainApplication's onCreate method
-      ticker: "Let's make a favorites",
+      message: `You are within ${
+        RANGE_OPTIONS[this.props.rangeOption]
+      } from your destination.`,
+      channel: '1997', // Same id as specified in MainApplication's onCreate method
+      ticker: 'Location Notifier ticker',
       vibrate: this.props.vibrate,
-      vibration: 3000,
+      vibration: 300000, // 5 mins
       small_icon: 'ic_launcher',
       large_icon: 'ic_launcher',
       play_sound: true,
       sound_name: soundName, // Plays custom notification ringtone if sound_name: null
-      color: 'red',
+      color: Colors.primary,
     };
+
     return alarmNotifData;
   }
 }
