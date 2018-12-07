@@ -15,9 +15,6 @@ export default class FavoriteListItem extends Component {
   static defaultProps = {
     label: '',
     address: '',
-    onPress: undefined,
-    onLongPress: undefined,
-    onMorePress: undefined,
   };
 
   constructor() {

@@ -1,6 +1,4 @@
 const primary = '#2196f3';
-const primaryRBGA = 'rgba(33, 150, 243, 0.5)';
-
 const darkPrimary = '#1769aa';
 const lightPrimary = '#4dabf5';
 
@@ -21,5 +19,5 @@ export default {
   statusBarColor: primary,
   lightGrayBackground: '#f2f2f2',
   darkGrayBackground: '#4C4A48',
-  primaryRBGA,
+  mapCircleFillColor: '#2196f333',
 };

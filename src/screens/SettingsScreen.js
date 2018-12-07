@@ -13,15 +13,17 @@ import {
   Text,
   Title,
   View,
+  Grid,
+  Col,
+  Row,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { setRangeOption, setVibrate } from '../actions/SettingsActions';
 import showRangeOptions from '../components/RangeOptions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-import { atmRef, verRef } from '../config/FirebaseConfig';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 import { PLAYLIST } from '../constants/Sound';
@@ -40,7 +42,6 @@ export class SettingsScreen extends Component {
     this.onPressRange = this.onPressRange.bind(this);
     this.onPressRingtone = this.onPressRingtone.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
-    this.onPressUpdate = this.onPressUpdate.bind(this);
   }
 
   render() {
@@ -90,7 +91,7 @@ export class SettingsScreen extends Component {
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 onPress={this.onPressRingtone}>
-                {PLAYLIST[this.props.soundID].item.name}
+                {PLAYLIST[this.props.soundID].name}
               </Text>
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
@@ -136,15 +137,40 @@ export class SettingsScreen extends Component {
             </Body>
             <Right />
           </ListItem>
-          <View>
-            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-              Developers
-            </Text>
-            <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
-            <Text style={styles.aboutInfor}>Lê Đức Tiến</Text>
-            <Text style={styles.aboutInfor}>Phan Đức Anh</Text>
-            <Text style={styles.aboutInfor}>Điền sau</Text>
-          </View>
+          <Grid style={{ padding: 16 }}>
+            <Col
+              size={1}
+              style={{
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                padding: 8,
+              }}>
+              <Image
+                source={require('../assets/images/icon.png')}
+                style={{ height: 64, width: 64 }}
+              />
+            </Col>
+            <Col
+              size={3}
+              style={{
+                flexDirection: 'column',
+                padding: 8,
+              }}>
+              <Text style={{ fontWeight: 'bold', color: Colors.primary }}>
+                Location Notifier
+              </Text>
+              <Text>
+                An app that will notify you when you are about to reach your
+                destination.
+              </Text>
+              <View style={{ height: 16 }} />
+              <Text style={{ fontWeight: 'bold' }}>Developed by</Text>
+              <Text>Chung Mạnh Quỳnh</Text>
+              <Text>Lê Đức Tiến</Text>
+              <Text>Phan Đức Anh</Text>
+              <Text>Điền sau</Text>
+            </Col>
+          </Grid>
         </Content>
       </Container>
     );
@@ -167,16 +193,6 @@ export class SettingsScreen extends Component {
       }
     });
   }
-  onPressUpdate() {
-    verRef.set(0.1, (result) => {
-      console.log(result);
-    });
-    atmRef.on('value', (child) => {
-      child.forEach((item) => {
-        console.log(item.val());
-      });
-    });
-  }
 }
 
 const styles = StyleSheet.create({
@@ -186,10 +202,6 @@ const styles = StyleSheet.create({
   nameRingtone: {
     width: 150,
     textAlign: 'right',
-  },
-  aboutInfor: {
-    textAlign: 'left',
-    marginLeft: 50,
   },
   vibrateButton: {
     backgroundColor: '#FD3C2D',

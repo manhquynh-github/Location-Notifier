@@ -20,7 +20,13 @@ const settingsReducer = (state = initialState, action) => {
     case CHANGE_RANGE: {
       const id = action.payload.optionID;
       if (id < 0 || id >= RANGE_OPTIONS.length) {
-        throw 'ERR: No such range option id to change.\n' + id;
+        console.warn(
+          '[ERROR]',
+          '[settingsReducer]',
+          'No such range optionID to change.',
+          id
+        );
+        return newState;
       }
 
       newState.rangeOption = id;
@@ -29,7 +35,13 @@ const settingsReducer = (state = initialState, action) => {
     case CHANGE_RINGTONE: {
       const soundID = action.payload.soundID;
       if (soundID < 0 || soundID >= PLAYLIST.length) {
-        throw 'ERR: No such range option id to change.\n' + id;
+        console.warn(
+          '[ERROR]',
+          '[settingsReducer]',
+          'No such range soundID to change.',
+          soundID
+        );
+        return newState;
       }
 
       newState.soundID = soundID;

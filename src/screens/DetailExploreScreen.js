@@ -17,8 +17,8 @@ import { changeLocation, changeStationType } from '../actions/ExploreActions';
 import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-import { ATM_STATION, GAS_STATION } from '../constants/ActionTypes';
 import Colors from '../constants/Colors';
+import { ATM, GAS } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
 
 class DetailExploreScreen extends Component {
@@ -154,11 +154,11 @@ class DetailExploreScreen extends Component {
     this.props.navigation.goBack();
   }
   gasStationPress() {
-    this.props.changeStationType(GAS_STATION);
+    this.props.changeStationType(GAS);
     this.props.navigation.goBack();
   }
   atmStationPress() {
-    this.props.changeStationType(ATM_STATION);
+    this.props.changeStationType(ATM);
     this.props.navigation.goBack();
   }
 
@@ -181,19 +181,31 @@ class DetailExploreScreen extends Component {
   async onPress(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    } else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+        break;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.warn('[ERROR]', '[onPress]', error));
+        break;
+      }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onPress]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
     this.props.changeLocation(location);
@@ -203,22 +215,31 @@ class DetailExploreScreen extends Component {
   async onChangeSave(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    }
-    // if source is not from favorite, try to retrieve the
-    // actual location which is the same as src/model/Location
-    else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+        break;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.warn('[ERROR]', '[onChangeSave]', error));
+        break;
+      }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onChangeSave]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
 
@@ -273,7 +294,9 @@ class DetailExploreScreen extends Component {
 
     if (value !== '') {
       // Search using Google API
-      await RNGooglePlaces.getAutocompletePredictions(value, { country: 'VN' })
+      await RNGooglePlaces.getAutocompletePredictions(value, {
+        country: 'VN',
+      })
         .then((places) => {
           const searchResults = places.map((e, i) => ({
             type: 'google',
@@ -281,7 +304,7 @@ class DetailExploreScreen extends Component {
           }));
           results = results.concat(searchResults);
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => console.warn('[ERROR]', '[search]', error));
     }
 
     // Set new state with new results
