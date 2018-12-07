@@ -147,14 +147,15 @@ class MainExploreScreen extends Component {
                 longitude: this.props.location.longitude,
               }}
               onReady={this.fitToCoordinates}
-              range={this.props.rangeOption}
-              isNavigating={this.props.isNavigating}
+              radius={RANGE_VALUES[this.props.rangeOption]}
             />
           )}
-          <StationMarkers
-            type={this.props.stationType}
-            onStationPress={this.onStationPress}
-          />
+          {this.props.stationType !== NONE && (
+            <StationMarkers
+              type={this.props.stationType}
+              onStationPress={this.onStationPress}
+            />
+          )}
         </MapView>
       </Container>
     );
