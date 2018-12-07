@@ -15,7 +15,7 @@ import {
   startNavigating,
   stopNavigating,
 } from '../actions/ExploreActions';
-import DestinationDirect from '../components/DestinationDirect';
+import NavigationRoute from '../components/NavigationRoute';
 import showRangeOptions from '../components/RangeOptions';
 import StationMarkers from '../components/StationMarkers';
 import Colors from '../constants/Colors';
@@ -140,7 +140,7 @@ class MainExploreScreen extends Component {
           ref={(c) => (this.mapView = c)}
           showsUserLocation>
           {this.props.location && (
-            <DestinationDirect
+            <NavigationRoute
               currentLocation={this.state.currentLocation}
               destination={{
                 latitude: this.props.location.latitude,

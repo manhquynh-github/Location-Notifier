@@ -7,7 +7,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { RANGE_VALUES } from '../constants/RangeOptions';
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBAGOnN-kkH26IFRwjFrciJ2LV4g0U8_eQ';
 
-export default class DestinationDirect extends Component {
+export default class NavigationRoute extends Component {
   static propTypes = {
     currentLocation: PropTypes.shape({
       latitude: PropTypes.number,
@@ -18,7 +18,6 @@ export default class DestinationDirect extends Component {
       longitude: PropTypes.number,
     }).isRequired,
     onReady: PropTypes.func,
-    checkAlarm: PropTypes.func,
     range: PropTypes.number.isRequired,
     isNavigating: PropTypes.bool.isRequired,
   };
