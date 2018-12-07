@@ -149,12 +149,10 @@ class MainExploreScreen extends Component {
               isNavigating={this.props.isNavigating}
             />
           )}
-          {
-            <StationMarkers
-              type={this.props.stationType}
-              onStationPress={this.onStationPress}
-            />
-          }
+          <StationMarkers
+            type={this.props.stationType}
+            onStationPress={this.onStationPress}
+          />
         </MapView>
       </Container>
     );
