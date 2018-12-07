@@ -19,4 +19,5 @@ export default {
   statusBarColor: primary,
   lightGrayBackground: '#f2f2f2',
   darkGrayBackground: '#4C4A48',
+  mapCircleFillColor: '#2196f333',
 };

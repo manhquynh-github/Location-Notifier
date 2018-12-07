@@ -19,7 +19,6 @@ const exploreReducer = (state = initialState, action) => {
     case CHANGE_LOCATION: {
       const value = action.payload.value;
       newState.location = value;
-      newState.isNavigating = true;
       return newState;
     }
     case STOP_NAVIGATING: {
