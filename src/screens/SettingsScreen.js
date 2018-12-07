@@ -21,7 +21,6 @@ import { connect } from 'react-redux';
 import { setRangeOption, setVibrate } from '../actions/SettingsActions';
 import showRangeOptions from '../components/RangeOptions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
-import { atmRef, verRef } from '../config/FirebaseConfig';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 import { PLAYLIST } from '../constants/Sound';
@@ -40,7 +39,6 @@ export class SettingsScreen extends Component {
     this.onPressRange = this.onPressRange.bind(this);
     this.onPressRingtone = this.onPressRingtone.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
-    this.onPressUpdate = this.onPressUpdate.bind(this);
   }
 
   render() {
@@ -165,16 +163,6 @@ export class SettingsScreen extends Component {
       if (selectedIndex !== undefined) {
         this.props.setRangeOption(selectedIndex);
       }
-    });
-  }
-  onPressUpdate() {
-    verRef.set(0.1, (result) => {
-      console.log(result);
-    });
-    atmRef.on('value', (child) => {
-      child.forEach((item) => {
-        console.log(item.val());
-      });
     });
   }
 }

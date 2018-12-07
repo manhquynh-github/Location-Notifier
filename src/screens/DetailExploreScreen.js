@@ -193,13 +193,19 @@ class DetailExploreScreen extends Component {
           .then((result) => {
             location = result;
           })
-          .catch((error) => console.log(error.message));
+          .catch((error) =>
+            console.warn('[ERROR]', '[onPress]', error)
+          );
       }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onPress]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
     this.props.changeLocation(location);
@@ -221,13 +227,19 @@ class DetailExploreScreen extends Component {
           .then((result) => {
             location = result;
           })
-          .catch((error) => console.log(error.message));
+          .catch((error) =>
+            console.warn('[ERROR]', '[onChangeSave]', error)
+          );
       }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onChangeSave]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
 
@@ -282,7 +294,9 @@ class DetailExploreScreen extends Component {
 
     if (value !== '') {
       // Search using Google API
-      await RNGooglePlaces.getAutocompletePredictions(value, { country: 'VN' })
+      await RNGooglePlaces.getAutocompletePredictions(value, {
+        country: 'VN',
+      })
         .then((places) => {
           const searchResults = places.map((e, i) => ({
             type: 'google',
@@ -290,7 +304,7 @@ class DetailExploreScreen extends Component {
           }));
           results = results.concat(searchResults);
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => console.warn('[ERROR]', '[search]', error));
     }
 
     // Set new state with new results

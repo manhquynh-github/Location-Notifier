@@ -72,7 +72,7 @@ export default class NavigationRoute extends Component {
 
   onNetConnectivityChange(isConnected) {
     this.setState({ isConnected: isConnected });
-    console.info('[INFO] Network availability:', isConnected);
+    console.info('[INFO]', '[onNetConnectivityChange]', 'status:', isConnected);
   }
 
   onReady(result) {

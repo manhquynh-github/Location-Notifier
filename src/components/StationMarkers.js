@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { atmRef, gasRef } from '../config/FirebaseConfig';
-import { NONE, ATM, GAS } from '../constants/StationTypes';
+import { ATM, GAS, NONE } from '../constants/StationTypes';
 
 export default class StationMarkers extends Component {
   static propTypes = {
@@ -73,7 +73,7 @@ export default class StationMarkers extends Component {
         }
       },
       (error) => {
-        console.log(error);
+        console.warn('[ERROR]', '[atmMarkers]', error);
       }
     );
 
@@ -86,7 +86,7 @@ export default class StationMarkers extends Component {
         }
       },
       (error) => {
-        console.log(error);
+        console.warn('[ERROR]', '[gasMarkers]', error);
       }
     );
   }

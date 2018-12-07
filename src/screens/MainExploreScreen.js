@@ -2,7 +2,7 @@ import { MapView } from 'expo';
 import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNGooglePlaces from 'react-native-google-places';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
@@ -15,6 +15,7 @@ import {
   startNavigating,
   stopNavigating,
 } from '../actions/ExploreActions';
+import { computeDistanceBetween } from '../common/HelperFunction';
 import NavigationRoute from '../components/NavigationRoute';
 import showRangeOptions from '../components/RangeOptions';
 import StationMarkers from '../components/StationMarkers';
@@ -23,7 +24,6 @@ import Layout from '../constants/Layout';
 import { RANGE_OPTIONS, RANGE_VALUES } from '../constants/RangeOptions';
 import { ATM, GAS, NONE } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
-import { computeDistanceBetween } from '../common/HelperFunction';
 
 class MainExploreScreen extends Component {
   static propTypes = {
@@ -242,13 +242,15 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.info('[INFO] onPickPress SUCCESS:', location.address);
+        console.info('[INFO]', '[onPickPress]', '[SUCCESS]', location.address);
       })
-      .catch((error) => console.error('[ERROR] onPickPress', error));
+      .catch((error) => console.warn('[ERROR]', '[onPickPress]', error));
 
     if (location == null) {
       console.info(
-        '[INFO] onPickPress Unable to find location from result item.'
+        '[INFO]',
+        '[onPickPress]',
+        'Unable to find location from result item.'
       );
       Toast.show({
         text: 'Unable to pick destination.',
@@ -332,7 +334,7 @@ class MainExploreScreen extends Component {
 
   isInRange() {
     if (!this.props.location) {
-      console.error('[ERROR] checkToAlarm No location.');
+      console.warn('[ERROR]', '[isInRange]', 'No location.');
       return;
     }
 
@@ -354,7 +356,7 @@ class MainExploreScreen extends Component {
     const alarmNotifData = this.configAlarmNotification();
     ReactNativeAN.sendNotification(alarmNotifData);
     this.props.navigation.navigate('Alarm');
-    console.info('[INFO] Send notification successfully');
+    console.info('[INFO]', '[raiseAlarm]', 'Send notification successfully');
   }
 
   configBackgroundGeolocation() {
@@ -394,20 +396,23 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('error', (error) => {
-      console.log('[ERROR] BackgroundGeolocation error:', error);
+      console.warn('[ERROR]', '[BackgroundGeolocation]', error);
     });
 
     BackgroundGeolocation.on('start', () => {
-      console.log('[INFO] BackgroundGeolocation service has started.');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'Started.');
     });
 
     BackgroundGeolocation.on('stop', () => {
-      console.log('[INFO] BackgroundGeolocation service has stopped.');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'Stopped.');
     });
 
     BackgroundGeolocation.on('authorization', (status) => {
       console.info(
-        '[INFO] BackgroundGeolocation authorization status: ' + status
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        'authorization status: ',
+        status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
         // we need to set delay or otherwise alert may not be shown
@@ -423,7 +428,12 @@ class MainExploreScreen extends Component {
                 },
                 {
                   text: 'No',
-                  onPress: () => console.warn('[WARN] No Pressed.'),
+                  onPress: () =>
+                    console.warn(
+                      '[WARN]',
+                      '[BackgroundGeolocation',
+                      'authorization No Pressed.'
+                    ),
                   style: 'cancel',
                 },
               ]
@@ -434,16 +444,16 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('background', () => {
-      console.info('[INFO] BackgroundGeolocation is in background');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'is in background');
     });
 
     BackgroundGeolocation.on('foreground', () => {
-      console.info('[INFO] BackgroundGeolocation is in foreground');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'is on foreground');
     });
   }
 
   startBackgroundGeolocation() {
-    console.info('[INFO] Starting BackgroundGeolocation.');
+    console.info('[INFO]', '[startBackgroundGeolocation]', 'begin');
     BackgroundGeolocation.checkStatus((status) => {
       console.info(
         '[INFO] BackgroundGeolocation status:',
@@ -457,7 +467,7 @@ class MainExploreScreen extends Component {
   }
 
   stopBackgroundGeolocation() {
-    console.info('[INFO] Stopping BackgroundGeolocation.');
+    console.info('[INFO]', '[stopBackgroundGeolocation]', 'begin');
     BackgroundGeolocation.checkStatus((status) => {
       console.info(
         '[INFO] BackgroundGeolocation status:',
