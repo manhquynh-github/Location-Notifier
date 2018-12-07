@@ -1,4 +1,5 @@
 import { MapView } from 'expo';
+import { Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NetInfo, View } from 'react-native';
@@ -68,6 +69,27 @@ export default class NavigationRoute extends Component {
     NetInfo.isConnected.fetch().then((isConnected) => {
       this.setState({ isConnected: isConnected });
     });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextState.isConnected != this.state.isConnected &&
+      nextState.isConnected == false
+    ) {
+      return false;
+    }
+
+    if (!nextState.isConnected) {
+      Toast.show({
+        text: 'You are offline.',
+        buttonText: 'Okay',
+        duration: 3000,
+      });
+
+      return false;
+    }
+
+    return true;
   }
 
   onNetConnectivityChange(isConnected) {

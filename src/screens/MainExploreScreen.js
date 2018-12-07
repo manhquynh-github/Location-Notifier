@@ -381,7 +381,7 @@ class MainExploreScreen extends Component {
       interval: 4000,
       fastestInterval: 4000,
       activitiesInterval: 10000,
-      stopOnStillActivity: false,
+      stopOnStillActivity: true,
     });
 
     BackgroundGeolocation.on('location', (location) => {
@@ -400,7 +400,12 @@ class MainExploreScreen extends Component {
 
     BackgroundGeolocation.on('stationary', (stationaryLocation) => {
       // handle stationary locations here
-      //Actions.sendLocation(stationaryLocation);
+      console.info(
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        '[stationary]',
+        stationaryLocation
+      );
     });
 
     BackgroundGeolocation.on('error', (error) => {
