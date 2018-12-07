@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  ListItem,
-  Text,
-  Badge,
-  Left,
-  Right,
   Body,
-  Switch,
-  Radio,
-  Picker,
+  Button,
+  Container,
+  Content,
+  Header,
+  Icon,
+  Left,
+  ListItem,
+  Right,
   Separator,
+  Switch,
+  Text,
+  Title,
   View,
-  ActionSheet,
+  Grid,
+  Col,
+  Row,
 } from 'native-base';
-import StatusBarOverlay from '../components/StatusBarOverlay';
-import { RANGE_OPTIONS } from '../constants/RangeOptions';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setVibrate, setRangeOption } from '../actions/SettingsActions';
-import { PLAYLIST } from '../constants/Sound';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { setRangeOption, setVibrate } from '../actions/SettingsActions';
 import showRangeOptions from '../components/RangeOptions';
+import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
-import {rootRef, verRef, atmRef} from '../config/FirebaseConfig';
+import { RANGE_OPTIONS } from '../constants/RangeOptions';
+import { PLAYLIST } from '../constants/Sound';
 
 export class SettingsScreen extends Component {
   static propTypes = {
@@ -44,7 +42,6 @@ export class SettingsScreen extends Component {
     this.onPressRange = this.onPressRange.bind(this);
     this.onPressRingtone = this.onPressRingtone.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
-    this.onPressUpdate = this.onPressUpdate.bind(this);
   }
 
   render() {
@@ -94,7 +91,7 @@ export class SettingsScreen extends Component {
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 onPress={this.onPressRingtone}>
-                {PLAYLIST[this.props.soundID].item.name}
+                {PLAYLIST[this.props.soundID].name}
               </Text>
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
@@ -140,15 +137,27 @@ export class SettingsScreen extends Component {
             </Body>
             <Right />
           </ListItem>
-          <View>
-            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-              Developers
-            </Text>
-            <Text style={styles.aboutInfor}>Chung Mạnh Quỳnh</Text>
-            <Text style={styles.aboutInfor}>Lê Đức Tiến</Text>
-            <Text style={styles.aboutInfor}>Phan Đức Anh</Text>
-            <Text style={styles.aboutInfor}>Điền sau</Text>
-          </View>
+          <Grid style={styles.aboutGrid}>
+            <Col size={1} style={styles.aboutAppIconContainer}>
+              <Image
+                source={require('../assets/images/icon.png')}
+                style={styles.aboutAppIconImage}
+              />
+            </Col>
+            <Col size={3} style={styles.aboutDescriptionContainer}>
+              <Text style={styles.aboutAppNameText}>Location Notifier</Text>
+              <Text>
+                An app that will notify you when you are about to reach your
+                destination.
+              </Text>
+              <View style={{ height: 16 }} />
+              <Text style={{ fontWeight: 'bold' }}>Developed by</Text>
+              <Text>Chung Mạnh Quỳnh</Text>
+              <Text>Lê Đức Tiến</Text>
+              <Text>Phan Đức Anh</Text>
+              <Text>Điền sau</Text>
+            </Col>
+          </Grid>
         </Content>
       </Container>
     );
@@ -171,16 +180,6 @@ export class SettingsScreen extends Component {
       }
     });
   }
-  onPressUpdate(){
-    verRef.set(0.1,(result)=>{
-      console.log(result);
-    })
-    atmRef.on("value", (child)=>{
-      child.forEach((item)=>{
-        console.log(item.val());
-      })
-    });
-  }
 }
 
 const styles = StyleSheet.create({
@@ -190,10 +189,6 @@ const styles = StyleSheet.create({
   nameRingtone: {
     width: 150,
     textAlign: 'right',
-  },
-  aboutInfor: {
-    textAlign: 'left',
-    marginLeft: 50,
   },
   vibrateButton: {
     backgroundColor: '#FD3C2D',
@@ -207,6 +202,20 @@ const styles = StyleSheet.create({
   aboutButton: {
     backgroundColor: '#127cd4',
   },
+  aboutGrid: {
+    padding: 16,
+  },
+  aboutAppIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 8,
+  },
+  aboutAppIconImage: { height: 64, width: 64 },
+  aboutDescriptionContainer: {
+    flexDirection: 'column',
+    padding: 8,
+  },
+  aboutAppNameText: { fontWeight: 'bold', color: Colors.primary },
 });
 
 const mapStateToProps = (state) => ({

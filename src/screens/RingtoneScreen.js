@@ -1,53 +1,55 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
   Body,
-  Picker,
-  List,
-  ListItem,
-  Text,
   Button,
+  Container,
+  Content,
+  Header,
   Icon,
+  Left,
+  ListItem,
+  Right,
+  Text,
+  Title,
 } from 'native-base';
-import StatusBarOverlay from '../components/StatusBarOverlay';
-import { Asset, Audio } from 'expo';
-import {
-  PLAYLIST,
-  PlaylistItem,
-  prepareSound,
-  loadSounds,
-  playSound,
-  stopSound
-} from '../constants/Sound';
-import { setRingtone } from '../actions/SettingsActions';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { setRingtone } from '../actions/SettingsActions';
+import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
+import {
+  loadSounds,
+  PLAYLIST,
+  playSound,
+  prepareSound,
+  stopSound,
+} from '../constants/Sound';
 
 export class RingtoneSetting extends Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
+    soundID: PropTypes.number.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     prepareSound();
-    const value = this.props.index;
     this.state = {
-      soundSelected: value,
+      selectedIndex: props.soundID,
     };
 
     this.onBackPress = this.onBackPress.bind(this);
     this.onPlayPauseItemPress = this.onPlayPausePressItem.bind(this);
-    this.renderSoundItem = this.renderSoundItem.bind(this);
-    this.keyExtractor = this.keyExtractor.bind(this);
+    this.onRenderItem = this.onRenderItem.bind(this);
+    this.willBlurSubscription = this.props.navigation.addListener(
+      'willBlur',
+      async (payload) => {
+        await stopSound('song').catch((error) => {
+          console.warn('[ERROR]', '[willBlurSubscription]', error);
+        });
+      }
+    );
   }
 
   render() {
@@ -73,30 +75,38 @@ export class RingtoneSetting extends Component {
         <Content>
           <FlatList
             data={PLAYLIST}
-            // extraData={this.state}
-            renderItem={this.renderSoundItem}
+            renderItem={this.onRenderItem}
             keyExtractor={this.keyExtractor}
-            attachStateToRender={this.state}  //Just make render with state, not implement
+            extraData={this.state}
           />
         </Content>
       </Container>
     );
   }
 
-  renderSoundItem(data) {
+  componentWillUnmount() {
+    this.willBlurSubscription.remove();
+  }
+
+  onRenderItem({ item, index }) {
+    console.log(item.name);
     return (
       <ListItem
         noIndent
-        iconRight
+        icon
         button
         delayPressIn={0}
-        style={data.index == this.state.soundSelected ? styles.selectedItem : {}}
         onPress={() => {
-          this.onPlayPausePressItem(data.index);
+          this.onPlayPausePressItem({ item, index });
         }}>
+        <Left style={{ width: 25 }}>
+          {index == this.state.selectedIndex && (
+            <Icon name="checkmark" style={{ color: Colors.primary }} />
+          )}
+        </Left>
         <Body>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {data.item.item.name}
+            {item.name}
           </Text>
         </Body>
         <Right>
@@ -105,51 +115,46 @@ export class RingtoneSetting extends Component {
       </ListItem>
     );
   }
-  //keyExtractor = (item, index) =>{PLAYLIST[index].item.name}  //WARNING
-  keyExtractor(item, index) {
-    return PLAYLIST[index].item.name;
+
+  keyExtractor(item, soundID) {
+    return `sound-item-${soundID}`;
   }
 
-  onBackPress() {
-    stopSound('song');
-
-    const ringtone = this.state.soundSelected;
-    this.props.setRingtone(ringtone);
-
+  async onBackPress() {
+    await stopSound('song').catch((error) => {
+      console.warn('[ERROR]', '[onBackPress]', error);
+    });
     this.props.navigation.goBack();
   }
 
-  async onPlayPausePressItem(index) {
-    const newState = this.state;
-    if (index != newState.soundSelected) {
-      newState.soundSelected = index;
-      this.setState(newState);
+  async onPlayPausePressItem({ item, index }) {
+    if (index != this.state.selectedIndex) {
+      this.setState({ selectedIndex: index });
+      this.props.setRingtone(index);
     }
     loadSounds({
-      song : PLAYLIST[index].item.asset,
+      song: item.asset,
     });
-    playSound('song');    
-  };
+    await playSound('song').catch((error) => {
+      console.warn('[ERROR]', '[onPlayPausePressItem]', error);
+    });
+  }
 }
 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.statusBarColor,
   },
-  nameRingtone: {
-    width: 150,
-    textAlign: 'right',
-  },
   selectedItem: {
     backgroundColor: '#cde1f9',
   },
 });
 const mapStateToProps = (state) => ({
-  index: state.settingsReducer.soundID,
+  soundID: state.settingsReducer.soundID,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setRingtone: (index) => dispatch(setRingtone(index)),
+  setRingtone: (soundID) => dispatch(setRingtone(soundID)),
 });
 
 export default connect(

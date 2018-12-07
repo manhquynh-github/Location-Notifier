@@ -1,7 +1,6 @@
 import { Body, Button, Icon, ListItem, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 
 export default class ResultListItem extends Component {
@@ -16,9 +15,6 @@ export default class ResultListItem extends Component {
   static defaultProps = {
     label: '',
     address: '',
-    saved: undefined,
-    onPress: undefined,
-    onChangeSave: undefined,
   };
 
   constructor(props) {

@@ -1,81 +1,66 @@
-import {
-  Button,
-  Container,
-  Content,
-  Fab,
-  Icon,
-  Text,
-  Toast,
-} from 'native-base';
+import { MapView } from 'expo';
+import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Dimensions,
-  ToastAndroid,
-  View,
-  NetInfo,
-} from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
+import ReactNativeAN from 'react-native-alarm-notification';
+import RNGooglePlaces from 'react-native-google-places';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setRangeOption } from '../actions';
+import {
+  changeLocation,
+  changeStationType,
+  startNavigating,
+  stopNavigating,
+} from '../actions/ExploreActions';
+import { computeDistanceBetween } from '../common/HelperFunction';
+import NavigationRoute from '../components/NavigationRoute';
 import showRangeOptions from '../components/RangeOptions';
+import StationMarkers from '../components/StationMarkers';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { MapView } from 'expo';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import DestinationDirect from '../components/DestinationDirect';
-import { RANGE_VALUES } from '../constants/RangeOptions';
+import { RANGE_OPTIONS, RANGE_VALUES } from '../constants/RangeOptions';
+import { ATM, GAS, NONE } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
-import { stopDirect, startDirect } from '../actions/ExploreActions';
-import RNGooglePlaces from 'react-native-google-places';
-import { changeLocation, changeStationType } from '../actions/ExploreActions';
-import ReactNativeAN from 'react-native-alarm-notification';
-import {
-  NONE_STATION,
-  ATM_STATION,
-  GAS_STATION,
-} from '../constants/ActionTypes';
-import MarkerStations from '../components/MarkerStations';
 
 class MainExploreScreen extends Component {
   static propTypes = {
     location: PropTypes.shape(LocationProps),
     rangeOption: PropTypes.number.isRequired,
     setRangeOption: PropTypes.func.isRequired,
-    stopDirect: PropTypes.func.isRequired,
-    startDirect: PropTypes.func.isRequired,
+    stopNavigating: PropTypes.func.isRequired,
+    startNavigating: PropTypes.func.isRequired,
     isNavigating: PropTypes.bool,
     changeLocation: PropTypes.func.isRequired,
     soundID: PropTypes.number.isRequired,
     vibrate: PropTypes.bool.isRequired,
-    stationType: PropTypes.number.isRequired,
+    stationType: PropTypes.oneOf([ATM, GAS, NONE]).isRequired,
   };
 
   constructor() {
     super();
-    
+
     this.state = {
       currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513,
-      }
+      },
+      isNotifying: false,
     };
 
     this.mapView = null;
-    this.isFitted = false;
+    this.configBackgroundGeolocation();
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onPickPress = this.onPickPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
-    this.fitToCoordinates = this.fitToCoordinates.bind(this);
-    this.calcCrow = this.calcCrow.bind(this);
-    this.toRad = this.toRad.bind(this);
-    this.checkToAlarm = this.checkToAlarm.bind(this);
-    this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
-    this.setCancelOrStart = this.setCancelOrStart.bind(this);
+    this.onNavigationRouteReady = this.onNavigationRouteReady.bind(this);
+    this.startNavigating = this.startNavigating.bind(this);
+    this.stopNavigating = this.stopNavigating.bind(this);
+    this.onToggleNavigation = this.onToggleNavigation.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
   }
 
@@ -98,7 +83,7 @@ class MainExploreScreen extends Component {
               style={{ color: Colors.darkGrayBackground }}>
               {this.props.location
                 ? `${this.props.location.address}`
-                : 'Search...'}
+                : 'Search here'}
             </Text>
           </Button>
           <Button
@@ -128,7 +113,7 @@ class MainExploreScreen extends Component {
           delayPressIn={0}
           style={styles.myLocationButton}
           position="bottomRight"
-          onPress={this.fitToCurrentCoordinates}>
+          onPress={this.onLocatePress}>
           <Icon
             name="my-location"
             type="MaterialIcons"
@@ -139,7 +124,7 @@ class MainExploreScreen extends Component {
           delayPressIn={0}
           style={styles.startButton}
           position="bottomRight"
-          onPress={this.setCancelOrStart}>
+          onPress={this.onToggleNavigation}>
           <Icon name={this.props.isNavigating ? 'pause' : 'play'} />
         </Fab>
         <MapView
@@ -152,38 +137,73 @@ class MainExploreScreen extends Component {
           }}
           ref={(c) => (this.mapView = c)}
           showsUserLocation>
-          {this.props.isNavigating && this.props.location && (
-            <DestinationDirect
+          {this.props.location && (
+            <NavigationRoute
               currentLocation={this.state.currentLocation}
               destination={{
                 latitude: this.props.location.latitude,
                 longitude: this.props.location.longitude,
               }}
-              fitToCoordinates={this.fitToCoordinates}
-              //checkAlarm={this.checkToAlarm}
-              range={this.props.rangeOption}
-              isNavigating={this.props.isNavigating}
+              onReady={this.onNavigationRouteReady}
+              radius={RANGE_VALUES[this.props.rangeOption]}
             />
           )}
-          {
-            <MarkerStations
-              stationType={this.props.stationType}
+          {this.props.stationType !== NONE && (
+            <StationMarkers
+              type={this.props.stationType}
               onStationPress={this.onStationPress}
             />
-          }
+          )}
         </MapView>
       </Container>
     );
   }
-  onStationPress(marker) {
-    const station = {
-      name: marker.title,
-      address: marker.title,
-      latitude: marker.lat,
-      longitude: marker.lng,
-    };
-    this.props.changeLocation(station);
-    this.props.changeStationType(NONE_STATION);
+
+  componentDidMount() {
+    //Reset destination location
+    this.props.changeLocation(null);
+    this.props.changeStationType(NONE);
+    this.props.stopNavigating();
+    this.stopBackgroundGeolocation();
+
+    BackgroundGeolocation.getCurrentLocation((location) => {
+      this.setState({
+        currentLocation: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
+      });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.isNavigating != this.props.isNavigating) {
+      if (!this.props.isNavigating) {
+        this.stopNavigating();
+      }
+    }
+
+    if (
+      this.props.isNavigating &&
+      JSON.stringify(prevState.currentLocation) !==
+        JSON.stringify(this.state.currentLocation)
+    ) {
+      if (this.isInRange()) {
+        if (!this.state.isNotifying) {
+          this.raiseAlarm();
+          this.setState({ isNotifying: true });
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.stopBackgroundGeolocation();
+
+    // unregister all event listeners
+    BackgroundGeolocation.events.forEach((event) =>
+      BackgroundGeolocation.removeAllListeners(event)
+    );
   }
 
   getLocationString() {
@@ -194,75 +214,22 @@ class MainExploreScreen extends Component {
       }
       return `${this.props.location.name}, ${this.props.location.address}`;
     }
-    return 'Search...';
+    return 'Search here';
   }
 
-  setCancelOrStart() {
-    //Cancel
-    if (this.props.isNavigating && this.props.location) {
-      //Fit to coornidate in another address
-      this.isFitted = false;
-      //immediately stop sound alarm
-      ReactNativeAN.stopAlarm();
-      //Turn of draw direction
-      this.props.stopDirect();
-      //ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
-      Toast.show({
-        text: 'Stop tracking your location!',
-        buttonText: 'Okay',
-        type: 'success',
-        duration: 2000,
-      });
-    }
-
-    //Start
-    else if (!this.props.isNavigating && this.props.location) {
-      this.props.startDirect();
-      this.isFitted = false;
-      //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
-      Toast.show({
-        text: 'Start tracking your location',
-        buttonText: 'Okay',
-        type: 'success',
-        duration: 2000,
-      });
-    } else {
-      Toast.show({
-        text: 'Enter your destination',
-        buttonText: 'Okay',
-        type: 'warning',
-        duration: 2000,
-      });
-    }
+  onStationPress(marker) {
+    const station = {
+      name: marker.title,
+      address: marker.title,
+      latitude: marker.lat,
+      longitude: marker.lng,
+    };
+    this.props.changeLocation(station);
+    this.props.changeStationType(NONE);
   }
 
-  fitToCoordinates(result) {
-    if (!this.isFitted) {
-      this.isFitted = true;
-
-      this.mapView.fitToCoordinates(result.coordinates, {
-        edgePadding: {
-          right: Layout.window.width / 20,
-          bottom: Layout.window.height / 20,
-          left: Layout.window.width / 20,
-          top: Layout.window.height / 20,
-        },
-        animated: true,
-      });
-    }
-  }
-
-  fitToCurrentCoordinates() {
-    const current = this.state.currentLocation;
-    this.mapView.fitToCoordinates([current], {
-      edgePadding: {
-        right: Layout.window.width / 15,
-        bottom: Layout.window.height / 15,
-        left: Layout.window.width / 15,
-        top: Layout.window.height / 15,
-      },
-      animated: true,
-    });
+  onNavigationRouteReady(result) {
+    this.mapView.fitToCoordinates(result.coordinates);
   }
 
   onSearchPress() {
@@ -274,88 +241,191 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.log('SUCCESS' + location.address);
+        console.info('[INFO]', '[onPickPress]', '[SUCCESS]', location.address);
       })
-      .catch((error) => console.log('ERRORRRRRRRRR'));
+      .catch((error) => console.warn('[ERROR]', '[onPickPress]', error));
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      ToastAndroid.show('ERROR', ToastAndroid.SHORT);
+      console.info(
+        '[INFO]',
+        '[onPickPress]',
+        'Unable to find location from result item.'
+      );
+      Toast.show({
+        text: 'Unable to pick destination.',
+        buttonText: 'Okay',
+        type: 'danger',
+        duration: 3000,
+      });
       return;
     }
 
     this.props.changeLocation(location);
   }
 
-  onLocatePress() {}
+  onLocatePress() {
+    this.mapView.fitToCoordinates([this.state.currentLocation]);
+  }
 
   onRangePress() {
     showRangeOptions(this.props.rangeOption, (selectedIndex) => {
-      if (selectedIndex !== undefined) {
+      if (selectedIndex !== undefined && selectedIndex !== null) {
         this.props.setRangeOption(selectedIndex);
       }
     });
   }
 
-  componentDidMount() {
-    //Reset destination location
-    this.props.changeLocation(null);
-    this.props.changeStationType(NONE_STATION);
-    this.props.stopDirect();
+  onToggleNavigation() {
+    // if true then stops
+    if (this.props.isNavigating) {
+      if (!this.props.isNavigating) {
+        Toast.show({
+          text: 'Alarm has already stopped!',
+          buttonText: 'Okay',
+          duration: 3000,
+        });
+      } else if (!this.props.location) {
+        console.warn(
+          "[WARN] There is no location but 'isNavigating' is true. Turning off..."
+        );
+        this.props.stopNavigating();
+      } else {
+        this.stopNavigating();
+        Toast.show({
+          text: 'Alarm stopped!',
+          buttonText: 'Okay',
+          type: 'success',
+          duration: 3000,
+        });
+      }
+    }
+    // if false then starts
+    else {
+      if (this.props.isNavigating) {
+        Toast.show({
+          text: 'Alarm has already been set!',
+          buttonText: 'Okay',
+          duration: 3000,
+        });
+      } else if (!this.props.location) {
+        Toast.show({
+          text: 'Please select a destination',
+          buttonText: 'Okay',
+          type: 'danger',
+          duration: 3000,
+        });
+      } else {
+        this.startNavigating();
+        Toast.show({
+          text: 'Alarm set!',
+          buttonText: 'Okay',
+          type: 'success',
+          duration: 3000,
+        });
+      }
+    }
+  }
 
+  startNavigating() {
+    this.startBackgroundGeolocation();
+    this.props.startNavigating();
+  }
+
+  stopNavigating() {
+    //immediately stop sound alarm
+    ReactNativeAN.stopAlarm();
+    ReactNativeAN.removeFiredNotification('1997');
+    this.setState({ isNotifying: false });
+    this.stopBackgroundGeolocation();
+    this.props.stopNavigating();
+  }
+
+  isInRange() {
+    if (!this.props.location) {
+      console.warn('[ERROR]', '[isInRange]', 'No location.');
+      return;
+    }
+
+    const current = this.state.currentLocation;
+    const destination = this.props.location;
+    const distance = computeDistanceBetween(
+      current.latitude,
+      current.longitude,
+      destination.latitude,
+      destination.longitude
+    );
+
+    return distance <= RANGE_VALUES[this.props.rangeOption];
+  }
+
+  raiseAlarm() {
+    //PUSH NOTIFICATIONS
+    //ALARM
+    const alarmNotifData = this.configAlarmNotification();
+    ReactNativeAN.sendNotification(alarmNotifData);
+    this.props.navigation.navigate('Alarm');
+    console.info('[INFO]', '[raiseAlarm]', 'Send notification successfully');
+  }
+
+  configBackgroundGeolocation() {
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
       distanceFilter: 50,
       notificationsEnabled: true,
       notificationTitle: 'Location Notifier',
-      notificationText: 'Location Notifier is tracking your locations',
+      notificationText: 'Location Notifier is tracking your location.',
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
       interval: 4000,
       fastestInterval: 4000,
       activitiesInterval: 10000,
-      stopOnStillActivity: false,
+      stopOnStillActivity: true,
     });
 
     BackgroundGeolocation.on('location', (location) => {
       // handle your locations here
       // to perform long running operation on iOS
       // you need to create background task
-      BackgroundGeolocation.startTask((taskKey) => {
-        //get current location
-        const newState = this.state;
-        const newLocation = location;
-        newState.currentLocation = newLocation;
-        this.setState(newState);
 
-        this.checkToAlarm();
-
-        BackgroundGeolocation.endTask(taskKey);
+      //get current location
+      this.setState({
+        currentLocation: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
       });
     });
 
     BackgroundGeolocation.on('stationary', (stationaryLocation) => {
       // handle stationary locations here
-      Actions.sendLocation(stationaryLocation);
+      console.info(
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        '[stationary]',
+        stationaryLocation
+      );
     });
 
     BackgroundGeolocation.on('error', (error) => {
-      console.log('[ERROR] BackgroundGeolocation error:', error);
+      console.warn('[ERROR]', '[BackgroundGeolocation]', error);
     });
 
     BackgroundGeolocation.on('start', () => {
-      console.log('[INFO] BackgroundGeolocation service has been started');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'Started.');
     });
 
     BackgroundGeolocation.on('stop', () => {
-      console.log('[INFO] BackgroundGeolocation service has been stopped');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'Stopped.');
     });
 
     BackgroundGeolocation.on('authorization', (status) => {
-      console.log(
-        '[INFO] BackgroundGeolocation authorization status: ' + status
+      console.info(
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        'authorization status: ',
+        status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
         // we need to set delay or otherwise alert may not be shown
@@ -371,7 +441,12 @@ class MainExploreScreen extends Component {
                 },
                 {
                   text: 'No',
-                  onPress: () => console.log('No Pressed'),
+                  onPress: () =>
+                    console.warn(
+                      '[WARN]',
+                      '[BackgroundGeolocation',
+                      'authorization No Pressed.'
+                    ),
                   style: 'cancel',
                 },
               ]
@@ -382,122 +457,62 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('background', () => {
-      console.log('[INFO] App is in background');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'is in background');
     });
 
     BackgroundGeolocation.on('foreground', () => {
-      console.log('[INFO] App is in foreground');
+      console.info('[INFO]', '[BackgroundGeolocation]', 'is on foreground');
     });
+  }
 
+  startBackgroundGeolocation() {
+    console.info('[INFO]', '[startBackgroundGeolocation]', 'begin');
     BackgroundGeolocation.checkStatus((status) => {
-      console.log(
-        '[INFO] BackgroundGeolocation service is running',
-        status.isRunning
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation services enabled',
-        status.locationServicesEnabled
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation auth status: ' + status.authorization
+      console.info(
+        '[INFO] BackgroundGeolocation status:',
+        JSON.stringify(status)
       );
 
-      // you don't need to check status before start (this is just the example)
       if (!status.isRunning) {
         BackgroundGeolocation.start(); //triggers start on start event
       }
     });
-
-    BackgroundGeolocation.getCurrentLocation((location) => {
-      const newState = this.state;
-      newState.currentLocation.latitude = location.latitude;
-      newState.currentLocation.longitude = location.longitude;
-
-      this.setState(newState);
-    });    
   }
 
-  componentWillUnmount() {
-    //return;
+  stopBackgroundGeolocation() {
+    console.info('[INFO]', '[stopBackgroundGeolocation]', 'begin');
+    BackgroundGeolocation.checkStatus((status) => {
+      console.info(
+        '[INFO] BackgroundGeolocation status:',
+        JSON.stringify(status)
+      );
 
-    // unregister all event listeners
-    BackgroundGeolocation.events.forEach((event) =>
-      BackgroundGeolocation.removeAllListeners(event)
-    );
-  }
-
-
-  checkToAlarm() {
-    if (!this.props.isNavigating || !this.props.location) {
-      //Have no destination
-      return;
-    }
-    const current = this.state.currentLocation;
-    const des = this.props.location;
-    const distance = this.calcCrow(
-      current.latitude,
-      current.longitude,
-      des.latitude,
-      des.longitude
-    );
-    console.log('Checking to alarm');
-    // Only check and push notifications once if your're inside range
-    if (
-      distance <= RANGE_VALUES[this.props.rangeOption] &&
-      this.props.isNavigating
-    ) {
-      //PUSH NOTIFICATIONS
-      //ALARM
-      const alarmNotifData = this.configAlarmNotification();
-      ReactNativeAN.sendNotification(alarmNotifData);
-
-      //Stop direct
-      //this.props.stopDirect();
-      this.isFitted = false; // Will be fit direction in new address
-
-      console.log('Send notification successfully');
-      this.props.navigation.navigate('Alarm');
-    }
+      if (status.isRunning) {
+        BackgroundGeolocation.stop();
+      }
+    });
   }
 
   configAlarmNotification() {
-    const soundName = 'alarm' + this.props.soundID + '.mp3';
+    const soundName = `alarm${this.props.soundID}.mp3`;
     const alarmNotifData = {
-      id: '1997',
+      id: '1997', // Required.
       title: 'Location Notifier',
-      message: "You're IN",
-      channel: '1997', // Required. Same id as specified in MainApplication's onCreate method
-      ticker: "Let's make a favorites",
+      message: `You are within ${
+        RANGE_OPTIONS[this.props.rangeOption]
+      } from your destination.`,
+      channel: '1997', // Same id as specified in MainApplication's onCreate method
+      ticker: 'Location Notifier ticker',
       vibrate: this.props.vibrate,
-      vibration: 3000,
+      vibration: 300000, // 5 mins
       small_icon: 'ic_launcher',
       large_icon: 'ic_launcher',
       play_sound: true,
       sound_name: soundName, // Plays custom notification ringtone if sound_name: null
-      color: 'red',
+      color: Colors.primary,
     };
+
     return alarmNotifData;
-  }
-
-  //Calculate distance between two coordinate to meters //BIRD BAY -- CHim bay
-  calcCrow(lat1, lon1, lat2, lon2) {
-    var R = 6371; // km
-    var dLat = this.toRad(lat2 - lat1);
-    var dLon = this.toRad(lon2 - lon1);
-    var lat1 = this.toRad(lat1);
-    var lat2 = this.toRad(lat2);
-
-    var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c * 1000;
-    return d;
-  }
-
-  // Converts numeric degrees to radians
-  toRad(Value) {
-    return (Value * Math.PI) / 180;
   }
 }
 
@@ -548,8 +563,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setRangeOption: (optionID) => dispatch(setRangeOption(optionID)),
-  stopDirect: () => dispatch(stopDirect()),
-  startDirect: () => dispatch(startDirect()),
+  stopNavigating: () => dispatch(stopNavigating()),
+  startNavigating: () => dispatch(startNavigating()),
   changeLocation: (location) => dispatch(changeLocation(location)),
   changeStationType: (type) => dispatch(changeStationType(type)),
 });

@@ -10,6 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
+import RNGooglePlaces from 'react-native-google-places';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { changeLocation, changeStationType } from '../actions/ExploreActions';
@@ -17,9 +18,8 @@ import { addFavorite, removeFavorite } from '../actions/FavoriteActions';
 import ResultList from '../components/ResultList';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
+import { ATM, GAS } from '../constants/StationTypes';
 import { propTypes as LocationProps } from '../model/Location';
-import RNGooglePlaces from 'react-native-google-places';
-import {NONE_STATION, ATM_STATION, GAS_STATION } from '../constants/ActionTypes'
 
 class DetailExploreScreen extends Component {
   static propTypes = {
@@ -28,7 +28,7 @@ class DetailExploreScreen extends Component {
     removeFavorite: PropTypes.func.isRequired,
     location: PropTypes.shape(LocationProps),
     changeLocation: PropTypes.func.isRequired,
-    changeStationType:PropTypes.func.isRequired,
+    changeStationType: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -153,12 +153,12 @@ class DetailExploreScreen extends Component {
   onBackPress() {
     this.props.navigation.goBack();
   }
-  gasStationPress(){
-    this.props.changeStationType(GAS_STATION);
+  gasStationPress() {
+    this.props.changeStationType(GAS);
     this.props.navigation.goBack();
   }
-  atmStationPress(){
-    this.props.changeStationType(ATM_STATION);
+  atmStationPress() {
+    this.props.changeStationType(ATM);
     this.props.navigation.goBack();
   }
 
@@ -181,19 +181,31 @@ class DetailExploreScreen extends Component {
   async onPress(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    } else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+        break;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.warn('[ERROR]', '[onPress]', error));
+        break;
+      }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onPress]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
     this.props.changeLocation(location);
@@ -203,22 +215,31 @@ class DetailExploreScreen extends Component {
   async onChangeSave(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    }
-    // if source is not from favorite, try to retrieve the
-    // actual location which is the same as src/model/Location
-    else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+        break;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.warn('[ERROR]', '[onChangeSave]', error));
+        break;
+      }
     }
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      console.log(item);
+      console.warn(
+        '[WARN]',
+        '[onChangeSave]',
+        'Unable to find location from result item.',
+        JSON.stringify(item)
+      );
       return;
     }
 
@@ -273,7 +294,9 @@ class DetailExploreScreen extends Component {
 
     if (value !== '') {
       // Search using Google API
-      await RNGooglePlaces.getAutocompletePredictions(value, { country: 'VN' })
+      await RNGooglePlaces.getAutocompletePredictions(value, {
+        country: 'VN',
+      })
         .then((places) => {
           const searchResults = places.map((e, i) => ({
             type: 'google',
@@ -281,7 +304,7 @@ class DetailExploreScreen extends Component {
           }));
           results = results.concat(searchResults);
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => console.warn('[ERROR]', '[search]', error));
     }
 
     // Set new state with new results
@@ -347,7 +370,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeLocation: (location) => dispatch(changeLocation(location)),
   addFavorite: (favorite) => dispatch(addFavorite(favorite)),
   removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
-  changeStationType:(type)=>dispatch(changeStationType(type)),
+  changeStationType: (type) => dispatch(changeStationType(type)),
 });
 
 export default withNavigation(
