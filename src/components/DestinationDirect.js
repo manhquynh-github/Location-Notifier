@@ -17,7 +17,7 @@ export default class DestinationDirect extends Component {
       latitude: PropTypes.number,
       longitude: PropTypes.number,
     }).isRequired,
-    fitToCoordinates: PropTypes.func,
+    onReady: PropTypes.func,
     checkAlarm: PropTypes.func,
     range: PropTypes.number.isRequired,
     isNavigating: PropTypes.bool.isRequired,
@@ -29,6 +29,7 @@ export default class DestinationDirect extends Component {
       isConnected: false,
     };
 
+    this.onReady = this.onReady.bind(this);
     this.handleFirstConnectivityChange = this.handleFirstConnectivityChange.bind(
       this
     );
@@ -46,9 +47,7 @@ export default class DestinationDirect extends Component {
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={4}
             strokeColor="hotpink"
-            onReady={(result) => {
-              this.fitToCoordinates(result);
-            }}
+            onReady={this.onReady}
           />
         )}
         <MapView.Marker
@@ -104,11 +103,9 @@ export default class DestinationDirect extends Component {
     }
   }
 
-  fitToCoordinates(result) {
-    if (this.props.fitToCoordinates) {
-      // && this.props.checkAlarm) {
-      this.props.fitToCoordinates(result);
-      //this.props.checkAlarm();
+  onReady(result) {
+    if (this.props.onReady) {
+      this.props.onReady(result);
     }
   }
 }

@@ -1,10 +1,10 @@
 // Computes the Crow Road between two geographical coordinates
 export function computeDistanceBetween(lat1, lon1, lat2, lon2) {
   var R = 6371; // km
-  var dLat = this.toRad(lat2 - lat1);
-  var dLon = this.toRad(lon2 - lon1);
-  var lat1 = this.toRad(lat1);
-  var lat2 = this.toRad(lat2);
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
 
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +

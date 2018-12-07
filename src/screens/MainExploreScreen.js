@@ -2,7 +2,7 @@ import { MapView } from 'expo';
 import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, ToastAndroid, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNGooglePlaces from 'react-native-google-places';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
@@ -47,17 +47,18 @@ class MainExploreScreen extends Component {
         latitude: 10.8703,
         longitude: 106.8034513,
       },
+      isNotifying: false,
     };
 
     this.mapView = null;
     this.isFitted = false;
+    this.configBackgroundGeolocation();
 
     this.onSearchPress = this.onSearchPress.bind(this);
     this.onPickPress = this.onPickPress.bind(this);
     this.onLocatePress = this.onLocatePress.bind(this);
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
-    this.checkToAlarm = this.checkToAlarm.bind(this);
     this.startNavigating = this.startNavigating.bind(this);
     this.stopNavigating = this.stopNavigating.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
@@ -138,15 +139,14 @@ class MainExploreScreen extends Component {
           }}
           ref={(c) => (this.mapView = c)}
           showsUserLocation>
-          {this.props.isNavigating && this.props.location && (
+          {this.props.location && (
             <DestinationDirect
               currentLocation={this.state.currentLocation}
               destination={{
                 latitude: this.props.location.latitude,
                 longitude: this.props.location.longitude,
               }}
-              fitToCoordinates={this.fitToCoordinates}
-              //checkAlarm={this.checkToAlarm}
+              onReady={this.fitToCoordinates}
               range={this.props.rangeOption}
               isNavigating={this.props.isNavigating}
             />
@@ -159,6 +159,41 @@ class MainExploreScreen extends Component {
       </Container>
     );
   }
+
+  componentDidMount() {
+    //Reset destination location
+    this.props.changeLocation(null);
+    this.props.changeStationType(NONE);
+    this.props.stopNavigating();
+    BackgroundGeolocation.getCurrentLocation((location) => {
+      this.setState({ currentLocation: location });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (
+      this.props.isNavigating &&
+      JSON.stringify(prevState.currentLocation) !==
+        JSON.stringify(this.state.currentLocation)
+    ) {
+      if (this.isInRange()) {
+        if (!this.state.isNotifying) {
+          this.raiseAlarm();
+          this.setState({ isNotifying: true });
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.stopBackgroundGeolocation();
+
+    // unregister all event listeners
+    BackgroundGeolocation.events.forEach((event) =>
+      BackgroundGeolocation.removeAllListeners(event)
+    );
+  }
+
   onStationPress(marker) {
     const station = {
       name: marker.title,
@@ -184,18 +219,19 @@ class MainExploreScreen extends Component {
   startNavigating() {
     if (this.props.isNavigating) {
       Toast.show({
-        text: 'Your alarm has already been set!',
+        text: 'Alarm has already been set!',
         buttonText: 'Okay',
         duration: 3000,
       });
     } else if (!this.props.location) {
       Toast.show({
-        text: 'Please select your destination',
+        text: 'Please select a destination',
         buttonText: 'Okay',
         type: 'danger',
         duration: 3000,
       });
     } else {
+      this.startBackgroundGeolocation();
       this.props.startNavigating();
       this.isFitted = false;
 
@@ -211,24 +247,26 @@ class MainExploreScreen extends Component {
   stopNavigating() {
     if (!this.props.isNavigating) {
       Toast.show({
-        text: 'Your alarm has already been cancelled!',
+        text: 'Alarm has already stopped!',
         buttonText: 'Okay',
         duration: 3000,
       });
     } else if (!this.props.location) {
       console.warn(
-        "There's no location but 'isNavigating' is true. Turning off..."
+        "[WARN] There is no location but 'isNavigating' is true. Turning off..."
       );
-      this.stopNavigating();
+      this.props.stopNavigating();
     } else {
       //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
-      //Turn of draw direction
+
+      this.stopBackgroundGeolocation();
       this.props.stopNavigating();
+
       Toast.show({
-        text: 'Alarm cancelled!',
+        text: 'Alarm stopped!',
         buttonText: 'Okay',
         type: 'success',
         duration: 3000,
@@ -261,13 +299,20 @@ class MainExploreScreen extends Component {
     await RNGooglePlaces.openPlacePickerModal()
       .then((place) => {
         location = place;
-        console.log('SUCCESS' + location.address);
+        console.info('[INFO] onPickPress SUCCESS:', location.address);
       })
-      .catch((error) => console.log('ERRORRRRRRRRR'));
+      .catch((error) => console.error('[ERROR] onPickPress', error));
 
     if (location == null) {
-      console.log('Unable to find location from result item.');
-      ToastAndroid.show('ERROR', ToastAndroid.SHORT);
+      console.info(
+        '[INFO] onPickPress Unable to find location from result item.'
+      );
+      Toast.show({
+        text: 'Unable to pick destination.',
+        buttonText: 'Okay',
+        type: 'danger',
+        duration: 3000,
+      });
       return;
     }
 
@@ -275,39 +320,53 @@ class MainExploreScreen extends Component {
   }
 
   onLocatePress() {
-    const current = this.state.currentLocation;
-    this.mapView.fitToCoordinates([current], {
-      edgePadding: {
-        right: Layout.window.width / 15,
-        bottom: Layout.window.height / 15,
-        left: Layout.window.width / 15,
-        top: Layout.window.height / 15,
-      },
-      animated: true,
-    });
+    this.mapView.fitToCoordinates([this.state.currentLocation]);
   }
 
   onRangePress() {
     showRangeOptions(this.props.rangeOption, (selectedIndex) => {
-      if (selectedIndex) {
+      if (selectedIndex !== undefined && selectedIndex !== null) {
         this.props.setRangeOption(selectedIndex);
       }
     });
   }
 
-  componentDidMount() {
-    //Reset destination location
-    this.props.changeLocation(null);
-    this.props.changeStationType(NONE);
-    this.props.stopNavigating();
+  isInRange() {
+    if (!this.props.location) {
+      console.error('[ERROR] checkToAlarm No location.');
+      return;
+    }
 
+    const current = this.state.currentLocation;
+    const destination = this.props.location;
+    const distance = computeDistanceBetween(
+      current.latitude,
+      current.longitude,
+      destination.latitude,
+      destination.longitude
+    );
+
+    return distance <= RANGE_VALUES[this.props.rangeOption];
+  }
+
+  raiseAlarm() {
+    //PUSH NOTIFICATIONS
+    //ALARM
+    const alarmNotifData = this.configAlarmNotification();
+    ReactNativeAN.sendNotification(alarmNotifData);
+    this.isFitted = false; // Will be fit direction in new address
+    this.props.navigation.navigate('Alarm');
+    console.info('[INFO] Send notification successfully');
+  }
+
+  configBackgroundGeolocation() {
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
       stationaryRadius: 50,
       distanceFilter: 50,
       notificationsEnabled: true,
       notificationTitle: 'Location Notifier',
-      notificationText: 'Location Notifier is tracking your locations',
+      notificationText: 'Location Notifier is tracking your location.',
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
@@ -321,17 +380,9 @@ class MainExploreScreen extends Component {
       // handle your locations here
       // to perform long running operation on iOS
       // you need to create background task
-      BackgroundGeolocation.startTask((taskKey) => {
-        //get current location
-        const newState = this.state;
-        const newLocation = location;
-        newState.currentLocation = newLocation;
-        this.setState(newState);
 
-        this.checkToAlarm();
-
-        BackgroundGeolocation.endTask(taskKey);
-      });
+      //get current location
+      this.setState({ currentLocation: location });
     });
 
     BackgroundGeolocation.on('stationary', (stationaryLocation) => {
@@ -352,7 +403,7 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('authorization', (status) => {
-      console.log(
+      console.info(
         '[INFO] BackgroundGeolocation authorization status: ' + status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
@@ -369,7 +420,7 @@ class MainExploreScreen extends Component {
                 },
                 {
                   text: 'No',
-                  onPress: () => console.log('No Pressed'),
+                  onPress: () => console.warn('[WARN] No Pressed.'),
                   style: 'cancel',
                 },
               ]
@@ -380,81 +431,42 @@ class MainExploreScreen extends Component {
     });
 
     BackgroundGeolocation.on('background', () => {
-      console.log('[INFO] App is in background');
+      console.info('[INFO] BackgroundGeolocation is in background');
     });
 
     BackgroundGeolocation.on('foreground', () => {
-      console.log('[INFO] App is in foreground');
+      console.info('[INFO] BackgroundGeolocation is in foreground');
     });
+  }
 
+  startBackgroundGeolocation() {
+    console.info('[INFO] Starting BackgroundGeolocation.');
     BackgroundGeolocation.checkStatus((status) => {
-      console.log(
-        '[INFO] BackgroundGeolocation service is running',
-        status.isRunning
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation services enabled',
-        status.locationServicesEnabled
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation auth status: ' + status.authorization
+      console.info(
+        '[INFO] BackgroundGeolocation status:',
+        JSON.stringify(status)
       );
 
-      // you don't need to check status before start (this is just the example)
       if (!status.isRunning) {
         BackgroundGeolocation.start(); //triggers start on start event
+        console.info('[INFO] Started.');
       }
     });
+  }
 
-    BackgroundGeolocation.getCurrentLocation((location) => {
-      const newState = this.state;
-      newState.currentLocation.latitude = location.latitude;
-      newState.currentLocation.longitude = location.longitude;
+  stopBackgroundGeolocation() {
+    console.info('[INFO] Stopping BackgroundGeolocation.');
+    BackgroundGeolocation.checkStatus((status) => {
+      console.info(
+        '[INFO] BackgroundGeolocation status:',
+        JSON.stringify(status)
+      );
 
-      this.setState(newState);
+      if (status.isRunning) {
+        BackgroundGeolocation.stop();
+        console.info('[INFO] Stopped.');
+      }
     });
-  }
-
-  componentWillUnmount() {
-    //return;
-
-    // unregister all event listeners
-    BackgroundGeolocation.events.forEach((event) =>
-      BackgroundGeolocation.removeAllListeners(event)
-    );
-  }
-
-  checkToAlarm() {
-    if (!this.props.isNavigating || !this.props.location) {
-      //Have no destination
-      return;
-    }
-    const current = this.state.currentLocation;
-    const des = this.props.location;
-    const distance = computeDistanceBetween(
-      current.latitude,
-      current.longitude,
-      des.latitude,
-      des.longitude
-    );
-    console.log('Checking to alarm');
-    // Only check and push notifications once if your're inside range
-    if (
-      distance <= RANGE_VALUES[this.props.rangeOption] &&
-      this.props.isNavigating
-    ) {
-      //PUSH NOTIFICATIONS
-      //ALARM
-      const alarmNotifData = this.configAlarmNotification();
-      ReactNativeAN.sendNotification(alarmNotifData);
-
-      //Stop direct
-      //this.props.stopNavigating();
-      this.isFitted = false; // Will be fit direction in new address
-
-      console.log('Send notification successfully');
-      this.props.navigation.navigate('Alarm');
-    }
   }
 
   configAlarmNotification() {
