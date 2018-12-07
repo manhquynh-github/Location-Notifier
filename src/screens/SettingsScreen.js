@@ -137,28 +137,15 @@ export class SettingsScreen extends Component {
             </Body>
             <Right />
           </ListItem>
-          <Grid style={{ padding: 16 }}>
-            <Col
-              size={1}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                padding: 8,
-              }}>
+          <Grid style={styles.aboutGrid}>
+            <Col size={1} style={styles.aboutAppIconContainer}>
               <Image
                 source={require('../assets/images/icon.png')}
-                style={{ height: 64, width: 64 }}
+                style={styles.aboutAppIconImage}
               />
             </Col>
-            <Col
-              size={3}
-              style={{
-                flexDirection: 'column',
-                padding: 8,
-              }}>
-              <Text style={{ fontWeight: 'bold', color: Colors.primary }}>
-                Location Notifier
-              </Text>
+            <Col size={3} style={styles.aboutDescriptionContainer}>
+              <Text style={styles.aboutAppNameText}>Location Notifier</Text>
               <Text>
                 An app that will notify you when you are about to reach your
                 destination.
@@ -215,6 +202,20 @@ const styles = StyleSheet.create({
   aboutButton: {
     backgroundColor: '#127cd4',
   },
+  aboutGrid: {
+    padding: 16,
+  },
+  aboutAppIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 8,
+  },
+  aboutAppIconImage: { height: 64, width: 64 },
+  aboutDescriptionContainer: {
+    flexDirection: 'column',
+    padding: 8,
+  },
+  aboutAppNameText: { fontWeight: 'bold', color: Colors.primary },
 });
 
 const mapStateToProps = (state) => ({
