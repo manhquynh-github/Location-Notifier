@@ -199,8 +199,6 @@ class MainExploreScreen extends Component {
   }
 
   componentWillUnmount() {
-    console.info('[INFO] ComponentWillUnmount.');
-
     this.stopBackgroundGeolocation();
 
     // unregister all event listeners
