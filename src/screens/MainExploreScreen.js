@@ -58,7 +58,8 @@ class MainExploreScreen extends Component {
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
-    this.setCancelOrStart = this.setCancelOrStart.bind(this);
+    this.startNavigating = this.startNavigating.bind(this);
+    this.stopNavigating = this.stopNavigating.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
   }
 
@@ -122,7 +123,9 @@ class MainExploreScreen extends Component {
           delayPressIn={0}
           style={styles.startButton}
           position="bottomRight"
-          onPress={this.setCancelOrStart}>
+          onPress={
+            this.props.isNavigating ? this.stopNavigating : this.startNavigating
+          }>
           <Icon name={this.props.isNavigating ? 'pause' : 'play'} />
         </Fab>
         <MapView
@@ -178,41 +181,57 @@ class MainExploreScreen extends Component {
     return 'Search...';
   }
 
-  setCancelOrStart() {
-    //Cancel
-    if (this.props.isNavigating && this.props.location) {
+  startNavigating() {
+    if (this.props.isNavigating) {
+      Toast.show({
+        text: 'Your alarm has already been set!',
+        buttonText: 'Okay',
+        duration: 3000,
+      });
+    } else if (!this.props.location) {
+      Toast.show({
+        text: 'Please select your destination',
+        buttonText: 'Okay',
+        type: 'danger',
+        duration: 3000,
+      });
+    } else {
+      this.props.startNavigating();
+      this.isFitted = false;
+
+      Toast.show({
+        text: 'Alarm set!',
+        buttonText: 'Okay',
+        type: 'success',
+        duration: 3000,
+      });
+    }
+  }
+
+  stopNavigating() {
+    if (!this.props.isNavigating) {
+      Toast.show({
+        text: 'Your alarm has already been cancelled!',
+        buttonText: 'Okay',
+        duration: 3000,
+      });
+    } else if (!this.props.location) {
+      console.warn(
+        "There's no location but 'isNavigating' is true. Turning off..."
+      );
+      this.stopNavigating();
+    } else {
       //Fit to coornidate in another address
       this.isFitted = false;
       //immediately stop sound alarm
       ReactNativeAN.stopAlarm();
       //Turn of draw direction
       this.props.stopNavigating();
-      //ToastAndroid.showWithGravity("Stop tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
       Toast.show({
-        text: 'Stop tracking your location!',
+        text: 'Alarm cancelled!',
         buttonText: 'Okay',
         type: 'success',
-        duration: 2000,
-      });
-    }
-
-    //Start
-    else if (!this.props.isNavigating && this.props.location) {
-      this.props.startNavigating();
-      this.isFitted = false;
-      //ToastAndroid.showWithGravity("Start tracking your location",ToastAndroid.SHORT,ToastAndroid.CENTER);
-      Toast.show({
-        text: 'Start tracking your location',
-        buttonText: 'Okay',
-        type: 'success',
-        duration: 2000,
-      });
-    } else {
-      Toast.show({
-        text: 'Enter your destination',
-        buttonText: 'Okay',
-        type: 'warning',
-        duration: 2000,
+        duration: 3000,
       });
     }
   }
@@ -270,7 +289,7 @@ class MainExploreScreen extends Component {
 
   onRangePress() {
     showRangeOptions(this.props.rangeOption, (selectedIndex) => {
-      if (selectedIndex !== undefined) {
+      if (selectedIndex) {
         this.props.setRangeOption(selectedIndex);
       }
     });
