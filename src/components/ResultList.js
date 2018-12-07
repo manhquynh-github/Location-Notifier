@@ -50,14 +50,17 @@ export default class ResultList extends Component {
         label = item.value.label;
         address = item.value.address;
         saved = true;
+        break;
       }
       case 'google': {
         label = item.value.primaryText;
         address = item.value.fullText;
+        break;
       }
       case 'location': {
         label = item.value.name;
         address = item.value.address;
+        break;
       }
     }
 

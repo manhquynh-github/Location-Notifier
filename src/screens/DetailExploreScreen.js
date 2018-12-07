@@ -185,6 +185,7 @@ class DetailExploreScreen extends Component {
       case 'favorite':
       case 'location': {
         location = item.value;
+        break;
       }
       case 'google': {
         // if source is not from favorite, try to retrieve the
@@ -193,9 +194,8 @@ class DetailExploreScreen extends Component {
           .then((result) => {
             location = result;
           })
-          .catch((error) =>
-            console.warn('[ERROR]', '[onPress]', error)
-          );
+          .catch((error) => console.warn('[ERROR]', '[onPress]', error));
+        break;
       }
     }
 
@@ -219,6 +219,7 @@ class DetailExploreScreen extends Component {
       case 'favorite':
       case 'location': {
         location = item.value;
+        break;
       }
       case 'google': {
         // if source is not from favorite, try to retrieve the
@@ -227,9 +228,8 @@ class DetailExploreScreen extends Component {
           .then((result) => {
             location = result;
           })
-          .catch((error) =>
-            console.warn('[ERROR]', '[onChangeSave]', error)
-          );
+          .catch((error) => console.warn('[ERROR]', '[onChangeSave]', error));
+        break;
       }
     }
 
