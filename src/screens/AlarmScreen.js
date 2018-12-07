@@ -46,7 +46,6 @@ class AlarmScreen extends Component {
   }
 
   onDismissPress() {
-    ReactNativeAN.stopAlarm();
     this.props.stopNavigating();
     this.props.navigation.navigate('MainExplore');
   }

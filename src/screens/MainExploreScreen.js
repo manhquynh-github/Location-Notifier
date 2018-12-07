@@ -60,6 +60,7 @@ class MainExploreScreen extends Component {
     this.onNavigationRouteReady = this.onNavigationRouteReady.bind(this);
     this.startNavigating = this.startNavigating.bind(this);
     this.stopNavigating = this.stopNavigating.bind(this);
+    this.onToggleNavigation = this.onToggleNavigation.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
   }
 
@@ -123,9 +124,7 @@ class MainExploreScreen extends Component {
           delayPressIn={0}
           style={styles.startButton}
           position="bottomRight"
-          onPress={
-            this.props.isNavigating ? this.stopNavigating : this.startNavigating
-          }>
+          onPress={this.onToggleNavigation}>
           <Icon name={this.props.isNavigating ? 'pause' : 'play'} />
         </Fab>
         <MapView
@@ -180,7 +179,7 @@ class MainExploreScreen extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.isNavigating != this.props.isNavigating) {
       if (!this.props.isNavigating) {
-        this.stopBackgroundGeolocation();
+        this.stopNavigating();
       }
     }
 
@@ -276,60 +275,69 @@ class MainExploreScreen extends Component {
     });
   }
 
-  startNavigating() {
+  onToggleNavigation() {
+    // if true then stops
     if (this.props.isNavigating) {
-      Toast.show({
-        text: 'Alarm has already been set!',
-        buttonText: 'Okay',
-        duration: 3000,
-      });
-    } else if (!this.props.location) {
-      Toast.show({
-        text: 'Please select a destination',
-        buttonText: 'Okay',
-        type: 'danger',
-        duration: 3000,
-      });
-    } else {
-      this.startBackgroundGeolocation();
-      this.props.startNavigating();
-
-      Toast.show({
-        text: 'Alarm set!',
-        buttonText: 'Okay',
-        type: 'success',
-        duration: 3000,
-      });
+      if (!this.props.isNavigating) {
+        Toast.show({
+          text: 'Alarm has already stopped!',
+          buttonText: 'Okay',
+          duration: 3000,
+        });
+      } else if (!this.props.location) {
+        console.warn(
+          "[WARN] There is no location but 'isNavigating' is true. Turning off..."
+        );
+        this.props.stopNavigating();
+      } else {
+        this.stopNavigating();
+        Toast.show({
+          text: 'Alarm stopped!',
+          buttonText: 'Okay',
+          type: 'success',
+          duration: 3000,
+        });
+      }
+    }
+    // if false then starts
+    else {
+      if (this.props.isNavigating) {
+        Toast.show({
+          text: 'Alarm has already been set!',
+          buttonText: 'Okay',
+          duration: 3000,
+        });
+      } else if (!this.props.location) {
+        Toast.show({
+          text: 'Please select a destination',
+          buttonText: 'Okay',
+          type: 'danger',
+          duration: 3000,
+        });
+      } else {
+        this.startNavigating();
+        Toast.show({
+          text: 'Alarm set!',
+          buttonText: 'Okay',
+          type: 'success',
+          duration: 3000,
+        });
+      }
     }
   }
 
-  stopNavigating() {
-    if (!this.props.isNavigating) {
-      Toast.show({
-        text: 'Alarm has already stopped!',
-        buttonText: 'Okay',
-        duration: 3000,
-      });
-    } else if (!this.props.location) {
-      console.warn(
-        "[WARN] There is no location but 'isNavigating' is true. Turning off..."
-      );
-      this.props.stopNavigating();
-    } else {
-      //immediately stop sound alarm
-      ReactNativeAN.stopAlarm();
-      ReactNativeAN.removeFiredNotification('1997');
-      this.setState({ isNotifying: false });
-      this.stopBackgroundGeolocation();
-      this.props.stopNavigating();
+  startNavigating() {
+    this.startBackgroundGeolocation();
+    this.props.startNavigating();
+  }
 
-      Toast.show({
-        text: 'Alarm stopped!',
-        buttonText: 'Okay',
-        type: 'success',
-        duration: 3000,
-      });
-    }
+  stopNavigating() {
+    //immediately stop sound alarm
+    ReactNativeAN.stopAlarm();
+    ReactNativeAN.removeFiredNotification('1997');
+    this.setState({ isNotifying: false });
+    this.stopBackgroundGeolocation();
+    this.props.stopNavigating();
   }
 
   isInRange() {
