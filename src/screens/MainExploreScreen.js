@@ -207,6 +207,17 @@ class MainExploreScreen extends Component {
     );
   }
 
+  getLocationString() {
+    const location = this.props.location;
+    if (location) {
+      if (location.address.includes(location.name)) {
+        return location.address;
+      }
+      return `${this.props.location.name}, ${this.props.location.address}`;
+    }
+    return 'Search here';
+  }
+
   onStationPress(marker) {
     const station = {
       name: marker.title,
@@ -218,15 +229,49 @@ class MainExploreScreen extends Component {
     this.props.changeStationType(NONE);
   }
 
-  getLocationString() {
-    const location = this.props.location;
-    if (location) {
-      if (location.address.includes(location.name)) {
-        return location.address;
-      }
-      return `${this.props.location.name}, ${this.props.location.address}`;
+  onNavigationRouteReady(result) {
+    this.mapView.fitToCoordinates(result.coordinates);
+  }
+
+  onSearchPress() {
+    this.props.navigation.navigate('DetailExplore');
+  }
+
+  async onPickPress() {
+    let location = null;
+    await RNGooglePlaces.openPlacePickerModal()
+      .then((place) => {
+        location = place;
+        console.info('[INFO] onPickPress SUCCESS:', location.address);
+      })
+      .catch((error) => console.error('[ERROR] onPickPress', error));
+
+    if (location == null) {
+      console.info(
+        '[INFO] onPickPress Unable to find location from result item.'
+      );
+      Toast.show({
+        text: 'Unable to pick destination.',
+        buttonText: 'Okay',
+        type: 'danger',
+        duration: 3000,
+      });
+      return;
     }
-    return 'Search...';
+
+    this.props.changeLocation(location);
+  }
+
+  onLocatePress() {
+    this.mapView.fitToCoordinates([this.state.currentLocation]);
+  }
+
+  onRangePress() {
+    showRangeOptions(this.props.rangeOption, (selectedIndex) => {
+      if (selectedIndex !== undefined && selectedIndex !== null) {
+        this.props.setRangeOption(selectedIndex);
+      }
+    });
   }
 
   startNavigating() {
@@ -283,59 +328,6 @@ class MainExploreScreen extends Component {
         duration: 3000,
       });
     }
-  }
-
-  onNavigationRouteReady(result) {
-    this.mapView.fitToCoordinates(result.coordinates, {
-      edgePadding: {
-        right: Layout.window.width / 20,
-        bottom: Layout.window.height / 20,
-        left: Layout.window.width / 20,
-        top: Layout.window.height / 20,
-      },
-      animated: true,
-    });
-  }
-
-  onSearchPress() {
-    this.props.navigation.navigate('DetailExplore');
-  }
-
-  async onPickPress() {
-    let location = null;
-    await RNGooglePlaces.openPlacePickerModal()
-      .then((place) => {
-        location = place;
-        console.info('[INFO] onPickPress SUCCESS:', location.address);
-      })
-      .catch((error) => console.error('[ERROR] onPickPress', error));
-
-    if (location == null) {
-      console.info(
-        '[INFO] onPickPress Unable to find location from result item.'
-      );
-      Toast.show({
-        text: 'Unable to pick destination.',
-        buttonText: 'Okay',
-        type: 'danger',
-        duration: 3000,
-      });
-      return;
-    }
-
-    this.props.changeLocation(location);
-  }
-
-  onLocatePress() {
-    this.mapView.fitToCoordinates([this.state.currentLocation]);
-  }
-
-  onRangePress() {
-    showRangeOptions(this.props.rangeOption, (selectedIndex) => {
-      if (selectedIndex !== undefined && selectedIndex !== null) {
-        this.props.setRangeOption(selectedIndex);
-      }
-    });
   }
 
   isInRange() {
