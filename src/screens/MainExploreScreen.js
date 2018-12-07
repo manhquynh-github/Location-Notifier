@@ -166,7 +166,12 @@ class MainExploreScreen extends Component {
     this.props.changeStationType(NONE);
     this.props.stopNavigating();
     BackgroundGeolocation.getCurrentLocation((location) => {
-      this.setState({ currentLocation: location });
+      this.setState({
+        currentLocation: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
+      });
     });
   }
 
@@ -374,7 +379,12 @@ class MainExploreScreen extends Component {
       // you need to create background task
 
       //get current location
-      this.setState({ currentLocation: location });
+      this.setState({
+        currentLocation: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
+      });
     });
 
     BackgroundGeolocation.on('stationary', (stationaryLocation) => {
