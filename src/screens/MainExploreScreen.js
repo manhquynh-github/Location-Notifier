@@ -82,7 +82,7 @@ class MainExploreScreen extends Component {
               style={{ color: Colors.darkGrayBackground }}>
               {this.props.location
                 ? `${this.props.location.address}`
-                : 'Search...'}
+                : 'Search here'}
             </Text>
           </Button>
           <Button

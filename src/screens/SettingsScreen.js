@@ -88,7 +88,7 @@ export class SettingsScreen extends Component {
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 onPress={this.onPressRingtone}>
-                {PLAYLIST[this.props.soundID].item.name}
+                {PLAYLIST[this.props.soundID].name}
               </Text>
               {Platform.OS === 'ios' && <Icon active name="arrow-forward" />}
             </Right>
