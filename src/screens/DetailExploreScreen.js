@@ -181,14 +181,20 @@ class DetailExploreScreen extends Component {
   async onPress(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    } else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.log(error.message));
+      }
     }
 
     if (location == null) {
@@ -203,17 +209,20 @@ class DetailExploreScreen extends Component {
   async onChangeSave(item) {
     let location = null;
 
-    if (item.type === 'favorite' || item.type === 'location') {
-      location = item.value;
-    }
-    // if source is not from favorite, try to retrieve the
-    // actual location which is the same as src/model/Location
-    else if (item.type === 'google') {
-      await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
-        .then((result) => {
-          location = result;
-        })
-        .catch((error) => console.log(error.message));
+    switch (item.type) {
+      case 'favorite':
+      case 'location': {
+        location = item.value;
+      }
+      case 'google': {
+        // if source is not from favorite, try to retrieve the
+        // actual location which is the same as src/model/Location
+        await RNGooglePlaces.lookUpPlaceByID(item.value.placeID)
+          .then((result) => {
+            location = result;
+          })
+          .catch((error) => console.log(error.message));
+      }
     }
 
     if (location == null) {

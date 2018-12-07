@@ -45,16 +45,20 @@ export default class ResultList extends Component {
     let label = '';
     let address = '';
     let saved = false;
-    if (item.type === 'favorite') {
-      label = item.value.label;
-      address = item.value.address;
-      saved = true;
-    } else if (item.type === 'google') {
-      label = item.value.primaryText;
-      address = item.value.fullText;
-    } else if (item.type === 'location') {
-      label = item.value.name;
-      address = item.value.address;
+    switch (item.type) {
+      case 'favorite': {
+        label = item.value.label;
+        address = item.value.address;
+        saved = true;
+      }
+      case 'google': {
+        label = item.value.primaryText;
+        address = item.value.fullText;
+      }
+      case 'location': {
+        label = item.value.name;
+        address = item.value.address;
+      }
     }
 
     return (
