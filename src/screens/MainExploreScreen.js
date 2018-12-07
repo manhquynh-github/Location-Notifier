@@ -58,7 +58,6 @@ class MainExploreScreen extends Component {
     this.onRangePress = this.onRangePress.bind(this);
     this.fitToCoordinates = this.fitToCoordinates.bind(this);
     this.checkToAlarm = this.checkToAlarm.bind(this);
-    this.fitToCurrentCoordinates = this.fitToCurrentCoordinates.bind(this);
     this.setCancelOrStart = this.setCancelOrStart.bind(this);
     this.onStationPress = this.onStationPress.bind(this);
   }
@@ -112,7 +111,7 @@ class MainExploreScreen extends Component {
           delayPressIn={0}
           style={styles.myLocationButton}
           position="bottomRight"
-          onPress={this.fitToCurrentCoordinates}>
+          onPress={this.onLocatePress}>
           <Icon
             name="my-location"
             type="MaterialIcons"
@@ -234,19 +233,6 @@ class MainExploreScreen extends Component {
     }
   }
 
-  fitToCurrentCoordinates() {
-    const current = this.state.currentLocation;
-    this.mapView.fitToCoordinates([current], {
-      edgePadding: {
-        right: Layout.window.width / 15,
-        bottom: Layout.window.height / 15,
-        left: Layout.window.width / 15,
-        top: Layout.window.height / 15,
-      },
-      animated: true,
-    });
-  }
-
   onSearchPress() {
     this.props.navigation.navigate('DetailExplore');
   }
@@ -269,7 +255,18 @@ class MainExploreScreen extends Component {
     this.props.changeLocation(location);
   }
 
-  onLocatePress() {}
+  onLocatePress() {
+    const current = this.state.currentLocation;
+    this.mapView.fitToCoordinates([current], {
+      edgePadding: {
+        right: Layout.window.width / 15,
+        bottom: Layout.window.height / 15,
+        left: Layout.window.width / 15,
+        top: Layout.window.height / 15,
+      },
+      animated: true,
+    });
+  }
 
   onRangePress() {
     showRangeOptions(this.props.rangeOption, (selectedIndex) => {
