@@ -1,10 +1,10 @@
 import { MapView } from 'expo';
-import { Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NetInfo, View } from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
 import { APIKEY } from '../config/GoogleMapConfig';
+import Colors from '../constants/Colors';
 
 export default class NavigationRoute extends Component {
   static propTypes = {
@@ -56,8 +56,8 @@ export default class NavigationRoute extends Component {
           center={this.props.destination}
           radius={this.props.radius}
           strokeWidth={3}
-          strokeColor="#2196f3"
-          fillColor="rgba(33, 150, 243, 0.2)"
+          strokeColor={Colors.primary}
+          fillColor={Colors.mapCircleFillColor}
         />
       </View>
     );
