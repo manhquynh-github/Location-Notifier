@@ -45,7 +45,13 @@ const favoriteReducer = (state = initialState, action) => {
         (e) => e.favoriteID == favoriteID
       );
       if (arrIdx < 0) {
-        throw 'ERR: No such favoriteID to remove.\n' + favoriteID;
+        console.warn(
+          '[ERROR]',
+          '[favoriteReducer]',
+          'No such favoriteID to remove.',
+          favoriteID
+        );
+        return newState;
       }
       // remove old index
       newState.favorites.splice(arrIdx, 1);
@@ -59,8 +65,13 @@ const favoriteReducer = (state = initialState, action) => {
       );
 
       if (oldFavoriteArrIdx < 0) {
-        throw 'ERR: No such favorite to edit.\n' +
-          JSON.stringify(updatedFavorite);
+        console.warn(
+          '[ERROR]',
+          '[favoriteReducer]',
+          'No such favorite to edit.',
+          JSON.stringify(updatedFavorite)
+        );
+        return newState;
       }
 
       newState.favorites[oldFavoriteArrIdx] = { ...updatedFavorite };

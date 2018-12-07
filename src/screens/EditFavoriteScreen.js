@@ -35,7 +35,8 @@ class EditFavoriteScreen extends Component {
     super();
     const item = props.navigation.getParam('item', null);
     if (item === null) {
-      throw 'No item to edit.';
+      console.warn('[ERROR]', '[constructor]', 'No item to edit.');
+      return;
     }
 
     this.state = {
