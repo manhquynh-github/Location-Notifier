@@ -70,7 +70,7 @@ class DetailExploreScreen extends Component {
             <Input
               value={this.state.location}
               style={{ flex: 1 }}
-              placeholder="Search..."
+              placeholder="Search here"
               autoFocus={true}
               onChangeText={this.onChangeText}
             />

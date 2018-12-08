@@ -2,7 +2,7 @@ import { MapView } from 'expo';
 import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, Platform, StyleSheet, View } from 'react-native';
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNGooglePlaces from 'react-native-google-places';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
@@ -294,7 +294,6 @@ class MainExploreScreen extends Component {
         Toast.show({
           text: 'Alarm stopped!',
           buttonText: 'Okay',
-          type: 'success',
           duration: 3000,
         });
       }
@@ -315,12 +314,53 @@ class MainExploreScreen extends Component {
           duration: 3000,
         });
       } else {
-        this.startNavigating();
-        Toast.show({
-          text: 'Alarm set!',
-          buttonText: 'Okay',
-          type: 'success',
-          duration: 3000,
+        this.isLocationServicesEnabled((enabled) => {
+          if (enabled) {
+            this.startNavigating();
+            Toast.show({
+              text: 'Alarm set!',
+              buttonText: 'Okay',
+              type: 'success',
+              duration: 3000,
+            });
+          } else {
+            if (Platform.OS === 'android') {
+              Alert.alert(
+                'Location services are disabled',
+                'Would you like to open location settings?',
+                [
+                  {
+                    text: 'Yes',
+                    onPress: () => BackgroundGeolocation.showLocationSettings(),
+                  },
+                  {
+                    text: 'No',
+                    onPress: () => {
+                      console.warn(
+                        '[WARN]',
+                        '[BackgroundGeolocation]',
+                        'authorization No Pressed.'
+                      );
+                      Toast.show({
+                        text: 'Location services are required.',
+                        buttonText: 'Okay',
+                        type: 'danger',
+                        duration: 3000,
+                      });
+                    },
+                    style: 'cancel',
+                  },
+                ]
+              );
+            } else {
+              Toast.show({
+                text: 'Location services are disabled.',
+                buttonText: 'Okay',
+                type: 'danger',
+                duration: 3000,
+              });
+            }
+          }
         });
       }
     }
@@ -444,7 +484,7 @@ class MainExploreScreen extends Component {
                   onPress: () =>
                     console.warn(
                       '[WARN]',
-                      '[BackgroundGeolocation',
+                      '[BackgroundGeolocation]',
                       'authorization No Pressed.'
                     ),
                   style: 'cancel',
@@ -465,11 +505,28 @@ class MainExploreScreen extends Component {
     });
   }
 
+  isLocationServicesEnabled(callback) {
+    if (callback == null) {
+      console.log(
+        '[ERROR]',
+        '[isLocationServicesEnabled]',
+        'callback is null.'
+      );
+      return;
+    }
+
+    BackgroundGeolocation.checkStatus((status) => {
+      callback(status.locationServicesEnabled);
+    });
+  }
+
   startBackgroundGeolocation() {
     console.info('[INFO]', '[startBackgroundGeolocation]', 'begin');
     BackgroundGeolocation.checkStatus((status) => {
       console.info(
-        '[INFO] BackgroundGeolocation status:',
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        'status:',
         JSON.stringify(status)
       );
 
@@ -483,7 +540,9 @@ class MainExploreScreen extends Component {
     console.info('[INFO]', '[stopBackgroundGeolocation]', 'begin');
     BackgroundGeolocation.checkStatus((status) => {
       console.info(
-        '[INFO] BackgroundGeolocation status:',
+        '[INFO]',
+        '[BackgroundGeolocation]',
+        'status:',
         JSON.stringify(status)
       );
 
