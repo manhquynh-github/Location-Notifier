@@ -2,7 +2,7 @@ import { MapView } from 'expo';
 import { Button, Container, Fab, Icon, Text, Toast } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Alert, Platform, StyleSheet, View } from 'react-native';
+import { Alert, Platform, StyleSheet, Vibration, View } from 'react-native';
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNGooglePlaces from 'react-native-google-places';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
@@ -349,6 +349,7 @@ class MainExploreScreen extends Component {
     //immediately stop sound alarm
     ReactNativeAN.stopAlarm();
     ReactNativeAN.removeFiredNotification('1997');
+    Vibration.cancel();
     this.setState({ isNotifying: false });
     this.stopBackgroundGeolocation();
     this.props.stopNavigating();
@@ -370,15 +371,6 @@ class MainExploreScreen extends Component {
     );
 
     return distance <= RANGE_VALUES[this.props.rangeOption];
-  }
-
-  raiseAlarm() {
-    //PUSH NOTIFICATIONS
-    //ALARM
-    const alarmNotifData = this.configAlarmNotification();
-    ReactNativeAN.sendNotification(alarmNotifData);
-    this.props.navigation.navigate('Alarm');
-    console.info('[INFO]', '[raiseAlarm]', 'Send notification successfully');
   }
 
   configBackgroundGeolocation() {
@@ -611,8 +603,7 @@ class MainExploreScreen extends Component {
       } from your destination.`,
       channel: '1997', // Same id as specified in MainApplication's onCreate method
       ticker: 'Location Notifier ticker',
-      vibrate: this.props.vibrate,
-      vibration: 300000, // 5 mins
+      vibrate: false,
       small_icon: 'ic_launcher',
       large_icon: 'ic_launcher',
       play_sound: true,
@@ -621,6 +612,14 @@ class MainExploreScreen extends Component {
     };
 
     return alarmNotifData;
+  }
+
+  raiseAlarm() {
+    const alarmNotifData = this.configAlarmNotification();
+    ReactNativeAN.sendNotification(alarmNotifData);
+    Vibration.vibrate([1000, 2000], true);
+    this.props.navigation.navigate('Alarm');
+    console.info('[INFO]', '[raiseAlarm]', 'successfully');
   }
 }
 
