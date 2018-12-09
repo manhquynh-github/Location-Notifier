@@ -15,7 +15,22 @@ export default class StationMarkers extends Component {
 
   constructor() {
     super();
-    this.initStations();
+    this.stations = {
+      [ATM]: [
+        {
+          lng: 106.65259739999999,
+          lat: 10.801465900000002,
+          title: 'ATM VietComBank',
+        },
+      ],
+      [GAS]: [
+        {
+          lng: 106.65259739999999,
+          lat: 10.801465900000002,
+          title: 'GAS station',
+        },
+      ],
+    };
     this.initMarkerImages();
     this.onStationPress = this.onStationPress.bind(this);
   }
@@ -46,30 +61,23 @@ export default class StationMarkers extends Component {
     );
   }
 
-  initStations() {
-    this.stations = {
-      [ATM]: [
-        {
-          lng: 106.65259739999999,
-          lat: 10.801465900000002,
-          title: 'ATM VietComBank',
-        },
-      ],
-      [GAS]: [
-        {
-          lng: 106.65259739999999,
-          lat: 10.801465900000002,
-          title: 'GAS station',
-        },
-      ],
-    };
+  componentDidMount() {
+    this.fetchStations();
+  }
 
+  fetchStations() {
     const atmMarkers = atmRef.child('thuduc');
     atmMarkers.once('value').then(
       (markers) => {
         const results = markers.val();
         if (results != null) {
           this.stations[ATM] = results;
+          console.info(
+            '[INFO]',
+            '[fetchStations]',
+            `[ATM] has ${results.length} records.`
+          );
+          this.forceUpdate();
         }
       },
       (error) => {
@@ -83,6 +91,12 @@ export default class StationMarkers extends Component {
         const results = markers.val();
         if (results != null) {
           this.stations[GAS] = results;
+          console.info(
+            '[INFO]',
+            '[fetchStations]',
+            `[GAS] has ${results.length} records.`
+          );
+          this.forceUpdate();
         }
       },
       (error) => {

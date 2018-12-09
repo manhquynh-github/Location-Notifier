@@ -94,7 +94,7 @@ class MainExploreScreen extends Component {
             style={styles.pickButton}
             androidRippleColor="lightgray"
             onPress={this.onPickPress}>
-            <Icon name="location" type="Entypo" style={{ color: '#000' }} />
+            <Icon name="location" type="Entypo" style={{ color: 'gray' }} />
           </Button>
         </View>
         <Fab
