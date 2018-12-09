@@ -264,7 +264,18 @@ class MainExploreScreen extends Component {
   }
 
   onLocatePress() {
-    this.mapView.fitToCoordinates([this.state.currentLocation]);
+    this.callWithLocationServices(() => {
+      BackgroundGeolocation.getCurrentLocation((location) => {
+        const currentLocation = {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        };
+        this.setState({
+          ...currentLocation,
+        });
+        this.mapView.fitToCoordinates([currentLocation]);
+      });
+    });
   }
 
   onRangePress() {
@@ -286,7 +297,9 @@ class MainExploreScreen extends Component {
         });
       } else if (!this.props.location) {
         console.warn(
-          "[WARN] There is no location but 'isNavigating' is true. Turning off..."
+          '[WARN]',
+          '[onToggleNavigation]',
+          'There is no location but [isNavigating] is true. Turning off...'
         );
         this.props.stopNavigating();
       } else {
@@ -314,53 +327,14 @@ class MainExploreScreen extends Component {
           duration: 3000,
         });
       } else {
-        this.isLocationServicesEnabled((enabled) => {
-          if (enabled) {
-            this.startNavigating();
-            Toast.show({
-              text: 'Alarm set!',
-              buttonText: 'Okay',
-              type: 'success',
-              duration: 3000,
-            });
-          } else {
-            if (Platform.OS === 'android') {
-              Alert.alert(
-                'Location services are disabled',
-                'Would you like to open location settings?',
-                [
-                  {
-                    text: 'Yes',
-                    onPress: () => BackgroundGeolocation.showLocationSettings(),
-                  },
-                  {
-                    text: 'No',
-                    onPress: () => {
-                      console.warn(
-                        '[WARN]',
-                        '[BackgroundGeolocation]',
-                        'authorization No Pressed.'
-                      );
-                      Toast.show({
-                        text: 'Location services are required.',
-                        buttonText: 'Okay',
-                        type: 'danger',
-                        duration: 3000,
-                      });
-                    },
-                    style: 'cancel',
-                  },
-                ]
-              );
-            } else {
-              Toast.show({
-                text: 'Location services are disabled.',
-                buttonText: 'Okay',
-                type: 'danger',
-                duration: 3000,
-              });
-            }
-          }
+        this.callWithLocationServices(() => {
+          this.startNavigating();
+          Toast.show({
+            text: 'Alarm set!',
+            buttonText: 'Okay',
+            type: 'success',
+            duration: 3000,
+          });
         });
       }
     }
@@ -468,31 +442,7 @@ class MainExploreScreen extends Component {
         status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
-        // we need to set delay or otherwise alert may not be shown
-        setTimeout(
-          () =>
-            Alert.alert(
-              'App requires location tracking permission',
-              'Would you like to open app settings?',
-              [
-                {
-                  text: 'Yes',
-                  onPress: () => BackgroundGeolocation.showAppSettings(),
-                },
-                {
-                  text: 'No',
-                  onPress: () =>
-                    console.warn(
-                      '[WARN]',
-                      '[BackgroundGeolocation]',
-                      'authorization No Pressed.'
-                    ),
-                  style: 'cancel',
-                },
-              ]
-            ),
-          1000
-        );
+        this.requestLocationPermission();
       }
     });
 
@@ -502,6 +452,17 @@ class MainExploreScreen extends Component {
 
     BackgroundGeolocation.on('foreground', () => {
       console.info('[INFO]', '[BackgroundGeolocation]', 'is on foreground');
+    });
+  }
+
+  isLocationPermitted(callback) {
+    if (callback == null) {
+      console.log('[ERROR]', '[isLocationPermitted]', 'callback is null.');
+      return;
+    }
+
+    BackgroundGeolocation.checkStatus((status) => {
+      callback(status.authorization == BackgroundGeolocation.AUTHORIZED);
     });
   }
 
@@ -517,6 +478,92 @@ class MainExploreScreen extends Component {
 
     BackgroundGeolocation.checkStatus((status) => {
       callback(status.locationServicesEnabled);
+    });
+  }
+
+  requestLocationPermission() {
+    Alert.alert(
+      'Location permission is required',
+      'Would you like to open app settings?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => BackgroundGeolocation.showAppSettings(),
+        },
+        {
+          text: 'No',
+          onPress: () => {
+            console.warn('[WARN]', '[BackgroundGeolocation]', 'No Pressed.');
+            Toast.show({
+              text: 'Location permission is required.',
+              buttonText: 'Okay',
+              type: 'danger',
+              duration: 3000,
+            });
+          },
+          style: 'cancel',
+        },
+      ]
+    );
+  }
+
+  requestLocationServices() {
+    if (Platform.OS === 'android') {
+      Alert.alert(
+        'Location services are disabled',
+        'Would you like to open location settings?',
+        [
+          {
+            text: 'Yes',
+            onPress: () => BackgroundGeolocation.showLocationSettings(),
+          },
+          {
+            text: 'No',
+            onPress: () => {
+              console.warn(
+                '[WARN]',
+                '[requestLocationServices]',
+                'No Pressed.'
+              );
+              Toast.show({
+                text: 'Location services are disabled.',
+                buttonText: 'Okay',
+                type: 'danger',
+                duration: 3000,
+              });
+            },
+            style: 'cancel',
+          },
+        ]
+      );
+    } else {
+      Toast.show({
+        text: 'Location services are disabled.',
+        buttonText: 'Okay',
+        type: 'danger',
+        duration: 3000,
+      });
+    }
+  }
+
+  callWithLocationServices(callback) {
+    if (callback == null) {
+      console.log('[ERROR]', '[callWithLocationServices]', 'callback is null.');
+      return;
+    }
+
+    this.isLocationPermitted((permitted) => {
+      if (permitted) {
+        this.isLocationServicesEnabled((enabled) => {
+          if (enabled) {
+            callback();
+          } else {
+            this.requestLocationServices();
+          }
+        });
+      } else {
+        this.requestLocationPermission();
+      }
     });
   }
 
