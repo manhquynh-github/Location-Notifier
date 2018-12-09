@@ -489,6 +489,7 @@ class MainExploreScreen extends Component {
         {
           text: 'Yes',
           onPress: () => BackgroundGeolocation.showAppSettings(),
+          style: 'default',
         },
         {
           text: 'No',
@@ -516,6 +517,7 @@ class MainExploreScreen extends Component {
           {
             text: 'Yes',
             onPress: () => BackgroundGeolocation.showLocationSettings(),
+            style: 'default',
           },
           {
             text: 'No',

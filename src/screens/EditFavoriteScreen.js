@@ -157,7 +157,8 @@ class EditFavoriteScreen extends Component {
   }
 
   onAndroidBackPress() {
-    return this.handleChanges(() => false);
+    this.handleChanges(() => this.props.navigation.goBack());
+    return true;
   }
 
   onSavePress() {
@@ -198,18 +199,23 @@ class EditFavoriteScreen extends Component {
     if (this.isModified()) {
       Alert.alert('Discard changes', 'Do you want to save changes?', [
         {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
           text: 'Yes',
           onPress: () => {
             this.save();
             callback();
           },
+          style: 'default',
         },
         {
           text: 'No',
           onPress: () => {
             callback();
           },
-          style: 'cancel',
+          style: 'destructive',
         },
       ]);
     } else {
