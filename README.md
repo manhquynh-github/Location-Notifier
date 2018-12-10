@@ -4,8 +4,6 @@
 
 ![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
-Download CH Play [here!](https://vietpano.com/)
-
 # Table of Content
 
 1. [Functionality](#functionality)
