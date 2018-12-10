@@ -340,6 +340,7 @@ class MainExploreScreen extends Component {
   }
 
   startNavigating() {
+    this.updateCurrentLocation();
     this.startBackgroundGeolocation();
     this.props.startNavigating();
   }
