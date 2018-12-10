@@ -83,23 +83,23 @@ You can use any text editor to edit source code and any command line program to 
 
 ### VSCode extensions
 
-- [Auto Import](https://marketplace.visualstudio.com/items?itemName=steoates.autoimport) Automatically finds, parses and provides code actions and code completion for all available imports. Works with Typescript and TSX
-- [Auto Import - ES6, TS, JSX, TSX](https://marketplace.visualstudio.com/items?itemName=NuclleaR.vscode-extension-auto-import) Automatically finds, parses and provides code actions and code completion for all available imports. Works with JavaScript and TypeScript.
-- [JavaScript (ES6) code snippets](https://marketplace.visualstudio.com/items?itemName=xabikos.JavaScriptSnippets) Code snippets for JavaScript in ES6 syntax
-- [Node.js Modules Intellisense](https://marketplace.visualstudio.com/items?itemName=leizongmin.node-module-intellisense) Autocompletes Node.js modules in import statements
-- [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense) Visual Studio Code plugin that autocompletes filenames
-- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) VS Code package to format your JavaScript / TypeScript / CSS using Prettier.
-- [React Native Tools](https://marketplace.visualstudio.com/items?itemName=vsmobile.vscode-react-native) This extension provides a development environment for React Native projects. Using this extension, you can debug your code and quickly run react-native commands from the command palette.
-- [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens) Shows the latest version for each package using code lens
+- [Auto Import](https://marketplace.visualstudio.com/items?itemName=steoates.autoimport) – automatically finds, parses and provides code actions and code completion for all available imports. Works with Typescript and TSX.
+- [Auto Import - ES6, TS, JSX, TSX](https://marketplace.visualstudio.com/items?itemName=NuclleaR.vscode-extension-auto-import) – automatically finds, parses and provides code actions and code completion for all available imports. Works with JavaScript and TypeScript.
+- [JavaScript (ES6) code snippets](https://marketplace.visualstudio.com/items?itemName=xabikos.JavaScriptSnippets) – code snippets for JavaScript in ES6 syntax.
+- [Node.js Modules Intellisense](https://marketplace.visualstudio.com/items?itemName=leizongmin.node-module-intellisense) – autocompletes Node.js modules in import statements.
+- [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense) Visual Studio Code plugin that autocompletes filenames.
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) – VS Code package to format your JavaScript/TypeScript/CSS using Prettier.
+- [React Native Tools](https://marketplace.visualstudio.com/items?itemName=vsmobile.vscode-react-native) – provides a development environment for React Native projects. Using this extension, you can debug your code and quickly run react-native commands from the command palette.
+- [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens) – shows the latest version for each package using code lens.
 
 # Open source libraries
 
 - [React Native](https://facebook.github.io/react-native/) – a JavaScript mobile framework developed by Facebook which allows developers to build Android and iOS mobile apps using JavaScript and reuse code across web and mobile applications.
-- [Expo](https://docs.expo.io) – a set of tools, libraries, and services that let you build native iOS and Android apps by writing JavaScript..
+- [Expo](https://docs.expo.io) – a set of tools, libraries, and services that let you build native iOS and Android apps by writing JavaScript.
 - [Native Base](https://nativebase.io/) – essential cross-platform UI components for [React Native](https://facebook.github.io/react-native/).
 - [React Native Alarm Notification](https://github.com/emekalites/react-native-alarm-notification) – scheduled alarm and local notification in [React Native](https://facebook.github.io/react-native/) (Android only).
 - [React Native Firebase](https://rnfirebase.io/) 🔥 – a well tested feature rich modular Firebase implementation for [React Native](https://facebook.github.io/react-native/).
-- [react-native-google-places](https://github.com/tolu360/react-native-google-places) – iOS/Android Google Places Widgets (Autocomplete, Place Picker) and API Services for React Native Apps
+- [react-native-google-places](https://github.com/tolu360/react-native-google-places) – iOS/Android Google Places Widgets (Autocomplete, Place Picker) and API Services for React Native Apps.
 - [react-native-maps-directions](https://github.com/bramus/react-native-maps-directions) – Directions Component for [react-native-maps](https://github.com/react-community/react-native-maps).
 - [react-native-mauron85-background-geolocation](https://github.com/mauron85/react-native-background-geolocation) – background and foreground geolocation plugin for [React Native](https://facebook.github.io/react-native/) and tracks user when app is running in background. [Demo & Fork](https://github.com/ductienuit/DemoMapService).
 - [React Navigation](https://reactnavigation.org) – routing and navigation for your React Native apps
@@ -114,4 +114,4 @@ You can use any text editor to edit source code and any command line program to 
 - PropTypes ([eng](https://reactjs.org/docs/typechecking-with-proptypes.html)/[vie](https://viblo.asia/p/react-proptypes-khai-bao-kieu-du-lieu-cho-component-naQZR1aPKvx))
 - [FlatList](https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6)
 - [Expo SDK](https://docs.expo.io/versions/latest/sdk)
-- [Places](https://github.com/manhquynh-github/React-Native-Project/blob/master/PlacesProblem.md) Only Expo, solving error with places module
+- [Common fixes](CommonFix.md)
