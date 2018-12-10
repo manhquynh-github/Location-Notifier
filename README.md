@@ -10,8 +10,8 @@ Download CH Play [here!](https://vietpano.com/)
 
 1. [Functionality](#functionality)
 1. [Getting Started](#getting-started)
-1. [Components](#components)
 1. [Addtional tools](#additional-tools)
+1. [Open source libraries](#open-source-libraries)
 1. [Documentation](#documentation)
 1. [Store](#store)
 
