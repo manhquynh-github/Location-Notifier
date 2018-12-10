@@ -18,10 +18,10 @@ Download CH Play [here!](https://vietpano.com/)
 # Functionality
 
 1. **Location notifying**: notifies when user is near a selected destination using GPS.
-1. **Map viewing**: provides a Google map to look around with markers and route directions. 
+1. **Map viewing**: provides a Google map to look around with markers and route directions.
 1. **Location searching**: allows looking for an address using Google API.
-1. **Detailed searching**: provides visual map with nearby places to choose from. 
-1. **Get nearby Gas stations or local ATMs**: allows locating nearby stations with buttons for easy access. 
+1. **Detailed searching**: provides visual map with nearby places to choose from.
+1. **Get nearby Gas stations or local ATMs**: allows locating nearby stations with buttons for easy access.
 1. **Manage a favorite list**: provides a list to save, label, copy, and edit an address.
 1. **Control the alarm settings**: lets user change ringtone, vibration, and notifying range.
 1. **Supports online/offline usage**
@@ -32,10 +32,12 @@ Go to [store](#store) for released app.
 
 ## Set up environment
 
-1. **[NodeJS](https://nodejs.org/en/)** (latest version)
+1. **[NodeJS](https://nodejs.org/en/)** (use latest version)
+
 1. **[Yarn](https://yarnpkg.com/en/) package**.
 
    You can download and use the installer from their [homepage](https://yarnpkg.com/en/docs/install#windows-stable) or install via npm.
+
    ```sh
    npm install -g yarn
    ```
@@ -68,20 +70,11 @@ Go to [store](#store) for released app.
 
 ## Run app in dev mode
 
-#### Connect your android device or turn on Android Emulator
-#### Open a terminal and run
+1. Connect your android device or turn on Android Emulator
+2. Open a terminal and run `expo start --localhost`
+3. Open another terminal and run `react-native run-android --variant DevMinSdkDevKernelDebug`
 
-```sh
-expo start --localhost
-```
-
-#### Open another terminal and run
-
-```sh
-react-native run-android --variant DevMinSdkDevKernelDebug
-```
-
-# Additional Tools
+# Additional tools
 
 You can use any text editor to edit source code and any command line program to start the project. These are the recommended development tools.
 
@@ -100,22 +93,33 @@ You can use any text editor to edit source code and any command line program to 
 - [React Native Tools](https://marketplace.visualstudio.com/items?itemName=vsmobile.vscode-react-native) This extension provides a development environment for React Native projects. Using this extension, you can debug your code and quickly run react-native commands from the command palette.
 - [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens) Shows the latest version for each package using code lens
 
-# Components
+# Open source libraries
 
-> [Expo](https://docs.expo.io) apps are React Native apps which contain the Expo SDK. The SDK is a native-and-JS library which provides access to the device's system functionality (things like the camera, contacts, local storage, and other hardware). That means you don't need to use Xcode or Android Studio, or write any native code, and it also makes your pure-JS project very portable because it can run in any native environment containing the Expo SDK.
+- [React Native](https://facebook.github.io/react-native/) – a JavaScript mobile framework developed by Facebook which allows developers to build Android and iOS mobile apps using JavaScript and reuse code across web and mobile applications.
 
-> [Native Base](https://nativebase.io/) is made from effective building blocks referred to as components. The Components are constructed in pure [React Native](https://github.com/facebook/react-native) platform along with some JavaScript functionality with rich set of customisable properties. These components allow you to quickly build the perfect interface.
+- [Expo](https://docs.expo.io) – a set of tools, libraries, and services that let you build native iOS and Android apps by writing JavaScript..
 
-> [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage.html#asyncstorage) is a simple, unencrypted, asynchronous, persistent, key-value storage system that is global to the app. It should be used instead of LocalStorage.
+- [Native Base](https://nativebase.io/) – essential cross-platform UI components for [React Native](https://facebook.github.io/react-native/).
 
-> [MapView](https://docs.expo.io/versions/latest/sdk/map-view) A Map component that uses Apple Maps or Google Maps on iOS and Google Maps on Android. Expo uses react-native-maps at react-community/react-native-maps. No setup required for use within the Expo app, or within a standalone app for iOS. See below for instructions on how to configure for deployment as a standalone app on Android.
+- [React Native Alarm Notification](https://github.com/emekalites/react-native-alarm-notification) – scheduled alarm and local notification in [React Native](https://facebook.github.io/react-native/) (Android only).
 
-> [Redux](https://redux.js.org/) Redux is a predictable state container for JavaScript apps.
-> (Not to be confused with a WordPress framework – Redux Framework.)
+- [React Native Firebase](https://rnfirebase.io/) 🔥 – a well tested feature rich modular Firebase implementation for [React Native](https://facebook.github.io/react-native/).
 
-> [Redux Persist](https://github.com/rt2zz/redux-persist) Persist and rehydrate a redux store.
+- [react-native-google-places](https://github.com/tolu360/react-native-google-places) – iOS/Android Google Places Widgets (Autocomplete, Place Picker) and API Services for React Native Apps
 
-> [MapServiceBackground](https://github.com/mauron85/react-native-background-geolocation) This plugin can be used for geolocation when the app is running in the foreground or background. [DEMO & Fork](https://github.com/ductienuit/DemoMapService)
+- [react-native-maps-directions](https://github.com/bramus/react-native-maps-directions) – Directions Component for [react-native-maps](https://github.com/react-community/react-native-maps).
+
+- [react-native-mauron85-background-geolocation](https://github.com/mauron85/react-native-background-geolocation) – background and foreground geolocation plugin for [React Native](https://facebook.github.io/react-native/) and tracks user when app is running in background. [Demo & Fork](https://github.com/ductienuit/DemoMapService).
+
+- [React Navigation](https://reactnavigation.org) – routing and navigation for your React Native apps
+
+- [React Redux](https://github.com/reduxjs/react-redux) – official React bindings for [Redux](http://redux.js.org).
+
+- [Redux](http://redux.js.org) – predictable state container for JavaScript apps.
+
+- [Redux Persist](https://github.com/rt2zz/redux-persist) – persist and rehydrate a redux store.
+
+- [MapView](https://docs.expo.io/versions/latest/sdk/map-view) (from [Expo](https://docs.expo.io)) – a map component that uses Apple Maps or Google Maps on iOS and Google Maps on Android from [react-native-maps](https://github.com/react-community/react-native-maps).
 
 # Documentation
 
