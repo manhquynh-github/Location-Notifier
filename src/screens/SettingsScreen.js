@@ -155,7 +155,6 @@ export class SettingsScreen extends Component {
               <Text>Chung Mạnh Quỳnh</Text>
               <Text>Lê Đức Tiến</Text>
               <Text>Phan Đức Anh</Text>
-              <Text>Điền sau</Text>
             </Col>
           </Grid>
         </Content>
