@@ -1,6 +1,6 @@
 # Location Notifier
 
-[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that uses [React Native](https://facebook.github.io/react-native/) framework. Our app aims to provide the ability of notifying a user whenever he/she is about to reach a set destination. Furthermore, this app supports organizing a favorite list, searching for nearby gas stations or local ATMs, and other related settings to control the alarm. This is useful for those who travel a lot, especially students that don't know if they are close to the destination or may oversleep on the bus.
+[Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that uses [React Native](https://facebook.github.io/react-native/) framework. The app will notify a user whenever he/she is about to reach a set destination. Moreover, this app supports organizing a favorite list, searching for nearby gas stations or local ATMs. There are also settings to control the alarm. This is useful for those who travel a lot, especially students that don't know if they are close to the destination or may oversleep on the bus.
 
 ![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
 
@@ -8,80 +8,78 @@ Download CH Play [here!](https://vietpano.com/)
 
 # Table of Content
 
+1. [Functionality](#functionality)
 1. [Getting Started](#getting-started)
-2. [Components](#components)
-3. [Addtional tools](#additional-tools)
-4. [Documentation](#documentation)
-5. [Appstore](#appstore)
+1. [Components](#components)
+1. [Addtional tools](#additional-tools)
+1. [Documentation](#documentation)
+1. [Store](#store)
+
+# Functionality
+
+1. **Location notifying**: notifies when user is near a selected destination using GPS.
+1. **Map viewing**: provides a Google map to look around with markers and route directions. 
+1. **Location searching**: allows looking for an address using Google API.
+1. **Detailed searching**: provides visual map with nearby places to choose from. 
+1. **Get nearby Gas stations or local ATMs**: allows locating nearby stations with buttons for easy access. 
+1. **Manage a favorite list**: provides a list to save, label, copy, and edit an address.
+1. **Control the alarm settings**: lets user change ringtone, vibration, and notifying range.
+1. **Supports online/offline usage**
 
 # Getting Started
 
-To get directly to released app, please go to [Appstore](#appstore).
-
-Below is the guidelines to start the app in development mode.
+Go to [store](#store) for released app.
 
 ## Set up environment
 
-### [NodeJS](https://nodejs.org/en/)
+1. **[NodeJS](https://nodejs.org/en/)** (latest version)
+1. **[Yarn](https://yarnpkg.com/en/) package**.
 
-We recommend you use the latest version.
+   You can download and use the installer from their [homepage](https://yarnpkg.com/en/docs/install#windows-stable) or install via npm.
+   ```sh
+   npm install -g yarn
+   ```
 
-### [Yarn](https://yarnpkg.com/en/) package
+   Then add to PATH environment:
 
-You can download and use the installer from their [homepage](https://yarnpkg.com/en/docs/install#windows-stable) or install via npm.
+   ```
+   %USERPROFILE%\AppData\Local\Yarn\bin
+   ```
 
-```sh
-npm install -g yarn
-```
+1. **[Expo](https://expo.io/) client**
 
-Then add to PATH environment:
+   ```sh
+   yarn global add expo-cli
+   ```
 
-```
-%USERPROFILE%\AppData\Local\Yarn\bin
-```
+1. Clone project
 
-### [Expo](https://expo.io/) client
+   ```sh
+   git clone https://github.com/manhquynh-github/React-Native-Project.git
+   ```
 
-```sh
-yarn global add expo-cli
-```
+1. Install package
 
-## Clone project & install packages
+   ```sh
+   git clone https://github.com/manhquynh-github/React-Native-Project.git
+   cd React-Native-Project
+   yarn install
+   ```
 
-```sh
-git clone https://github.com/manhquynh-github/React-Native-Project.git
-cd React-Native-Project
-yarn install
-```
+## Run app in dev mode
 
-You have successfully set up [Location Notifier](https://github.com/manhquynh-github/React-Native-Project) in development mode. The app is now all ready to run on any mobile devices/emulators.
-
-## Setup with browser expo (**_outdated_**)
-
-_This part is outdated, update coming soon._
-
-You can run the following command to create the boilerplate.
-
-Go to app location
+#### Connect your android device or turn on Android Emulator
+#### Open a terminal and run
 
 ```sh
-cd React-Native-Project
+expo start --localhost
 ```
 
-For Android run
+#### Open another terminal and run
 
 ```sh
-expo start
+react-native run-android --variant DevMinSdkDevKernelDebug
 ```
-
-Connect your android device or turn on emulator
-
-```sh
-Choose Local in CONNECTION Menu
-Click Run on Android device/ emulator
-```
-
-Refer [expo-project](https://facebook.github.io/react-native/docs/getting-started.html) page for additional information
 
 # Additional Tools
 
@@ -127,6 +125,7 @@ You can use any text editor to edit source code and any command line program to 
 - [FlatList](https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6)
 - [Expo SDK](https://docs.expo.io/versions/latest/sdk)
 - [Places](https://github.com/manhquynh-github/React-Native-Project/blob/master/PlacesProblem.md) Only Expo, solving error with places module
-# Appstore
+
+# Store
 
 [https://vietpano.com](https://vietpano.com)
