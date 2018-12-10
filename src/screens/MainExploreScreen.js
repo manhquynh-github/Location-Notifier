@@ -165,15 +165,7 @@ class MainExploreScreen extends Component {
     this.props.changeStationType(NONE);
     this.props.stopNavigating();
     this.stopBackgroundGeolocation();
-
-    BackgroundGeolocation.getCurrentLocation((location) => {
-      this.setState({
-        currentLocation: {
-          longitude: location.longitude,
-          latitude: location.latitude,
-        },
-      });
-    });
+    this.updateCurrentLocation();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -183,15 +175,22 @@ class MainExploreScreen extends Component {
       }
     }
 
-    if (
-      this.props.isNavigating &&
-      JSON.stringify(prevState.currentLocation) !==
-        JSON.stringify(this.state.currentLocation)
-    ) {
-      if (this.isInRange()) {
-        if (!this.state.isNotifying) {
-          this.raiseAlarm();
-          this.setState({ isNotifying: true });
+    // if is navigating
+    if (this.props.isNavigating) {
+      // if current location is updated
+      // or destination (this.props.location) is updated
+      if (
+        JSON.stringify(prevState.currentLocation) !==
+          JSON.stringify(this.state.currentLocation) ||
+        JSON.stringify(prevProps.location) !==
+          JSON.stringify(this.props.location)
+      ) {
+        // check if in range
+        if (this.isInRange()) {
+          if (!this.state.isNotifying) {
+            this.raiseAlarm();
+            this.setState({ isNotifying: true });
+          }
         }
       }
     }
@@ -212,7 +211,7 @@ class MainExploreScreen extends Component {
       if (location.address.includes(location.name)) {
         return location.address;
       }
-      return `${this.props.location.name}, ${this.props.location.address}`;
+      return `${location.name}, ${location.address}`;
     }
     return 'Search here';
   }
@@ -558,6 +557,17 @@ class MainExploreScreen extends Component {
       } else {
         this.requestLocationPermission();
       }
+    });
+  }
+
+  updateCurrentLocation() {
+    BackgroundGeolocation.getCurrentLocation((location) => {
+      this.setState({
+        currentLocation: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
+      });
     });
   }
 
