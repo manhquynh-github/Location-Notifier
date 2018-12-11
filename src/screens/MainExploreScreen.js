@@ -628,7 +628,9 @@ class MainExploreScreen extends Component {
   raiseAlarm() {
     const alarmNotifData = this.configAlarmNotification();
     ReactNativeAN.sendNotification(alarmNotifData);
-    Vibration.vibrate([1000, 2000], true);
+    if (this.props.vibrate) {
+      Vibration.vibrate([1000, 2000], true);
+    }
     this.props.navigation.navigate('Alarm');
     console.info('[INFO]', '[raiseAlarm]', 'successfully');
   }
