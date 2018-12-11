@@ -2,7 +2,7 @@
 
 [Location Notifier](https://github.com/manhquynh-github/React-Native-Project) is a simple cross-platform mobile app that uses [React Native](https://facebook.github.io/react-native/) framework. The app will notify a user whenever he/she is about to reach a set destination. Moreover, this app supports organizing a favorite list and searching for nearby gas stations or local ATMs. There are also settings to control the alarm. This is useful for those who travel a lot, especially students that don't know if they are close to the destination or may oversleep on the bus.
 
-![Demo](https://media.giphy.com/media/HzMfJIkTZgx8s/giphy.gif)
+![Demo](https://github.com/manhquynh-github/React-Native-Project/blob/master/example/home.gif)
 
 # Table of Content
 
@@ -22,6 +22,7 @@
 1. **Manage a favorite list**: provides a list to save, label, copy, and edit an address.
 1. **Control the alarm settings**: lets user change ringtone, vibration, and notifying range.
 1. **Supports online/offline usage**
+1. **[ALL DEMOs](https://github.com/manhquynh-github/React-Native-Project/blob/master/example/home.gif)**
 
 # Getting Started
 
