@@ -24,7 +24,6 @@ See more previews [here](previews/).
 1. **Manage a favorite list**: provides a list to save, label, copy, and edit an address.
 1. **Control the alarm settings**: lets user change ringtone, vibration, and notifying range.
 1. **Supports online/offline usage**
-1. **[ALL DEMOs](https://github.com/manhquynh-github/React-Native-Project/blob/master/example/home.gif)**
 
 # Getting Started
 
