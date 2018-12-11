@@ -22,13 +22,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { editFavorite, removeFavorite } from '../actions/FavoriteActions';
+import { editFavorite } from '../actions/FavoriteActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';
 import Colors from '../constants/Colors';
 
 class EditFavoriteScreen extends Component {
   static propTypes = {
-    removeFavorite: PropTypes.func.isRequired,
     editFavorite: PropTypes.func.isRequired,
   };
 
@@ -245,7 +244,6 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  removeFavorite: (favoriteID) => dispatch(removeFavorite(favoriteID)),
   editFavorite: (favorite) => dispatch(editFavorite(favorite)),
 });
 
