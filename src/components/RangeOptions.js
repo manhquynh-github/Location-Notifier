@@ -2,6 +2,12 @@ import { ActionSheet } from 'native-base';
 import Colors from '../constants/Colors';
 import { RANGE_OPTIONS } from '../constants/RangeOptions';
 
+/**
+ * Shows an @type {ActionSheet} of all the range options.
+ * The current selected index will have a checkmark rendered.
+ * @param {number} currentIndex
+ * @param {function(number): void} callback
+ */
 const showRangeOptions = (currentIndex, callback) => {
   // Generate new range options, where
   // only selected one has a check mark.

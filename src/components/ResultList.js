@@ -7,16 +7,40 @@ import ResultListItem from './ResultListItem';
 
 export default class ResultList extends Component {
   static propTypes = {
+    /**
+     * The data array to show in the list.
+     */
     data: PropTypes.arrayOf(
       PropTypes.shape({
+        /**
+         * The result type of this item.
+         * Must be one following:
+         * - 'location': the item is an object which has a shape like
+         * { name: string, address: string, latitude: number, longitude: number }.
+         * - 'google': the item is retrieved from Google Autocomplete API.
+         * - 'favorite': the item is from the favorite list.
+         */
         type: PropTypes.oneOf(['location', 'google', 'favorite']),
+        /**
+         * The value of this item.
+         * Must be one of the following:
+         * - An object containing location information.
+         * - An object containing information from Google Autocomplete API.
+         */
         value: PropTypes.oneOfType([
           PropTypes.shape(LocationProps),
           PropTypes.shape(SearchResultProps),
         ]),
       })
     ),
+    /**
+     * Event listener for when an item is pressed.
+     */
     onPress: PropTypes.func,
+    /**
+     * Event listener for when the Save toggle button, which adds an item to
+     * favorite list, is changed.
+     */
     onChangeSave: PropTypes.func,
   };
 

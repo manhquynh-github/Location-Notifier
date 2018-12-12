@@ -1,8 +1,10 @@
 import {
   Body,
   Button,
+  Col,
   Container,
   Content,
+  Grid,
   Header,
   Icon,
   Left,
@@ -13,13 +15,10 @@ import {
   Text,
   Title,
   View,
-  Grid,
-  Col,
-  Row,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Image } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { setRangeOption, setVibrate } from '../actions/SettingsActions';
 import showRangeOptions from '../components/RangeOptions';

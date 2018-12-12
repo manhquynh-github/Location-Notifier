@@ -7,15 +7,37 @@ import FavoriteListItem from './FavoriteListItem';
 
 export default class FavoriteList extends Component {
   static propTypes = {
+    /**
+     * The data array to show in the list.
+     */
     data: PropTypes.arrayOf(
       PropTypes.shape({
+        /**
+         * The FavoriteID of this item.
+         * Not to be confused with PlaceID (which is from Google Map API).
+         */
         favoriteID: PropTypes.number.isRequired,
+        /**
+         * The label of this item.
+         */
         label: PropTypes.string,
+        /**
+         * The location information of this item.
+         */
         ...LocationProps,
       })
     ),
+    /**
+     * Event listener for when an item is pressed.
+     */
     onPress: PropTypes.func,
+    /**
+     * Event listener for when an item is pressed and held.
+     */
     onLongPress: PropTypes.func,
+    /**
+     * Event listenr for when an item's More (3 dots) button is pressed.
+     */
     onMorePress: PropTypes.func,
   };
 
@@ -26,6 +48,10 @@ export default class FavoriteList extends Component {
   constructor() {
     super();
     this.state = {
+      /**
+       * Should the list update now.
+       * Use refresh() to update.
+       */
       refresh: false,
     };
     this.onRenderItem = this.onRenderItem.bind(this);
@@ -40,7 +66,7 @@ export default class FavoriteList extends Component {
         <View style={styles.emptyContainer}>
           <Image
             source={require('../assets/images/EmptyFavorite.png')}
-            style={styles.allDoneImage}
+            style={styles.emptyImage}
           />
           <Text>There's no favorite items!</Text>
           <Text>Let's add some more.</Text>
@@ -100,13 +126,19 @@ export default class FavoriteList extends Component {
 }
 
 const styles = StyleSheet.create({
+  /**
+   * Styles for the container when there are no items.
+   */
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
   },
-  allDoneImage: {
+  /**
+   * Styles for the image indicating there are no items.
+   */
+  emptyImage: {
     height: 128,
     width: 128,
     marginBottom: 10,

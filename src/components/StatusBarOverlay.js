@@ -9,6 +9,9 @@ export default class StatusBarOverlay extends Component {
 }
 
 const styles = StyleSheet.create({
+  /**
+   * Styles for the view behind the status bar.
+   */
   statusBar: {
     height: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     backgroundColor: Colors.statusBarColor,

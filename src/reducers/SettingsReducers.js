@@ -9,8 +9,17 @@ import { RANGE_OPTIONS } from '../constants/RangeOptions';
 import { PLAYLIST } from '../constants/Sound';
 
 const initialState = {
+  /**
+   * The selected option for the range which is used in notifying process.
+   */
   rangeOption: 0,
+  /**
+   * The selected index of the ringtone settings.
+   */
   soundID: 0,
+  /**
+   * If vibration is allowed in notify process.
+   */
   vibrate: true,
 };
 

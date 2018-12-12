@@ -2,7 +2,6 @@ import { Button, Container, H1, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import ReactNativeAN from 'react-native-alarm-notification';
 import { connect } from 'react-redux';
 import { stopNavigating } from '../actions/ExploreActions';
 import StatusBarOverlay from '../components/StatusBarOverlay';

@@ -5,10 +5,25 @@ import { StyleSheet } from 'react-native';
 
 export default class FavoriteListItem extends Component {
   static propTypes = {
+    /**
+     * The label of this item.
+     */
     label: PropTypes.string,
+    /**
+     * The full address of this item.
+     */
     address: PropTypes.string,
+    /**
+     * Event listener for when this item is pressed.
+     */
     onPress: PropTypes.func,
+    /**
+     * Event listener for when this item is pressed and held.
+     */
     onLongPress: PropTypes.func,
+    /**
+     * Event listener for when this item's More (3 dots) button is pressed.
+     */
     onMorePress: PropTypes.func,
   };
 
@@ -76,6 +91,9 @@ export default class FavoriteListItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  /**
+   * Styles for the more (3 dots) button.
+   */
   moreIcon: {
     color: 'gray',
   },

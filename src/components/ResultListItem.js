@@ -5,10 +5,26 @@ import Colors from '../constants/Colors';
 
 export default class ResultListItem extends Component {
   static propTypes = {
+    /**
+     * The label for this item.
+     */
     label: PropTypes.string,
+    /**
+     * The full address of this item.
+     */
     address: PropTypes.string,
+    /**
+     * If the item saved to favorite list.
+     */
     saved: PropTypes.bool,
+    /**
+     * Event listener for when this item is pressed.
+     */
     onPress: PropTypes.func,
+    /**
+     * Event listener for when the Save toggle button, which adds this item to
+     * favorite list, is changed.
+     */
     onChangeSave: PropTypes.func,
   };
 

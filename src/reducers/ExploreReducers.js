@@ -8,8 +8,17 @@ import {
 import { NONE } from '../constants/StationTypes';
 
 const initialState = {
+  /**
+   * The destination location information.
+   */
   location: null,
+  /**
+   * If the navigating process is on.
+   */
   isNavigating: false,
+  /**
+   * The current station type.
+   */
   stationType: NONE,
 };
 

@@ -36,6 +36,9 @@ export class RingtoneSetting extends Component {
 
     prepareSound();
     this.state = {
+      /**
+       * The selected index of the list.
+       */
       selectedIndex: props.soundID,
     };
 

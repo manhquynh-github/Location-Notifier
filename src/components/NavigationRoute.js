@@ -9,15 +9,41 @@ import Colors from '../constants/Colors';
 
 export default class NavigationRoute extends Component {
   static propTypes = {
+    /**
+     * The starting location of the route.
+     */
     currentLocation: PropTypes.shape({
+      /**
+       * The latitude value.
+       */
       latitude: PropTypes.number,
+      /**
+       * The longitude value.
+       */
       longitude: PropTypes.number,
     }).isRequired,
+    /**
+     * The arriving location of the route
+     */
     destination: PropTypes.shape({
+      /**
+       * The latitude value.
+       */
       latitude: PropTypes.number,
+      /**
+       * The longitude value.
+       */
       longitude: PropTypes.number,
     }).isRequired,
+    /**
+     * The radius calculated from the arriving location, which indicates range
+     * to notify.
+     */
     radius: PropTypes.number.isRequired,
+    /**
+     * Event listener for when the directions are drawn and ready.
+     * Returns an array of starting and arriving locations.
+     */
     onReady: PropTypes.func,
   };
 

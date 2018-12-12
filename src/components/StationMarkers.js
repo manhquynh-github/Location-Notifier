@@ -7,7 +7,17 @@ import { ATM, GAS, NONE } from '../constants/StationTypes';
 
 export default class StationMarkers extends Component {
   static propTypes = {
+    /**
+     * The station type to show.
+     * Must be one of the following:
+     * - ATM
+     * - GAS
+     * - NONE
+     */
     type: PropTypes.oneOf([ATM, GAS, NONE]),
+    /**
+     * Event listener for when a station is pressed.
+     */
     onStationPress: PropTypes.func,
   };
 
@@ -15,6 +25,7 @@ export default class StationMarkers extends Component {
 
   constructor() {
     super();
+    // Set default stations.
     this.stations = {
       [ATM]: [
         {

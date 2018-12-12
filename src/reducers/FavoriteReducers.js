@@ -17,6 +17,9 @@ const sampleData = [
 ];
 
 const initialState = {
+  /**
+   * The array of favorite items.
+   */
   favorites: sampleData,
 };
 

@@ -43,10 +43,16 @@ class MainExploreScreen extends Component {
     super();
 
     this.state = {
+      /**
+       * The current location of the device.
+       */
       currentLocation: {
         latitude: 10.8703,
         longitude: 106.8034513,
       },
+      /**
+       * If the notifying process is running.
+       */
       isNotifying: false,
     };
 
